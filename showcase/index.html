@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free Website Template for Yo-Yo & Skill Toy Contests</title>
-  <meta name="description" content="A free, open-source website template for yo-yo, kendama, and skill toy contests. Edit one file, publish on GitHub Pages for $0. Registration status, countdown, and results switch over by themselves.">
+  <meta name="description" content="A free, open-source website template for yo-yo, kendama, diabolo, spinning top, and skill toy contests. Edit one file, publish on GitHub Pages for $0. Registration status, countdown, and results switch over by themselves.">
   <meta name="robots" content="index, follow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#1a2744">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free Website Template for Yo-Yo & Skill Toy Contests">
-  <meta property="og:description" content="Edit one file, publish on GitHub Pages, $0. Yo-yo (NYYL rules), kendama, and trick battle presets.">
+  <meta property="og:description" content="Edit one file, publish on GitHub Pages, $0. Yo-yo (NYYL rules), kendama, diabolo, spin top, mixed skill toy, and trick battle presets.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="showcase.css">
 </head>
@@ -20,7 +20,7 @@
 
 <header class="top">
   <div class="wrap top-inner">
-    <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="36" height="36"><span>Yo-Yo Contest Site Template</span></a>
+    <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="36" height="36"><span>Skill Toy Contest Site Template</span></a>
     <nav aria-label="Page sections">
       <a href="#examples">Examples</a>
       <a href="#deploy">Deploy</a>
@@ -35,7 +35,7 @@
 <section class="hero">
   <div class="wrap">
     <p class="eyebrow">Free &bull; Open source &bull; No coding</p>
-    <h1>A website for your yo-yo contest</h1>
+    <h1>A website for your skill toy contest</h1>
     <p class="lede">Divisions, schedule, rules, venue, sponsors, and results, from one settings file.
       The site follows your contest's calendar by itself: "registration opens soon", then the register button,
       then "registration closed", then "today!", then a "that's a wrap" page with your results.
@@ -74,6 +74,24 @@
         <span class="tag tag-demo">Demo</span>
         <strong>Kendama Contest</strong>
         <span><code>kendama-contest</code> preset, registration opens soon</span>
+      </a>
+      <a class="example" href="examples/demo-diabolo-contest/index.html">
+        <img src="images/demo-diabolo-contest.png" alt="Home page of the diabolo contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Diabolo Contest</strong>
+        <span><code>diabolo-contest</code> preset, registration open, combo price</span>
+      </a>
+      <a class="example" href="examples/demo-spintop-contest/index.html">
+        <img src="images/demo-spintop-contest.png" alt="Home page of the spinning top contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Spin Top Contest</strong>
+        <span><code>spintop-contest</code> preset, longest spin and ring battles</span>
+      </a>
+      <a class="example" href="examples/demo-skill-toy-contest/index.html">
+        <img src="images/demo-skill-toy-contest.png" alt="Home page of the mixed skill toy contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Skill Toy Contest</strong>
+        <span><code>skill-toy-contest</code> preset, a division for every toy</span>
       </a>
       <a class="example" href="examples/demo-trick-battle/index.html">
         <img src="images/demo-trick-battle.png" alt="Home page of the trick battle demo site" width="390" height="700" loading="lazy">
@@ -165,6 +183,9 @@ confirm the GitHub Pages site is live.</code></pre>
         <tbody>
           <tr><td><code>yoyo-contest</code></td><td>A yo-yo contest (default)</td><td>1A, X Division, and Sport divisions; NYYL freestyle rules and a scoring explainer; music upload steps</td></tr>
           <tr><td><code>kendama-contest</code></td><td>A kendama contest</td><td>Beginner, Intermediate, and Open trick ladders plus a battle bracket</td></tr>
+          <tr><td><code>diabolo-contest</code></td><td>A diabolo contest</td><td>Single Diabolo, Multi-Diabolo styles (2D, 3D+, Vertax, fixed axle), Beginner to house music, and a trick ladder; ceiling and toss safety rules</td></tr>
+          <tr><td><code>spintop-contest</code></td><td>A spinning top contest</td><td>Trick Freestyle (string and hand-spun styles), Junior Tricks (12 and under), Longest Spin, and Ring Battle</td></tr>
+          <tr><td><code>skill-toy-contest</code></td><td>A mixed contest with several toys</td><td>A division for each toy: yo-yo, kendama ladder, diabolo, spin top, open skill toy, plus a beginner division for any toy</td></tr>
           <tr><td><code>trick-battle</code></td><td>A casual club battle or skill toy jam</td><td>Beginner, Open, and Kendama brackets; side games; simple battle rules</td></tr>
         </tbody>
       </table>
@@ -180,7 +201,7 @@ confirm the GitHub Pages site is live.</code></pre>
     <ul class="features">
       <li><strong>9 pages</strong>: Home, Schedule, Register, Rules, Venue, Sponsors, Results, FAQ, Terms</li>
       <li><strong>A site that follows the calendar</strong>: registration opens and closes, a countdown, contest day, and "that's a wrap", rebuilt daily</li>
-      <li><strong>Divisions &amp; fees</strong>, guest events with their own sign-up, and music upload steps</li>
+      <li><strong>Divisions &amp; fees</strong>: any number, with styles, age limits, combo prices, and music only where it's needed</li>
       <li><strong>Rules &amp; scoring</strong> explained in plain English, with sources</li>
       <li><strong>Sponsors</strong> by tier, partners and friends, and sponsorship packages with slots</li>
       <li><strong>Results</strong>: podiums by division, stats, and links to standings, photos, and video</li>
@@ -196,7 +217,7 @@ confirm the GitHub Pages site is live.</code></pre>
     <h2>Questions</h2>
     <details><summary>Does it handle registration and payments?</summary><p>No. The site links to whatever sign-up you use: a Google Form, a Stripe payment link, Eventbrite, or your own app. The Register button appears and disappears on your dates.</p></details>
     <details><summary>What happens after the contest?</summary><p>The day after, the home page switches to "that's a wrap" with your wrap-up numbers and links. Fill in the results section of <code>site.jsonc</code> and the Results page shows each division's podium.</p></details>
-    <details><summary>Do I have to use NYYL rules?</summary><p>No. The <code>yoyo-contest</code> preset starts from them because most U.S. contests do. Copy the <code>rules</code> section into <code>site.jsonc</code> and write your own.</p></details>
+    <details><summary>Do I have to use NYYL rules?</summary><p>No. The <code>yoyo-contest</code> preset starts from them because most U.S. yo-yo contests do. The diabolo, spin top, and mixed presets use a simple, typical judging sheet instead. Copy the <code>rules</code> section into <code>site.jsonc</code> and write your own.</p></details>
     <details><summary>Are the terms legal advice?</summary><p>No. They're a plain-English starting point from a real contest. Have someone check them against your venue's requirements and local law.</p></details>
     <details><summary>Why is this separate from the club template?</summary><p>Clubs and contests rarely share the same organizers, dates, or audience. Two small templates are easier to run than one big one.</p></details>
     <details><summary>Is it really free?</summary><p>Yes. The template is public domain, and GitHub Pages hosts public sites for free.</p></details>
@@ -219,7 +240,7 @@ confirm the GitHub Pages site is live.</code></pre>
   <div class="wrap">
     <p>Public domain (<a href="https://github.com/dmvthrowers/yoyo-contest-template/blob/main/LICENSE" rel="noopener noreferrer">Unlicense</a>).
       Built by the volunteers behind the <a href="https://dmvthrowers.club/vsyc26.html" rel="noopener noreferrer">Virginia State Yo-Yo Contest</a>.
-      Not affiliated with any yo-yo league, brand, or shop.</p>
+      Not affiliated with any skill toy league, brand, or shop.</p>
     <p><a href="https://github.com/dmvthrowers/yoyo-contest-template" rel="noopener noreferrer">Source on GitHub</a> &bull;
       <a href="https://github.com/dmvthrowers/yoyo-contest-template/issues" rel="noopener noreferrer">Report a problem</a></p>
     <p class="credit">Template by Brandon Rogers &amp; <a href="https://dmvthrowers.club/" rel="noopener noreferrer">DMV Throwers</a></p>

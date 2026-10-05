@@ -18,6 +18,9 @@ EXAMPLES = [                               # (folder name, settings file)
     ("vsyc-26", "examples/vsyc-26.jsonc"),
     ("demo-yoyo-contest", "site.jsonc"),
     ("demo-kendama-contest", "examples/demo-kendama-contest.jsonc"),
+    ("demo-diabolo-contest", "examples/demo-diabolo-contest.jsonc"),
+    ("demo-spintop-contest", "examples/demo-spintop-contest.jsonc"),
+    ("demo-skill-toy-contest", "examples/demo-skill-toy-contest.jsonc"),
     ("demo-trick-battle", "examples/demo-trick-battle.jsonc"),
 ]
 
