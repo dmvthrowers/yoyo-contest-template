@@ -137,6 +137,15 @@ a:hover { color: var(--accent-ink); }
 .style-list strong { display: inline-block; min-width: 3.2rem; color: var(--accent-ink); font-weight: 900; }
 .division-fee { margin: 0; font-weight: 800; font-size: 1.15rem; color: var(--primary); }
 .division-fee .label { margin-bottom: 0; }
+.division-format { font-weight: 700; font-size: .95rem; color: var(--primary); border-left: 3px solid var(--accent); padding-left: .6rem; margin-bottom: .6rem; }
+.division-more { margin: -.4rem 0 .6rem; }
+.format-label { color: var(--accent-ink); margin-top: 1rem; }
+.trick-list { margin: 0 0 1rem; padding-left: 1.6rem; columns: 2 10rem; column-gap: 1.5rem; }
+.trick-list li { margin-bottom: .3rem; break-inside: avoid; }
+.criteria { margin-top: .5rem; }
+.criteria caption { text-align: left; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); padding-bottom: .35rem; }
+.criteria td { font-weight: 800; width: 6rem; }
+.criteria tfoot th, .criteria tfoot td { border-top: 2px solid var(--primary); }
 .fee-note { display: block; font-weight: 400; font-size: .9rem; color: var(--muted); }
 
 /* Rules */

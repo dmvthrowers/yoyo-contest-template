@@ -15,6 +15,7 @@
   //   "diabolo-contest"   - a diabolo contest: freestyles, multi-diabolo styles, a trick ladder
   //   "spintop-contest"   - a spinning top contest: freestyle, longest spin, ring battles
   //   "skill-toy-contest" - a mixed contest with a division for each toy
+  //   "juggling-contest"  - a juggling contest: solo and team routines, numbers, a battle
   //   "trick-battle"      - a casual battle or jam for any skill toy
   // Anything you set below overrides the preset.
   "preset": "yoyo-contest",
@@ -111,7 +112,8 @@
   //   "code": "1A",                      short code, shown big on the card
   //   "name": "1A Division",             required
   //   "text": "Single yo-yo on a string.",
-  //   "format": "Freestyle",             optional: "Trick ladder", "Bracket", "Timed"...
+  //   "format": "Freestyle",             freestyle, panel, timed, scored, ladder, bracket, showcase
+  //                                      (or any other text); see README "Division formats"
   //   "length": "2-min freestyle",       routine or round length ("" to hide)
   //   "fee": "$20",                      shown on the card and in the fee table
   //   "ages": "Under 13",                or { "min": 8, "max": 12 }; leave out for all ages
@@ -119,6 +121,13 @@
   //   "styles": ["2A", "3A", "4A", "5A"],  optional; or [{ "code": "2A", "name": "Looping" }, ...]
   //   "tags": ["Open"]                   any other short labels
   // }
+  // Format details (all optional; README "Division formats" has examples):
+  //   "tricks": ["Big Cup", ...], "attempts": 3          trick ladder: the list, tries per trick
+  //   "bracket": { "third_place": true, "match_format": "two 30-second rounds" }   battles
+  //   "criteria": [{ "label": "Choreography", "points": 25 }, ...]                  panel judging
+  //   "unit": "seconds", "better": "lower", "attempts": 3                         timed or scored
+  //   "team": { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" }       team entries
+  //   "rounds": [{ "name": "Prelims", "advance": 10 }, { "name": "Finals" }]       prelims -> finals
   // A preset section you don't want at all ("gear", "guest_events"...)? Set it to false.
 
   // Guest events with their own sign-up (battles, side contests)

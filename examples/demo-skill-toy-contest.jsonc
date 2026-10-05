@@ -1,5 +1,6 @@
 // Demo: a made-up mixed skill toy contest using the "skill-toy-contest" preset. Registration has closed.
-// The divisions are copied from the preset so each one can carry its own fee and age limits.
+// The divisions are copied from the preset so each one can carry its own fee and age limits, and a
+// Junior division replaces Beginner. Includes Artistic Performance (panel criteria) and a Showcase.
 {
   "preset": "skill-toy-contest",
   "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/New_York", "source_url": "", "credit": true },
@@ -22,8 +23,9 @@
   "divisions": [
     { "code": "YY", "name": "Yo-Yo Freestyle", "format": "Freestyle", "text": "Any yo-yo style. Pick one when you register.",
       "styles": ["1A", "2A", "3A", "4A", "5A"], "length": "2-min freestyle", "music": true, "fee": "$15" },
-    { "code": "KD", "name": "Kendama Ladder", "format": "Trick ladder", "text": "Called tricks from easier to harder, with a set number of attempts at each.",
-      "music": false, "fee": "$10" },
+    { "code": "KD", "name": "Kendama Ladder", "format": "Trick ladder", "text": "Called tricks from easier to harder. Land each one within three tries to move up.",
+      "tricks": ["Big Cup", "Small Cup", "Base Cup", "Spike", "Around Japan", "Around the World", "Lighthouse", "Earth Turn"],
+      "attempts": 3, "music": false, "fee": "$10" },
     { "code": "DB", "name": "Diabolo Freestyle", "format": "Freestyle", "text": "One diabolo or more. Tell us which when you register.",
       "styles": ["1 diabolo", "2+ diabolos"], "length": "2-min freestyle", "music": true, "fee": "$15" },
     { "code": "ST", "name": "Spin Top Freestyle", "format": "Freestyle", "text": "String-thrown or hand-spun tops in a short routine.",
@@ -31,6 +33,14 @@
     { "code": "Open", "name": "Open Skill Toy", "format": "Freestyle", "text": "Any other toy you can trick with.",
       "styles": [ { "name": "Juggling" }, { "name": "Devil sticks" }, { "name": "Flow toys" }, { "name": "Something else", "text": "Ask us before you register." } ],
       "length": "2-min freestyle", "music": true, "fee": "$15" },
+    { "code": "AP", "name": "Artistic Performance", "format": "Panel judged",
+      "text": "Any toy. A longer performance judged on artistry, not trick count: choreography, music, and stage presence.",
+      "length": "3-min performance", "music": true, "fee": "$15",
+      "criteria": [ { "label": "Choreography", "points": 30 }, { "label": "Musicality", "points": 25 },
+                    { "label": "Execution", "points": 25 }, { "label": "Stage presence", "points": 20 } ] },
+    { "code": "Show", "name": "Showcase", "format": "Showcase",
+      "text": "Not a competition. Show the crowd what your toy can do, solo or with friends.",
+      "team": { "label": "Solo or group", "min": 1, "max": 6 }, "length": "Up to 2 min", "music": true, "fee": "Free" },
     { "code": "Jr", "name": "Junior (Any Toy)", "format": "Freestyle", "text": "A short routine to house music for younger players, with any toy.",
       "ages": { "max": 13 }, "length": "60-sec routine", "music": "house", "fee": "$10" }
   ],

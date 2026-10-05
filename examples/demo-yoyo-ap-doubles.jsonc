@@ -1,0 +1,66 @@
+// Demo: a made-up yo-yo contest using the "yoyo-contest" preset, with two extra divisions the
+// preset leaves out: Artistic Performance (AP) and Doubles. 1A runs Prelims -> Finals.
+// The AP and Doubles criteria and points are this demo's own, not NYYL's. Registration is open.
+{
+  "preset": "yoyo-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/New_York", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Harbor City Yo-Yo Classic", "short_name": "HCY", "edition": "4th Annual", "tradition": "",
+    "date": "2026-11-21", "start": "09:30", "end": "18:30", "status": "scheduled",
+    "city": "Baltimore", "region": "MD", "admission": "Free to spectate", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Harbor City Throwers", "url": "" },
+    "description": "A yo-yo contest in Baltimore: 1A prelims and finals, X Division, Sport, Artistic Performance, and Doubles.",
+    "about_title": "Yo-Yo Contest Day in Baltimore",
+    "about": ["{division_count} divisions: {divisions}. Organized by {organizer}."],
+    "features": ["1A prelims & finals", "Artistic Performance", "Doubles", "Free to spectate"]
+  },
+  "registration": { "opens": "2026-09-01", "closes": "2026-11-14", "url": "https://example.org/register",
+    "fee_summary": "$15–$30 per division",
+    "combos": [ { "name": "Any two divisions", "fee": "$35" } ],
+    "spectators": "Free",
+    "music": { "deadline": "2026-11-17", "upload_url": "" } },
+  "divisions": [
+    { "code": "1A", "name": "1A Division", "text": "Single yo-yo on a string. Everyone throws a prelim; the top ten throw a longer final.",
+      "length": "1-min prelim · 2-min final", "music": true, "fee": "$20", "tags": ["Open"],
+      "rounds": [ { "name": "Prelims", "advance": 10, "length": "1-min freestyle" }, { "name": "Finals", "length": "2-min freestyle" } ] },
+    { "code": "X", "name": "X Division", "text": "Pick one style when you register: 2A = looping, 3A = two yo-yos on strings, 4A = offstring, 5A = freehand.",
+      "styles": ["2A", "3A", "4A", "5A"], "length": "2-min freestyle", "music": true, "fee": "$20" },
+    { "code": "Sport", "name": "Sport / Beginner", "text": "A welcoming first step into contest play. Most of the score is presentation.",
+      "ages": "All ages", "length": "90-sec freestyle", "music": true, "fee": "$15" },
+    { "code": "AP", "name": "Artistic Performance", "format": "panel",
+      "text": "Any yo-yo style. A performance judged on artistry, not trick count. Props and costumes welcome.",
+      "length": "3-min performance", "music": true, "fee": "$20",
+      "criteria": [ { "label": "Choreography", "points": 30 }, { "label": "Musicality", "points": 25 },
+                    { "label": "Execution", "points": 25 }, { "label": "Stage presence", "points": 20 } ] },
+    { "code": "2P", "name": "Doubles", "format": "panel",
+      "text": "Two players, one routine: trade-offs, sync, and tricks that need both of you.",
+      "team": { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" },
+      "length": "2-min routine", "music": true, "fee": "$30",
+      "criteria": [ { "label": "Difficulty", "points": 30 }, { "label": "Execution", "points": 30 },
+                    { "label": "Teamwork", "points": 25 }, { "label": "Presentation", "points": 15 } ] }
+  ],
+  "divisions_notes": [
+    "Competing in more than one division? Registration is charged per division unless a combo price is listed. Doubles is charged per pair.",
+    "1A, X, and Sport are scored with the National Yo-Yo League (NYYL) freestyle rules. AP and Doubles use this contest's own panel criteria, listed on the Rules page."
+  ],
+  "schedule": [
+    { "time": "9:30 AM", "title": "Doors Open · Check-In", "text": "Registration desk and practice area open." },
+    { "time": "10:00 AM", "title": "Welcome & Rules Briefing", "text": "" },
+    { "time": "10:30 AM", "division": "1A", "round": "Prelims" },
+    { "time": "12:00 PM", "title": "Sport / Beginner", "text": "" },
+    { "time": "12:45 PM", "title": "Lunch Break", "text": "Practice space stays open." },
+    { "time": "1:45 PM", "title": "Doubles", "text": "" },
+    { "time": "2:30 PM", "title": "X Division", "text": "2A · 3A · 4A · 5A." },
+    { "time": "3:45 PM", "title": "Artistic Performance", "text": "" },
+    { "time": "4:30 PM", "division": "1A", "round": "Finals" },
+    { "time": "5:45 PM", "title": "Awards", "text": "Awards for every division and sponsor thanks." }
+  ],
+  "venue": { "name": "Fells Point Rec Center", "space": "Main hall", "address": "900 Example St, Baltimore MD" },
+  "sponsors": [ { "tier": "Gold", "name": "Example Yo-Yo Shop", "text": "Prizes for every podium." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [ { "group": "Competing", "q": "What is Artistic Performance?", "a": "A longer performance judged on choreography, music, and stage presence instead of trick count. The Rules page lists the criteria." } ],
+  "terms": { "effective": "" },
+  "theme": { "primary": "#14324a", "accent": "#e8b04b" }
+}

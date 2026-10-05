@@ -1,0 +1,31 @@
+// Demo: a made-up juggling contest using the "juggling-contest" preset. Registration is open.
+// Shows panel judging with criteria, a team division priced per team, a scored numbers event
+// (catches, best of 3), a last-one-juggling battle bracket, and a showcase.
+{
+  "preset": "juggling-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/New_York", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Riverside Juggling Open", "short_name": "RJO", "edition": "1st Annual", "tradition": "",
+    "date": "2026-12-12", "start": "09:00", "end": "17:30", "status": "scheduled",
+    "city": "Richmond", "region": "VA", "admission": "Free to watch", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Riverside Juggling Club", "url": "" },
+    "description": "A juggling contest in Richmond: solo and team routines, numbers endurance, a battle bracket, and a showcase.",
+    "about_title": "A Day of Juggling in Richmond",
+    "about": ["{division_count} divisions: {divisions}. Balls, clubs, rings, and everything in between. Organized by {organizer}."],
+    "features": ["Solo & team routines", "Numbers endurance", "Battle bracket", "Showcase", "Free to watch"]
+  },
+  "registration": { "opens": "2026-09-15", "closes": "2026-12-05", "url": "https://example.org/register",
+    "fee_summary": "$5–$20 per division",
+    "fees": [ { "division": "IF", "fee": "$15" }, { "division": "Team", "fee": "$20" },
+              { "division": "Num", "fee": "$5", "text": "Per category" }, { "division": "Battle", "fee": "$5" },
+              { "division": "Show", "fee": "Free" }, { "name": "Spectators", "fee": "Free" } ],
+    "music": { "deadline": "2026-12-08", "upload_url": "" } },
+  "venue": { "name": "Southside Community Gym", "space": "Main gym (28 ft ceiling)", "address": "800 Example Blvd, Richmond VA",
+    "facts": [ { "label": "Parking", "text": "Free lot next to the gym." } ] },
+  "sponsors": [ { "tier": "Gold", "name": "Example Juggling Supply", "text": "Prop packs for every division winner." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": {}
+}

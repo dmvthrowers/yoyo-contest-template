@@ -234,7 +234,7 @@ def star_points(cx, cy, outer, inner):
 
 
 # Toy silhouettes for the generated logo and icons, drawn in a 100x100 box. Pick one with
-# theme.emblem: "yoyo", "kendama", "top", "diabolo", or "star" (any skill toy).
+# theme.emblem: "yoyo", "kendama", "top", "diabolo", "juggling", or "star" (any skill toy).
 # Each part is (shape, numbers, hole); holes are cut out in the background color.
 TOYS = {
     "kendama": [("circle", (50, 23, 21), False), ("circle", (50, 23, 4), True),
@@ -245,6 +245,7 @@ TOYS = {
     "diabolo": [("poly", ((3, 18), (43, 42), (43, 58), (3, 82)), False),
                 ("poly", ((97, 18), (57, 42), (57, 58), (97, 82)), False),
                 ("rect", (38, 45, 24, 10), False), ("rect", (9, 22, 4, 56), True), ("rect", (87, 22, 4, 56), True)],
+    "juggling": [("circle", (50, 24, 18), False), ("circle", (24, 70, 18), False), ("circle", (76, 70, 18), False)],
     "star": [("poly", star_points(50, 53, 48, 20), False)],
 }
 EMBLEMS = ["yoyo"] + list(TOYS)
@@ -772,10 +773,12 @@ class Site:
         cfg = self.cfg
         rows = []
         for item in cfg.get("schedule") or []:
+            title, auto = self.schedule_round(item)
             link = f' {ext_link(item["url"], item.get("url_label") or "More", "more")}' if item.get("url") else ""
-            text = f'<p>{esc(self.fill(item.get("text", "")))}{link}</p>' if item.get("text") or link else ""
+            words = self.fill(item.get("text", "")) or auto
+            text = f'<p>{esc(words)}{link}</p>' if words or link else ""
             rows.append(f'<li><span class="slot-time">{esc(item.get("time", ""))}</span>'
-                        f'<div class="slot-body"><h3>{esc(item["title"])}</h3>{text}</div></li>')
+                        f'<div class="slot-body"><h3>{esc(title)}</h3>{text}</div></li>')
         timeline = f'<ol class="timeline">{"".join(rows)}</ol>' if rows else \
             '<p class="muted center">The schedule will be posted closer to the contest.</p>'
         notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in cfg.get("schedule_notes") or [])
@@ -789,6 +792,22 @@ class Site:
   </div>
 </section>"""
         return "Schedule", f"{self.name} {self.year()} schedule: {self.when()}.", body, None
+
+    def schedule_round(self, item):
+        """A schedule item's title, and default text for a division's round ("Top 10 advance to Finals.").
+        Items can set "division" (a code) and "round" (one of its rounds) instead of a title."""
+        d = next((x for x in self.divisions() if item.get("division") and x.get("code") == item["division"]), None)
+        rnd = item.get("round")
+        title = item.get("title") or " · ".join(x for x in ((d or {}).get("name"), rnd) if x)
+        auto = ""
+        rounds = rounds_of(d)
+        names = [r["name"] for r in rounds]
+        if rnd in names:
+            i = names.index(rnd)
+            n = positive_int(rounds[i].get("advance"))
+            if n and i + 1 < len(rounds):
+                auto = f"Top {n} advance to {rounds[i + 1]['name']}."
+        return title, auto
 
     # --- divisions, fees, and music (all from the "divisions" list; see README "Divisions")
     def divisions(self):
@@ -807,10 +826,259 @@ class Site:
                 warnings.append(f'Division "{d["name"]}": "ages" should be text like "Under 13", or {{ "min": 8, "max": 12 }}.')
             if d.get("music") not in (None, True, False, "house"):
                 warnings.append(f'Division "{d["name"]}": "music" should be true, false, or "house". Ignored.')
+            self.check_division_format(d)
         codes = {d.get("code") for d in self.divisions()}
         for f in (self.cfg.get("registration") or {}).get("fees") or []:
             if f.get("division") and f["division"] not in codes:
                 warnings.append(f'registration.fees lists division "{f["division"]}", but no division has that code.')
+        self.check_schedule_rounds()
+
+    def check_division_format(self, d):
+        """Warnings for the format fields (format, tricks, attempts, bracket, criteria, unit,
+        better, team, rounds). Bad values are ignored, so the build still works."""
+        def warn(msg):
+            warnings.append(f'Division "{d["name"]}": {msg}')
+        fmt = d.get("format")
+        if fmt is not None and not isinstance(fmt, str):
+            warn(f'"format" should be text, like one of: {", ".join(FORMATS)}. Ignored.')
+        key = format_key(d)
+        if "tricks" in d and tricks_of(d) is None:
+            warn('"tricks" should be a list of trick names, like ["Big Cup", "Spike"]. Ignored.')
+        elif tricks_of(d) and key != "ladder":
+            warn(f'"tricks" are listed only for trick ladders, but "format" is "{fmt}". Ignored.')
+        if "attempts" in d and positive_int(d["attempts"]) is None:
+            warn('"attempts" should be a whole number like 3. Ignored.')
+        b = d.get("bracket")
+        if b is not None:
+            if not isinstance(b, (dict, bool)):
+                warn('"bracket" should be { "third_place": true, "match_format": "two 30-second rounds" }. Ignored.')
+            elif isinstance(b, dict):
+                if "third_place" in b and not isinstance(b["third_place"], bool):
+                    warn('"bracket.third_place" should be true or false. Ignored.')
+                if b.get("elimination") not in (None, "single", "double"):
+                    warn('"bracket.elimination" should be "single" or "double". Using "single".')
+                for k in ("match_format", "vote", "decided_by", "poll"):
+                    if k in b and not isinstance(b[k], str) and not (k == "vote" and b[k] is False):
+                        warn(f'"bracket.{k}" should be text. Ignored.')
+                if "third_place_by_votes" in b and not isinstance(b["third_place_by_votes"], bool):
+                    warn('"bracket.third_place_by_votes" should be true or false. Ignored.')
+                if b.get("third_place") is True and b.get("third_place_by_votes") is True:
+                    warn('"bracket" sets both "third_place" (a match) and "third_place_by_votes". Pick one; showing the match.')
+                if b.get("third_place_by_votes") is True and bracket_decider(b) != "audience":
+                    warn('"bracket.third_place_by_votes" needs "decided_by": "audience". Ignored.')
+                if "stream_url" in b and not (isinstance(b["stream_url"], str) and b["stream_url"].startswith("https://")):
+                    warn('"bracket.stream_url" should be a link starting with https://. Ignored.')
+            if key != "bracket":
+                warn(f'"bracket" is shown only for brackets, but "format" is "{fmt}". Ignored.')
+        if "criteria" in d:
+            crit = d["criteria"]
+            if not isinstance(crit, list) or not all(isinstance(c, (dict, str)) for c in crit):
+                warn('"criteria" should be a list like [{ "label": "Choreography", "points": 25 }]. Ignored.')
+            else:
+                for c in crit:
+                    if isinstance(c, dict) and not c.get("label"):
+                        warn('every item in "criteria" needs a "label". That item is ignored.')
+                    if isinstance(c, dict) and "points" in c and number(c["points"]) is None:
+                        warn(f'"points" for criterion "{c.get("label", "")}" should be a number like 25. Ignored.')
+                if key == "showcase":
+                    warn('showcase divisions are not judged, so "criteria" are ignored.')
+                elif key not in ("panel", "freestyle"):
+                    warn(f'"criteria" are shown only for judged routines (panel or freestyle), but "format" is "{fmt}". Ignored.')
+        if "rules" in d and rules_of(d) is None:
+            warn('"rules" should be a list of short sentences, like ["One-minute routines, head to head."]. Ignored.')
+        if "unit" in d and not (isinstance(d["unit"], str) and d["unit"].strip()):
+            warn('"unit" should be text like "seconds" or "catches". Ignored.')
+        if "better" in d and d["better"] not in ("lower", "higher"):
+            warn('"better" should be "lower" or "higher". Ignored.')
+        if "team" in d:
+            t = d["team"]
+            if not isinstance(t, dict):
+                warn('"team" should be { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" }. Ignored.')
+            else:
+                lo, hi = t.get("min"), t.get("max")
+                if lo is not None and positive_int(lo) is None or hi is not None and positive_int(hi) is None:
+                    warn('"team.min" and "team.max" should be whole numbers like 2. Ignored.')
+                elif lo and hi and lo > hi:
+                    warn(f'"team.min" ({lo}) is more than "team.max" ({hi}).')
+                for k in ("label", "fee"):
+                    if k in t and not isinstance(t[k], str):
+                        warn(f'"team.{k}" should be text. Ignored.')
+        if "rounds" in d:
+            rounds = d["rounds"]
+            if not isinstance(rounds, list) or not all(isinstance(r, dict) and r.get("name") for r in rounds):
+                warn('"rounds" should be a list like [{ "name": "Prelims", "advance": 10 }, { "name": "Finals" }]. Ignored.')
+            else:
+                last = None
+                for j, r in enumerate(rounds):
+                    if "advance" not in r:
+                        continue
+                    n = positive_int(r["advance"])
+                    if n is None:
+                        warn(f'"advance" for round "{r["name"]}" should be a whole number like 10. Ignored.')
+                    elif j == len(rounds) - 1:
+                        warn(f'"{r["name"]}" is the last round, so no one advances from it. "advance" ignored.')
+                    elif last is not None and n >= last:
+                        warn(f'round "{r["name"]}" advances {n}, but the round before it advanced only {last}.')
+                    else:
+                        last = n
+
+    def check_schedule_rounds(self):
+        """Schedule items can name a division (by code) and one of its rounds; check both exist."""
+        by_code = {d.get("code"): d for d in self.divisions() if d.get("code")}
+        for item in self.cfg.get("schedule") or []:
+            if not isinstance(item, dict) or not (item.get("division") or item.get("round")):
+                continue
+            what = f'Schedule item "{item.get("title") or item.get("time", "")}"'
+            d = by_code.get(item.get("division"))
+            if item.get("division") and not d:
+                warnings.append(f'{what} names division "{item["division"]}", but no division has that code.')
+                continue
+            if item.get("round"):
+                names = [r["name"] for r in rounds_of(d)] if d else \
+                    [r["name"] for x in self.divisions() for r in rounds_of(x)]
+                if item["round"] not in names:
+                    whose = f'division "{d["name"]}" has' if d else "no division has a"
+                    have = f' Its rounds are: {", ".join(names)}.' if d and names else ""
+                    warnings.append(f'{what} names round "{item["round"]}", but {whose} {"no round" if d else "round"} by that name.{have}')
+
+    # --- division formats: short phrases for the card, and details for the Rules page
+    def team_text(self, d):
+        """"Doubles · 2 players" from the "team" field."""
+        t = team_of(d)
+        if not t:
+            return ""
+        lo, hi = positive_int(t.get("min")), positive_int(t.get("max"))
+        if lo and hi and lo <= hi:
+            size = f"{lo} players" if lo == hi else f"{lo}–{hi} players"
+        elif lo or hi:
+            size = f"{lo}+ players" if lo else f"Up to {hi} players"
+        else:
+            size = ""
+        return " · ".join(x for x in (t.get("label") if isinstance(t.get("label"), str) else "Team", size) if x)
+
+    def rounds_text(self, d):
+        """"Prelims → Finals (top 10 advance)" from the "rounds" field."""
+        rounds = rounds_of(d)
+        if not rounds:
+            return ""
+        adv = [positive_int(r.get("advance")) for r in rounds[:-1]]
+        if all(adv):
+            names = " → ".join(r["name"] for r in rounds)
+            tops = ", then ".join(f"top {n}" for n in adv)
+            return f"{names} ({tops} advance)" if tops else names
+        return " → ".join(r["name"] + (f" (top {n} advance)" if n else "") for r, n in zip(rounds, adv + [None]))
+
+    def format_bits(self, d):
+        """Short facts about how the division runs, e.g. ["12 tricks", "3 tries per trick"]."""
+        key, bits = format_key(d), []
+        attempts = positive_int(d.get("attempts"))
+        if key == "ladder":
+            tricks = tricks_of(d) or []
+            if tricks:
+                bits.append(f"{len(tricks)} tricks")
+            if attempts:
+                bits.append(f"{attempts} {'try' if attempts == 1 else 'tries'} per trick")
+        elif key == "bracket" and (isinstance(d.get("bracket"), dict) or d.get("bracket") is True):
+            b = bracket_of(d)
+            elim = "double" if b.get("elimination") == "double" else "single"
+            bits.append(f"{elim} elimination battles")
+            decider = bracket_decider(b)
+            if decider:
+                bits.append({"judges": "judges vote", "crowd": "crowd vote", "audience": "audience vote"}.get(decider, decider))
+            if isinstance(b.get("match_format"), str) and b["match_format"]:
+                bits.append(b["match_format"])
+            if b.get("third_place") is True:
+                bits.append("3rd-place match")
+            elif b.get("third_place_by_votes") is True and decider == "audience":
+                bits.append("3rd place by vote totals")
+        elif key in ("timed", "scored"):
+            unit = d.get("unit") if isinstance(d.get("unit"), str) else ""
+            if unit.strip():
+                bits.append(f"measured in {unit.strip()}")
+            if d.get("better") in ("lower", "higher"):
+                bits.append("lowest wins" if d["better"] == "lower" else "highest wins")
+            if attempts:
+                bits.append(f"best of {attempts} attempts" if attempts > 1 else "1 attempt")
+        elif key == "showcase":
+            bits.append("not judged")
+        if key in ("panel", "freestyle"):
+            crit = criteria_of(d)
+            if crit:
+                total = sum(number(c.get("points")) or 0 for c in crit)
+                bits.append(f"{len(crit)} judging criteria" + (f" · {total:g} points" if total else ""))
+        return bits
+
+    def format_text(self, d):
+        """The format's explanation: the division's "format_text", or a short default for known formats."""
+        if isinstance(d.get("format_text"), str):
+            return self.fill(d["format_text"])
+        return FORMATS.get(format_key(d), "")
+
+    def has_format_details(self, d):
+        """Does this division get its own block under "How Each Division Works" on the Rules page?"""
+        key = format_key(d)
+        return bool((key == "ladder" and tricks_of(d)) or (key in ("panel", "freestyle") and criteria_of(d))
+                    or rounds_of(d) or team_of(d) or rules_of(d) or (key == "bracket" and isinstance(d.get("bracket"), dict))
+                    or (key in ("timed", "scored") and (positive_int(d.get("attempts")) or d.get("unit") or d.get("better")))
+                    or (key == "ladder" and positive_int(d.get("attempts"))))
+
+    def format_anchor(self, d):
+        return "format-" + re.sub(r"[^a-z0-9]+", "-", (d.get("code") or d["name"]).lower()).strip("-")
+
+    def format_block(self, d):
+        """One division's details on the Rules page: format, rounds, team size, trick list, criteria."""
+        facts = []
+        label = format_label(d)
+        bits = self.format_bits(d)
+        if label or bits:
+            facts.append(" · ".join(x for x in [label] + bits if x))
+        if rounds_of(d):
+            facts.append("Rounds: " + self.rounds_text(d))
+            for r in rounds_of(d):
+                extra = " · ".join(x for x in (r.get("length"), self.fill(r.get("text", "")) if isinstance(r.get("text"), str) else "") if x)
+                if extra:
+                    facts.append(f'{r["name"]}: {extra}')
+        if team_of(d):
+            fee = team_of(d).get("fee")
+            facts.append(self.team_text(d) + (f" · entry fee {fee}" if isinstance(fee, str) and fee else ""))
+        if d.get("length") and not any(r.get("length") for r in rounds_of(d)):
+            facts.append(d["length"])
+        b = bracket_of(d) if format_key(d) == "bracket" else {}
+        watch = ""
+        if bracket_decider(b) == "audience":
+            stream = b.get("stream_url") if isinstance(b.get("stream_url"), str) and b["stream_url"].startswith("https://") else ""
+            poll = b.get("poll") if isinstance(b.get("poll"), str) else ""
+            how = f"{poll} on the stream" if poll and stream else (poll or ("live poll on the stream" if stream else ""))
+            facts.append("Winners picked by the audience" + (f": {how}" if how else ""))
+            if stream:
+                watch = f'<p>{ext_link(stream, "Watch the stream", "more")}</p>'
+        facts += [self.fill(r) for r in rules_of(d) or []]
+        explain = self.format_text(d)
+        out = [f'<div class="rule-block" id="{self.format_anchor(d)}"><h3>{esc(d["name"])}</h3>']
+        if explain:
+            out.append(f"<p>{esc(explain)}</p>")
+        if facts:
+            out.append('<ul class="checklist">' + "".join(f"<li>{esc(f)}</li>" for f in facts) + "</ul>")
+        tricks = tricks_of(d) if format_key(d) == "ladder" else None
+        if tricks:
+            attempts = positive_int(d.get("attempts"))
+            tries = f" · {attempts} {'try' if attempts == 1 else 'tries'} per trick" if attempts else ""
+            out.append(f'<p class="label format-label">Trick list{esc(tries)}</p>'
+                       '<ol class="trick-list">' + "".join(f"<li>{esc(t)}</li>" for t in tricks) + "</ol>")
+        if watch:
+            out.append(watch)
+        crit = criteria_of(d) if format_key(d) in ("panel", "freestyle") else []
+        if crit:
+            has_points = any(number(c.get("points")) is not None for c in crit)
+            head = '<th scope="col">Points</th>' if has_points else ""
+            rows = "".join(f'<tr><th scope="row">{esc(c["label"])}</th>'
+                           + (f'<td>{esc(fmt_points(c.get("points")))}</td>' if has_points else "") + "</tr>" for c in crit)
+            total = sum(number(c.get("points")) or 0 for c in crit)
+            foot = f'<tfoot><tr><th scope="row">Total</th><td>{total:g}</td></tr></tfoot>' if has_points and total else ""
+            out.append(f'<div class="table-wrap"><table class="criteria"><caption>Judging criteria</caption>'
+                       f'<thead><tr><th scope="col">Criterion</th>{head}</tr></thead><tbody>{rows}</tbody>{foot}</table></div>')
+        out.append("</div>")
+        return "".join(out)
 
     def division_fee(self, d):
         if d.get("fee"):
@@ -826,15 +1094,27 @@ class Site:
         reg = self.cfg.get("registration") or {}
         by_code = {d.get("code"): d for d in self.divisions() if d.get("code")}
         explicit = [f for f in reg.get("fees") or [] if isinstance(f, dict)]
+        def team_note(d, text=""):
+            return " · ".join(x for x in (self.team_text(d) if d else "", text) if x)
         if explicit:
-            rows = [(f.get("name") or by_code.get(f.get("division"), {}).get("name") or f.get("division", ""),
-                     f.get("fee", ""), f.get("text", "")) for f in explicit]
+            rows = []
+            for f in explicit:
+                d = by_code.get(f.get("division")) if f.get("division") else None
+                rows.append((f.get("name") or (d or {}).get("name") or f.get("division", ""),
+                             self.team_fee(d, f.get("fee", "")) if d else f.get("fee", ""), team_note(d, f.get("text", ""))))
         else:
-            rows = [(d["name"], d["fee"], "") for d in self.divisions() if d.get("fee")]
+            rows = [(d["name"], self.team_fee(d, d["fee"]), team_note(d)) for d in self.divisions() if d.get("fee")]
         rows += [(c.get("name", ""), c.get("fee", ""), c.get("text", "")) for c in reg.get("combos") or [] if isinstance(c, dict)]
         if not explicit and reg.get("spectators"):
             rows.append(("Spectators", reg["spectators"], ""))
         return rows
+
+    def team_fee(self, d, fee):
+        """"$30" + team.fee "per pair" -> "$30 per pair"."""
+        per = team_of(d or {}).get("fee")
+        if fee and isinstance(per, str) and per and per.lower() not in fee.lower():
+            return f"{fee} {per}"
+        return fee
 
     def music_plan(self):
         """(show the music section?, names of the divisions that need music when only some do)."""
@@ -852,7 +1132,7 @@ class Site:
     def division_card(self, d):
         styles = [s for s in d.get("styles") or [] if s]
         mixed = any(x.get("music") is not True for x in self.divisions())     # only some divisions use your own music
-        pills = [d.get("format")]
+        pills = [format_label(d), self.team_text(d)]
         if styles:
             pills.append(" · ".join(s if isinstance(s, str) else (s.get("code") or s.get("name", "")) for s in styles))
         pills += [age_text(d.get("ages")), *(d.get("tags") or []), d.get("length"),
@@ -861,10 +1141,15 @@ class Site:
         style_items = "".join(f'<li><strong>{esc(s.get("code") or s.get("name", ""))}</strong> '
                               + esc(" · ".join(x for x in ((s.get("name") if s.get("code") else ""), self.fill(s.get("text", ""))) if x))
                               + "</li>" for s in styles if isinstance(s, dict) and (s.get("text") or (s.get("code") and s.get("name"))))
-        fee = self.division_fee(d)
+        fee = self.team_fee(d, self.division_fee(d))
+        how = [" · ".join(self.format_bits(d)), self.rounds_text(d)]
+        how[0] = how[0][:1].upper() + how[0][1:]
+        how_html = "".join(f'<p class="division-format">{esc(x)}</p>' for x in how if x)
+        if self.has_format_details(d):
+            how_html += f'<p class="division-more"><a class="more" href="rules.html#{self.format_anchor(d)}">How it works</a></p>'
         return (f'\n  <div class="card division"><span class="division-code">{esc(d.get("code", ""))}</span>'
-                f'<h3>{esc(d["name"])}</h3><p>{esc(self.fill(d.get("text") or d.get("description") or ""))}</p>'
-                + (f'<ul class="style-list">{style_items}</ul>' if style_items else "")
+                f'<h3>{esc(d["name"])}</h3><p>{esc(self.fill(d.get("text") or d.get("description") or "") or self.format_text(d))}</p>'
+                + (f'<ul class="style-list">{style_items}</ul>' if style_items else "") + how_html
                 + (f'<ul class="pill-row">{pills_html}</ul>' if pills_html else "")
                 + (f'<p class="division-fee"><span class="label">Entry fee</span>{esc(fee)}</p>' if fee else "") + "</div>")
 
@@ -943,9 +1228,15 @@ class Site:
             scoring = self.section("Judging", R.get("scoring_title", "How Scoring Works"),
                                    intro + self.rule_blocks(R["scoring"]) + notes, alt=True, center=False)
         notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in R.get("notes") or [])
+        formats = ""
+        detailed = [d for d in self.divisions() if self.has_format_details(d)]
+        if detailed:
+            formats = "\n" + self.section("Divisions", R.get("formats_title") or "How Each Division Works",
+                                           '<div class="rule-blocks">' + "".join(self.format_block(d) for d in detailed) + "</div>",
+                                           alt=not scoring, center=False)
         body = f"""{self.page_head("Contest rules", "Rules")}
 {self.section("Contest rules", R.get("title", "Contest Ruleset"), (f'<p class="intro">{esc(self.fill(R.get("intro", "")))}</p>' if R.get("intro") else "") + self.rule_blocks(R.get("sections") or []) + notes + src_html, center=False)}
-{scoring}"""
+{scoring}{formats}"""
         return "Rules", f"Rules and judging for {self.name} {self.year()}.", body, None
 
     def page_venue(self):
@@ -1223,6 +1514,104 @@ class Site:
         # The base path lets scripts/check_site.py resolve 404.html's absolute links.
         if OUT == ROOT / "_site":
             (ROOT / ".build-base-path").write_text(self.base_path)
+
+
+# Division formats (README "Division formats"). "format" can be any text; these known ones also
+# get a default explanation, and their own fields (tricks, bracket, criteria, unit...) are shown.
+FORMATS = {
+    "freestyle": "A routine of your own tricks, judged as a whole.",
+    "panel": "A panel of judges scores each routine on set criteria.",
+    "timed": "The clock decides. Each attempt is timed, and your best one counts.",
+    "scored": "A measured result decides the placing. Every attempt is measured, and your best one counts.",
+    "ladder": "Called tricks from easier to harder. Land each one within your tries to move up the ladder.",
+    "bracket": "Head-to-head battles. Win a battle to move on to the next round.",
+    "showcase": "A performance for the crowd. Not judged and not ranked.",
+}
+FORMAT_LABELS = {"freestyle": "Freestyle", "panel": "Panel judged", "timed": "Timed", "scored": "Scored",
+                 "ladder": "Trick ladder", "bracket": "Bracket", "showcase": "Showcase"}
+FORMAT_NAMES = {"freestyle": "freestyle", "panel": "panel", "panel judged": "panel", "panel-judged": "panel",
+                "judged": "panel", "timed": "timed", "scored": "scored", "manual": "scored", "ladder": "ladder",
+                "trick ladder": "ladder", "trick-ladder": "ladder", "bracket": "bracket", "battle": "bracket",
+                "battles": "bracket", "battle bracket": "bracket", "showcase": "showcase", "exhibition": "showcase"}
+
+
+def format_key(d):
+    """The known format a division uses ("ladder", "bracket"...), or None for free text.
+    With no "format", it's taken from the fields: tricks -> ladder, bracket -> bracket, criteria -> panel."""
+    fmt = d.get("format")
+    if isinstance(fmt, str) and fmt.strip():
+        return FORMAT_NAMES.get(fmt.strip().lower())
+    if fmt is None:
+        if tricks_of(d):
+            return "ladder"
+        if isinstance(d.get("bracket"), dict) or d.get("bracket") is True:
+            return "bracket"
+        if criteria_of(d):
+            return "panel"
+    return None
+
+
+def format_label(d):
+    """The format pill: what you wrote ("Trick ladder"), or a label for a bare key ("ladder")."""
+    fmt, key = d.get("format"), format_key(d)
+    if isinstance(fmt, str) and fmt.strip():
+        return FORMAT_LABELS[key] if key and fmt == fmt.lower() else fmt
+    return FORMAT_LABELS.get(key, "") if fmt is None else ""
+
+
+def positive_int(v):
+    return v if isinstance(v, int) and not isinstance(v, bool) and v > 0 else None
+
+
+def number(v):
+    return v if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+
+def fmt_points(v):
+    n = number(v)
+    return f"{n:g}" if n is not None else ""
+
+
+def tricks_of(d):
+    t = d.get("tricks")
+    if t is None:
+        return []
+    return t if isinstance(t, list) and all(isinstance(x, str) and x.strip() for x in t) else None
+
+
+def bracket_of(d):
+    b = d.get("bracket")
+    return b if isinstance(b, dict) else {}
+
+
+def bracket_decider(b):
+    """Who picks each battle's winner: "judges" (default), "crowd", "audience", other text, or ""."""
+    v = b.get("decided_by", b.get("vote", "judges"))
+    return v.strip() if isinstance(v, str) else ""
+
+
+def criteria_of(d):
+    c = d.get("criteria")
+    if not isinstance(c, list):
+        return []
+    return [x if isinstance(x, dict) else {"label": x} for x in c
+            if (isinstance(x, dict) and x.get("label")) or (isinstance(x, str) and x)]
+
+
+def team_of(d):
+    return d["team"] if isinstance(d.get("team"), dict) else {}
+
+
+def rounds_of(d):
+    r = (d or {}).get("rounds")
+    return r if isinstance(r, list) and all(isinstance(x, dict) and x.get("name") for x in r) else []
+
+
+def rules_of(d):
+    r = d.get("rules")
+    if r is None:
+        return []
+    return r if isinstance(r, list) and all(isinstance(x, str) for x in r) else None
 
 
 def age_text(ages):
