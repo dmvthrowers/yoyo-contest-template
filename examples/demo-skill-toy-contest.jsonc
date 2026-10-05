@@ -1,0 +1,44 @@
+// Demo: a made-up mixed skill toy contest using the "skill-toy-contest" preset. Registration has closed.
+// The divisions are copied from the preset so each one can carry its own fee and age limits.
+{
+  "preset": "skill-toy-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/New_York", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Tri-County Skill Toy Open", "short_name": "TSO", "edition": "5th Annual", "tradition": "",
+    "date": "2026-10-24", "start": "09:00", "end": "17:30", "status": "scheduled",
+    "city": "Harrisburg", "region": "PA", "admission": "Free to spectate", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Tri-County Skill Toy Club", "url": "" },
+    "description": "One contest, every toy: yo-yo, kendama, diabolo, spin top, and open skill toy divisions in Harrisburg.",
+    "about_title": "Every Toy Gets a Stage",
+    "about": ["{division_count} divisions, one for each toy plus a beginner division for any toy. Organized by {organizer}."],
+    "features": ["Yo-yo", "Kendama", "Diabolo", "Spin top", "Open skill toy"]
+  },
+  "registration": { "opens": "2026-08-15", "closes": "2026-10-03", "url": "https://example.org/register",
+    "fee_summary": "$10–$15 per division",
+    "combos": [ { "name": "Any three divisions", "fee": "$35" } ],
+    "spectators": "Free",
+    "music": { "deadline": "2026-10-21", "upload_url": "" } },
+  "divisions": [
+    { "code": "YY", "name": "Yo-Yo Freestyle", "format": "Freestyle", "text": "Any yo-yo style. Pick one when you register.",
+      "styles": ["1A", "2A", "3A", "4A", "5A"], "length": "2-min freestyle", "music": true, "fee": "$15" },
+    { "code": "KD", "name": "Kendama Ladder", "format": "Trick ladder", "text": "Called tricks from easier to harder, with a set number of attempts at each.",
+      "music": false, "fee": "$10" },
+    { "code": "DB", "name": "Diabolo Freestyle", "format": "Freestyle", "text": "One diabolo or more. Tell us which when you register.",
+      "styles": ["1 diabolo", "2+ diabolos"], "length": "2-min freestyle", "music": true, "fee": "$15" },
+    { "code": "ST", "name": "Spin Top Freestyle", "format": "Freestyle", "text": "String-thrown or hand-spun tops in a short routine.",
+      "length": "90-sec freestyle", "music": true, "fee": "$15" },
+    { "code": "Open", "name": "Open Skill Toy", "format": "Freestyle", "text": "Any other toy you can trick with.",
+      "styles": [ { "name": "Juggling" }, { "name": "Devil sticks" }, { "name": "Flow toys" }, { "name": "Something else", "text": "Ask us before you register." } ],
+      "length": "2-min freestyle", "music": true, "fee": "$15" },
+    { "code": "Jr", "name": "Junior (Any Toy)", "format": "Freestyle", "text": "A short routine to house music for younger players, with any toy.",
+      "ages": { "max": 13 }, "length": "60-sec routine", "music": "house", "fee": "$10" }
+  ],
+  "venue": { "name": "Riverfront Hall", "space": "Ballroom", "address": "100 Example St, Harrisburg PA" },
+  "sponsors": [ { "tier": "Gold", "name": "Example Toy Shop", "text": "Prize packs for every division." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [ { "group": "Competing", "q": "Is there a division for kids?", "a": "Yes. Junior (Any Toy) is for players 13 and under." } ],
+  "terms": { "effective": "" },
+  "theme": {}
+}

@@ -1,0 +1,422 @@
+{
+  "preset_name": "Diabolo contest",
+  "divisions": [
+    {
+      "code": "1D",
+      "name": "Single Diabolo",
+      "format": "Freestyle",
+      "text": "One diabolo, two hand sticks, and your own music. The core freestyle division, open to every level.",
+      "length": "2-min freestyle",
+      "music": true,
+      "tags": [
+        "Open"
+      ]
+    },
+    {
+      "code": "MD",
+      "name": "Multi-Diabolo & Styles",
+      "format": "Freestyle",
+      "text": "Two or more diabolos, or another style. Pick one style when you register.",
+      "styles": [
+        {
+          "code": "2D",
+          "name": "Two diabolos"
+        },
+        {
+          "code": "3D+",
+          "name": "Three or more diabolos"
+        },
+        {
+          "code": "VX",
+          "name": "Vertax (vertical axle)"
+        },
+        {
+          "code": "FA",
+          "name": "Fixed axle"
+        }
+      ],
+      "length": "2-min freestyle",
+      "music": true
+    },
+    {
+      "code": "Beg",
+      "name": "Beginner",
+      "format": "Freestyle",
+      "text": "First contest? A shorter routine to house music, judged mostly on clean execution and presentation.",
+      "ages": "All ages",
+      "length": "90-sec routine",
+      "music": "house"
+    },
+    {
+      "code": "Ladder",
+      "name": "Trick Ladder",
+      "format": "Trick ladder",
+      "text": "Called tricks from easier to harder. Land each one within your attempts to move up. No routine to plan.",
+      "music": false,
+      "tags": [
+        "All levels"
+      ]
+    }
+  ],
+  "divisions_notes": [
+    "Competing in more than one division? Registration is charged per division unless a combo price is listed.",
+    "Routine lengths and the trick ladder list are confirmed at the rules briefing. The Rules page explains how judging works."
+  ],
+  "gear": {
+    "title": "What to Bring",
+    "intro": "Bring your own gear. Ask us before the day if you need to borrow anything.",
+    "items": [
+      "Your diabolo and hand sticks, plus spare string already cut to length.",
+      "A backup diabolo if you have one. Drops happen.",
+      "Your music on your phone as a backup, if your division uses your own track.",
+      "Clothes you can move in. Loose sleeves can catch the string."
+    ]
+  },
+  "registration": {
+    "music": {
+      "steps": [
+        "Name your file DIVISION_LastName_FirstName.mp3, like 1D_Lee_Ana.mp3.",
+        "MP3 format, clean lyrics only. Trim it to your division's routine length.",
+        "Send it by {music_deadline}. Bring a backup on your phone."
+      ]
+    }
+  },
+  "guest_events": [],
+  "schedule": [
+    {
+      "time": "9:00 AM",
+      "title": "Check-In & Warm-Up",
+      "text": "Registration desk and practice area open."
+    },
+    {
+      "time": "10:00 AM",
+      "title": "Welcome & Rules Briefing",
+      "text": "Ceiling height, the stage area, and how judging works."
+    },
+    {
+      "time": "10:30 AM",
+      "title": "Beginner Division",
+      "text": ""
+    },
+    {
+      "time": "11:15 AM",
+      "title": "Trick Ladder",
+      "text": ""
+    },
+    {
+      "time": "12:15 PM",
+      "title": "Lunch Break",
+      "text": "Practice area stays open."
+    },
+    {
+      "time": "1:15 PM",
+      "title": "Single Diabolo",
+      "text": ""
+    },
+    {
+      "time": "2:45 PM",
+      "title": "Multi-Diabolo & Styles",
+      "text": ""
+    },
+    {
+      "time": "4:15 PM",
+      "title": "Awards",
+      "text": "Awards for every division and sponsor thanks."
+    }
+  ],
+  "schedule_notes": [
+    "Times may change on the day based on the number of competitors. Check the registration desk for the running order."
+  ],
+  "rules": {
+    "ruleset_name": "our contest rules",
+    "sport": "Diabolo",
+    "title": "Contest Ruleset",
+    "intro": "Diabolo contests don't share one rulebook, so here's exactly how this one works. It uses a typical freestyle format: a timed routine to music, judged on difficulty, execution, and performance.",
+    "sections": [
+      {
+        "title": "Freestyle Format",
+        "items": [
+          "Routine lengths are listed with each division on the Register page.",
+          "Your routine starts with the music and ends when the music stops.",
+          "Music must be suitable for all ages. No explicit lyrics.",
+          "Be ready when you're called. Missing your slot may forfeit your spot."
+        ]
+      },
+      {
+        "title": "Multi-Diabolo & Styles",
+        "items": [
+          "Pick one style when you register: 2D, 3D+, Vertax, or fixed axle.",
+          "Each routine is judged against what's hard in its own style, so styles can share a division.",
+          "The head judge may move you to another style if your routine is mostly a different one."
+        ]
+      },
+      {
+        "title": "Trick Ladder",
+        "items": [
+          "Judges call tricks in order, from easier to harder.",
+          "You get a set number of attempts per trick, announced at the briefing.",
+          "Land the trick to move up. Miss every attempt and your run ends.",
+          "Ties are broken by a sudden-death trick chosen by the judges."
+        ]
+      },
+      {
+        "title": "Equipment",
+        "items": [
+          "Any diabolo and hand sticks you're comfortable with.",
+          "Check your string before you compete. Replace it if it's frayed.",
+          "Judges may inspect equipment before you compete.",
+          "Keep spare string and a backup diabolo nearby."
+        ]
+      },
+      {
+        "title": "Safety",
+        "items": [
+          "Look up before you toss. Low ceilings, lights, and banners are pointed out at the briefing.",
+          "A toss that hits the ceiling or a fixture counts as a drop.",
+          "Stay inside the marked stage area. No tosses toward the audience.",
+          "Warm up only in the practice area."
+        ]
+      },
+      {
+        "title": "Judging & Conduct",
+        "items": [
+          "Judge decisions are final.",
+          "Respectful conduct is required. Unsportsmanlike behavior may mean disqualification.",
+          "Organizers may adjust the format based on registration numbers."
+        ]
+      }
+    ],
+    "scoring_title": "How Judging Works",
+    "scoring_intro": "Each judge scores three categories for every freestyle. Scores are averaged across the panel. How much each category counts is announced at the rules briefing.",
+    "scoring": [
+      {
+        "title": "Difficulty",
+        "items": [
+          "How hard the tricks are, and how many different kinds you show.",
+          "Harder combinations and smooth transitions score higher than repeats."
+        ]
+      },
+      {
+        "title": "Execution",
+        "items": [
+          "Clean catches, control, and recoveries.",
+          "Drops and unplanned stops cost points. Pick it up and keep going."
+        ]
+      },
+      {
+        "title": "Performance",
+        "items": [
+          "Use of the stage and connection with the audience.",
+          "Musicality: hitting the beats and changes in your song.",
+          "Construction: how the routine fits together from start to finish."
+        ]
+      }
+    ],
+    "scoring_notes": [],
+    "notes": [
+      "These rules can change before registration opens. Questions? Email {email}."
+    ],
+    "sources": []
+  },
+  "faq": [
+    {
+      "group": "Attending",
+      "q": "Is it free to watch?",
+      "a": "{admission}. No ticket needed for spectators and families."
+    },
+    {
+      "group": "Attending",
+      "q": "What time does it run?",
+      "a": "{date}, {hours}. See the Schedule page for the full day."
+    },
+    {
+      "group": "Attending",
+      "q": "Where is it?",
+      "a": "{venue}, {place}. The Venue page has parking, directions, and hotels."
+    },
+    {
+      "group": "Competing",
+      "q": "What divisions are there?",
+      "a": "{divisions}. The Register page lists each one's routine length and entry fee."
+    },
+    {
+      "group": "Competing",
+      "q": "How is it judged?",
+      "a": "Judges score difficulty, execution, and performance. The trick ladder is scored by the tricks you land. The Rules page has the details."
+    },
+    {
+      "group": "Competing",
+      "q": "Do I need to send music?",
+      "a": "For Single Diabolo and Multi-Diabolo, yes: send your track by {music_deadline}. The Beginner division uses house music, and the Trick Ladder has none."
+    },
+    {
+      "group": "Competing",
+      "q": "What should I bring?",
+      "a": "Your own diabolo, hand sticks, and spare string. The Register page has the full list."
+    },
+    {
+      "group": "Competing",
+      "q": "Can I compete in more than one division?",
+      "a": "Yes. Registration is charged per division, unless the Register page lists a combo price."
+    },
+    {
+      "group": "Competing",
+      "q": "What's the refund policy?",
+      "a": "Fees are non-refundable once payment clears, except for documented medical emergencies, duplicate charges, or a cancelled division. See Terms."
+    },
+    {
+      "group": "Competing",
+      "q": "I've never competed. Should I?",
+      "a": "Yes! The Beginner division is a short routine to house music, and the Trick Ladder needs no routine at all."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Can I volunteer?",
+      "a": "Yes, please. Email {email}. We need help with check-in, judging, stage, music, and setup."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "How do I become a sponsor?",
+      "a": "See the Sponsors page for packages, or email {email}."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Who organizes it?",
+      "a": "{name} is organized by {organizer}."
+    }
+  ],
+  "terms": {
+    "effective": "",
+    "intro": "By registering as a competitor or attending {name} {year}, you agree to these terms. Parents and guardians registering minor competitors agree on their behalf. They cover refunds, assumption of risk, photo release, conduct, and minors.",
+    "sections": [
+      {
+        "title": "Refund & Cancellation Policy",
+        "paragraphs": [
+          "Registration fees are non-refundable once payment is confirmed, except:"
+        ],
+        "items": [
+          "Medical emergency: if a documented medical emergency keeps you from competing, email {email} before the contest. We'll consider a full or partial refund.",
+          "Duplicate payment: if you're charged twice by mistake, the duplicate charge is refunded in full.",
+          "Division cancelled: if we cancel a division and can't move you to another, that division's fee is refunded in full."
+        ],
+        "after": [
+          "Other reasons, like schedule conflicts or travel problems, aren't eligible. Fees pay for the venue, equipment, and awards ahead of time.",
+          "Registration is personal and can't be transferred to another competitor. To request a refund, email {email} with the subject \"Refund Request\" as early as you can."
+        ]
+      },
+      {
+        "title": "Assumption of Risk & Liability Waiver",
+        "paragraphs": [
+          "Diabolo and skill toy activities carry risks, including contact with tossed equipment and string, unexpected movement of other participants, and falls. By competing or attending, you accept those risks.",
+          "{organizer}, its volunteers, and the venue are not liable for injury, loss, theft, or property damage connected with the contest, to the fullest extent the law allows.",
+          "Competitors are responsible for keeping their equipment safe and in working order. Organizers may stop any equipment or performance that puts others at risk.",
+          "For minors: a parent or legal guardian must acknowledge this waiver at check-in. Minors can't compete without it."
+        ]
+      },
+      {
+        "title": "Photo & Video Release",
+        "paragraphs": [
+          "{name} is a public event. It will be photographed, recorded, and may be livestreamed by organizers, media, sponsors, and attendees.",
+          "By competing or attending, you consent to being photographed and recorded, and you give {organizer} a non-exclusive, royalty-free right to use those images for contest records, promotion of future events, and club communications. No payment is provided.",
+          "Stage routines are recorded for judging and may be shared publicly as part of the contest archive.",
+          "Don't want to be photographed? Tell an organizer at check-in. We'll make reasonable efforts, but we can't guarantee you won't appear in photos of a public event."
+        ]
+      },
+      {
+        "title": "Code of Conduct",
+        "paragraphs": [
+          "Everyone at the contest, including competitors, spectators, volunteers, and staff, is expected to:"
+        ],
+        "items": [
+          "Treat others with respect, whatever their age, skill level, background, or identity.",
+          "Never harass, intimidate, discriminate against, or threaten anyone.",
+          "Compete with integrity. Don't interfere with other competitors' performances or equipment.",
+          "Follow instructions from contest staff and venue staff.",
+          "Keep the competition area and venue clean and safe.",
+          "Clear the stage and warm-up space when staff ask."
+        ],
+        "after": [
+          "Breaking this code can mean disqualification, removal from the venue, or a ban from future events. The contest director's decisions are final. To report a problem, talk to any staff member or email {email}."
+        ]
+      },
+      {
+        "title": "Minor Participant Policy",
+        "paragraphs": [
+          "Competitors and spectators of all ages are welcome. For anyone under 18:"
+        ],
+        "items": [
+          "Registration: a parent or legal guardian must register the competitor and agrees to these terms on their behalf.",
+          "Waiver: a parent or guardian must be present at check-in, or have sent written acknowledgment of the waiver, before the minor competes.",
+          "Supervision: minors watching the contest should come with a parent or guardian. Organizers aren't responsible for unaccompanied minors.",
+          "Names and photos: results for minors are shown as first name and last initial unless a parent opts in to full names. Parents can ask staff at check-in to limit their child's appearance in event media."
+        ]
+      },
+      {
+        "title": "Event Cancellation",
+        "paragraphs": [
+          "If the contest is cancelled entirely for reasons beyond our control, like severe weather, venue closure, or a public health emergency, competitors get a full refund within 30 days of the announcement.",
+          "If the contest changes significantly but still happens (fewer divisions, a new venue), we'll tell competitors as early as possible and work with each person case by case."
+        ]
+      }
+    ]
+  },
+  "results": {
+    "links_eyebrow": "Everyone who competed"
+  },
+  "theme": {
+    "primary": "#0f3b46",
+    "accent": "#e5a03a",
+    "background": "#f6f4ef",
+    "ink": "#132a30",
+    "corners": "sharp",
+    "emblem": "diabolo"
+  },
+  "sponsorship": {
+    "intro": "Put your brand in front of competitors, families, and spectators. Every dollar goes to the event.",
+    "tiers": [
+      {
+        "name": "Presenting",
+        "price": "Ask us",
+        "slots": "1 slot",
+        "perks": [
+          "\"{name} Presented by [Your Brand]\"",
+          "Logo on everything",
+          "Large vendor table",
+          "Emcee callouts all day",
+          "Free competitor registrations"
+        ]
+      },
+      {
+        "name": "Gold",
+        "price": "Ask us",
+        "slots": "Limited",
+        "perks": [
+          "Large logo on banner and flyers",
+          "Vendor table",
+          "Emcee shoutouts",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "Silver",
+        "price": "Ask us",
+        "slots": "Open",
+        "perks": [
+          "Logo on banner",
+          "Emcee shoutout at opening",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "In-Kind",
+        "price": "Any amount",
+        "slots": "Open",
+        "perks": [
+          "Name on sponsor banner",
+          "Social media thank-you",
+          "Prizes, product, gift cards, and food all count"
+        ]
+      }
+    ]
+  }
+}

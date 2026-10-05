@@ -1,0 +1,405 @@
+{
+  "preset_name": "Spinning top contest",
+  "divisions": [
+    {
+      "code": "FS",
+      "name": "Trick Freestyle",
+      "format": "Freestyle",
+      "text": "Your best top tricks in a timed routine to your own music. Pick your style when you register.",
+      "styles": [
+        {
+          "code": "String",
+          "name": "String-thrown tops"
+        },
+        {
+          "code": "Hand",
+          "name": "Hand-spun and finger tops"
+        }
+      ],
+      "length": "2-min freestyle",
+      "music": true
+    },
+    {
+      "code": "Jr",
+      "name": "Junior Tricks",
+      "format": "Freestyle",
+      "text": "A shorter trick routine for younger players, to house music.",
+      "ages": {
+        "max": 12
+      },
+      "length": "90-sec routine",
+      "music": "house"
+    },
+    {
+      "code": "Spin",
+      "name": "Longest Spin",
+      "format": "Timed",
+      "text": "Throw your top and keep it spinning. The longest time wins.",
+      "length": "Best of 3 throws",
+      "music": false,
+      "tags": [
+        "All ages"
+      ]
+    },
+    {
+      "code": "Ring",
+      "name": "Ring Battle",
+      "format": "Bracket",
+      "text": "Tops are thrown into the ring together. The last top spinning inside the ring wins the round.",
+      "music": false,
+      "tags": [
+        "Knockout"
+      ]
+    }
+  ],
+  "divisions_notes": [
+    "Competing in more than one division? Registration is charged per division unless a combo price is listed.",
+    "Top size limits for Longest Spin and Ring Battle are announced at check-in. See the Rules page."
+  ],
+  "gear": {
+    "title": "What to Bring",
+    "intro": "Bring your own tops. Ask us before the day if you need to borrow one.",
+    "items": [
+      "Your tops and strings, plus spare strings. They wear out fast.",
+      "A backup top for each division you enter.",
+      "Your music on your phone as a backup, if you're in Trick Freestyle.",
+      "Closed-toe shoes. Tops land hard."
+    ]
+  },
+  "registration": {
+    "music": {
+      "steps": [
+        "Name your file FS_LastName_FirstName.mp3, like FS_Cruz_Maya.mp3.",
+        "MP3 format, clean lyrics only. Trim it to the routine length.",
+        "Send it by {music_deadline}. Bring a backup on your phone."
+      ]
+    }
+  },
+  "guest_events": [],
+  "schedule": [
+    {
+      "time": "9:00 AM",
+      "title": "Check-In & Warm-Up",
+      "text": "Registration desk and practice area open. Tops checked for Ring Battle."
+    },
+    {
+      "time": "10:00 AM",
+      "title": "Welcome & Rules Briefing",
+      "text": "Throwing areas, top limits, and how judging works."
+    },
+    {
+      "time": "10:30 AM",
+      "title": "Longest Spin",
+      "text": "Three throws each."
+    },
+    {
+      "time": "11:30 AM",
+      "title": "Junior Tricks",
+      "text": ""
+    },
+    {
+      "time": "12:15 PM",
+      "title": "Lunch Break",
+      "text": "Practice area stays open."
+    },
+    {
+      "time": "1:15 PM",
+      "title": "Trick Freestyle",
+      "text": ""
+    },
+    {
+      "time": "2:45 PM",
+      "title": "Ring Battle",
+      "text": "Bracket rounds through the final."
+    },
+    {
+      "time": "4:00 PM",
+      "title": "Awards",
+      "text": "Awards for every division and sponsor thanks."
+    }
+  ],
+  "schedule_notes": [
+    "Times may change on the day based on the number of competitors. Check the registration desk for the running order."
+  ],
+  "rules": {
+    "ruleset_name": "our contest rules",
+    "sport": "Spinning top",
+    "title": "Contest Ruleset",
+    "intro": "Spinning top contests don't share one rulebook, so here's exactly how this one works. The events are typical of top contests: a trick freestyle, a longest-spin event, and a ring battle.",
+    "sections": [
+      {
+        "title": "Trick Freestyle",
+        "items": [
+          "Routine lengths are listed with each division on the Register page.",
+          "A dropped or stopped top can be rethrown. The clock keeps running.",
+          "Music must be suitable for all ages. No explicit lyrics.",
+          "Be ready when you're called. Missing your slot may forfeit your spot."
+        ]
+      },
+      {
+        "title": "Longest Spin",
+        "items": [
+          "Throw onto the marked surface when the judge says go.",
+          "The timer stops when your top stops spinning or leaves the marked area.",
+          "Your best of three throws counts.",
+          "Ties go to one extra throw each."
+        ]
+      },
+      {
+        "title": "Ring Battle",
+        "items": [
+          "Players throw into the ring together on the judge's count.",
+          "A top is out when it stops spinning, falls over, or leaves the ring.",
+          "The last top spinning in the ring wins the round. Winners advance to the final.",
+          "False starts are rethrown."
+        ]
+      },
+      {
+        "title": "Equipment",
+        "items": [
+          "Hand-spun or string-launched tops only. No launchers, motors, or batteries.",
+          "Tops for Longest Spin and Ring Battle must fit the size limits announced at check-in.",
+          "No sharpened or loose metal tips.",
+          "Judges may inspect any top before you compete."
+        ]
+      },
+      {
+        "title": "Safety & Conduct",
+        "items": [
+          "Throw only inside the marked areas, and only when the judge says go.",
+          "Spectators stay behind the line around the ring.",
+          "Judge decisions are final.",
+          "Respectful conduct is required. Unsportsmanlike behavior may mean disqualification.",
+          "Organizers may adjust the format based on registration numbers."
+        ]
+      }
+    ],
+    "scoring_title": "How Freestyles Are Judged",
+    "scoring_intro": "Each judge scores three categories for every freestyle. Scores are averaged across the panel. Longest Spin is timed, and Ring Battle is decided round by round.",
+    "scoring": [
+      {
+        "title": "Difficulty",
+        "items": [
+          "How hard the tricks are, and how many different kinds you show.",
+          "Harder combinations and smooth transitions score higher than repeats."
+        ]
+      },
+      {
+        "title": "Execution",
+        "items": [
+          "Clean catches, control, and recoveries.",
+          "Drops and unplanned stops cost points. Pick it up and keep going."
+        ]
+      },
+      {
+        "title": "Performance",
+        "items": [
+          "Use of the stage and connection with the audience.",
+          "Musicality: hitting the beats and changes in your song.",
+          "Construction: how the routine fits together from start to finish."
+        ]
+      }
+    ],
+    "scoring_notes": [],
+    "notes": [
+      "These rules can change before registration opens. Questions? Email {email}."
+    ],
+    "sources": []
+  },
+  "faq": [
+    {
+      "group": "Attending",
+      "q": "Is it free to watch?",
+      "a": "{admission}. No ticket needed for spectators and families."
+    },
+    {
+      "group": "Attending",
+      "q": "What time does it run?",
+      "a": "{date}, {hours}. See the Schedule page for the full day."
+    },
+    {
+      "group": "Attending",
+      "q": "Where is it?",
+      "a": "{venue}, {place}. The Venue page has parking, directions, and hotels."
+    },
+    {
+      "group": "Competing",
+      "q": "What divisions are there?",
+      "a": "{divisions}. The Register page lists each one's format and entry fee."
+    },
+    {
+      "group": "Competing",
+      "q": "What kind of top can I use?",
+      "a": "Any top you spin by hand or launch with a string. No launchers, motors, or batteries. Size limits for Longest Spin and Ring Battle are announced at check-in."
+    },
+    {
+      "group": "Competing",
+      "q": "Do I need to send music?",
+      "a": "Only for Trick Freestyle: send your track by {music_deadline}. Junior Tricks uses house music, and the other events have none."
+    },
+    {
+      "group": "Competing",
+      "q": "Is there a division for kids?",
+      "a": "Yes. Junior Tricks is for players 12 and under, and anyone can enter Longest Spin."
+    },
+    {
+      "group": "Competing",
+      "q": "Can I compete in more than one division?",
+      "a": "Yes. Registration is charged per division, unless the Register page lists a combo price."
+    },
+    {
+      "group": "Competing",
+      "q": "What's the refund policy?",
+      "a": "Fees are non-refundable once payment clears, except for documented medical emergencies, duplicate charges, or a cancelled division. See Terms."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Can I volunteer?",
+      "a": "Yes, please. Email {email}. We need help with check-in, judging, stage, music, and setup."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "How do I become a sponsor?",
+      "a": "See the Sponsors page for packages, or email {email}."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Who organizes it?",
+      "a": "{name} is organized by {organizer}."
+    }
+  ],
+  "terms": {
+    "effective": "",
+    "intro": "By registering as a competitor or attending {name} {year}, you agree to these terms. Parents and guardians registering minor competitors agree on their behalf. They cover refunds, assumption of risk, photo release, conduct, and minors.",
+    "sections": [
+      {
+        "title": "Refund & Cancellation Policy",
+        "paragraphs": [
+          "Registration fees are non-refundable once payment is confirmed, except:"
+        ],
+        "items": [
+          "Medical emergency: if a documented medical emergency keeps you from competing, email {email} before the contest. We'll consider a full or partial refund.",
+          "Duplicate payment: if you're charged twice by mistake, the duplicate charge is refunded in full.",
+          "Division cancelled: if we cancel a division and can't move you to another, that division's fee is refunded in full."
+        ],
+        "after": [
+          "Other reasons, like schedule conflicts or travel problems, aren't eligible. Fees pay for the venue, equipment, and awards ahead of time.",
+          "Registration is personal and can't be transferred to another competitor. To request a refund, email {email} with the subject \"Refund Request\" as early as you can."
+        ]
+      },
+      {
+        "title": "Assumption of Risk & Liability Waiver",
+        "paragraphs": [
+          "Spinning top and skill toy activities carry risks, including contact with thrown or bouncing tops, unexpected movement of other participants, and falls. By competing or attending, you accept those risks.",
+          "{organizer}, its volunteers, and the venue are not liable for injury, loss, theft, or property damage connected with the contest, to the fullest extent the law allows.",
+          "Competitors are responsible for keeping their equipment safe and in working order. Organizers may stop any equipment or performance that puts others at risk.",
+          "For minors: a parent or legal guardian must acknowledge this waiver at check-in. Minors can't compete without it."
+        ]
+      },
+      {
+        "title": "Photo & Video Release",
+        "paragraphs": [
+          "{name} is a public event. It will be photographed, recorded, and may be livestreamed by organizers, media, sponsors, and attendees.",
+          "By competing or attending, you consent to being photographed and recorded, and you give {organizer} a non-exclusive, royalty-free right to use those images for contest records, promotion of future events, and club communications. No payment is provided.",
+          "Freestyles and battles are recorded for judging and may be shared publicly as part of the contest archive.",
+          "Don't want to be photographed? Tell an organizer at check-in. We'll make reasonable efforts, but we can't guarantee you won't appear in photos of a public event."
+        ]
+      },
+      {
+        "title": "Code of Conduct",
+        "paragraphs": [
+          "Everyone at the contest, including competitors, spectators, volunteers, and staff, is expected to:"
+        ],
+        "items": [
+          "Treat others with respect, whatever their age, skill level, background, or identity.",
+          "Never harass, intimidate, discriminate against, or threaten anyone.",
+          "Compete with integrity. Don't interfere with other competitors' performances or equipment.",
+          "Follow instructions from contest staff and venue staff.",
+          "Keep the competition area and venue clean and safe.",
+          "Clear the stage and warm-up space when staff ask."
+        ],
+        "after": [
+          "Breaking this code can mean disqualification, removal from the venue, or a ban from future events. The contest director's decisions are final. To report a problem, talk to any staff member or email {email}."
+        ]
+      },
+      {
+        "title": "Minor Participant Policy",
+        "paragraphs": [
+          "Competitors and spectators of all ages are welcome. For anyone under 18:"
+        ],
+        "items": [
+          "Registration: a parent or legal guardian must register the competitor and agrees to these terms on their behalf.",
+          "Waiver: a parent or guardian must be present at check-in, or have sent written acknowledgment of the waiver, before the minor competes.",
+          "Supervision: minors watching the contest should come with a parent or guardian. Organizers aren't responsible for unaccompanied minors.",
+          "Names and photos: results for minors are shown as first name and last initial unless a parent opts in to full names. Parents can ask staff at check-in to limit their child's appearance in event media."
+        ]
+      },
+      {
+        "title": "Event Cancellation",
+        "paragraphs": [
+          "If the contest is cancelled entirely for reasons beyond our control, like severe weather, venue closure, or a public health emergency, competitors get a full refund within 30 days of the announcement.",
+          "If the contest changes significantly but still happens (fewer divisions, a new venue), we'll tell competitors as early as possible and work with each person case by case."
+        ]
+      }
+    ]
+  },
+  "results": {
+    "links_eyebrow": "Everyone who competed"
+  },
+  "theme": {
+    "primary": "#4a1d1d",
+    "accent": "#e8b23a",
+    "background": "#faf6ef",
+    "ink": "#2a1a17",
+    "corners": "sharp",
+    "emblem": "top"
+  },
+  "sponsorship": {
+    "intro": "Put your brand in front of competitors, families, and spectators. Every dollar goes to the event.",
+    "tiers": [
+      {
+        "name": "Presenting",
+        "price": "Ask us",
+        "slots": "1 slot",
+        "perks": [
+          "\"{name} Presented by [Your Brand]\"",
+          "Logo on everything",
+          "Large vendor table",
+          "Emcee callouts all day",
+          "Free competitor registrations"
+        ]
+      },
+      {
+        "name": "Gold",
+        "price": "Ask us",
+        "slots": "Limited",
+        "perks": [
+          "Large logo on banner and flyers",
+          "Vendor table",
+          "Emcee shoutouts",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "Silver",
+        "price": "Ask us",
+        "slots": "Open",
+        "perks": [
+          "Logo on banner",
+          "Emcee shoutout at opening",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "In-Kind",
+        "price": "Any amount",
+        "slots": "Open",
+        "perks": [
+          "Name on sponsor banner",
+          "Social media thank-you",
+          "Prizes, product, gift cards, and food all count"
+        ]
+      }
+    ]
+  }
+}
