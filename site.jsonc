@@ -1,0 +1,190 @@
+// =====================================================================
+//  YOUR CONTEST SETTINGS: this is the main file you edit.
+//  Lines starting with // are notes and are ignored.
+//  Keep the quotes and commas. When in doubt, copy an existing line.
+//  After you save (commit) on GitHub, the site rebuilds in about a minute.
+//
+//  The site changes by itself as the date gets closer:
+//  "registration opens soon" > "registration open" > "closed" > "today!" > "that's a wrap".
+// =====================================================================
+{
+  // STEP 1: Pick a starting preset. It fills in divisions, rules, scoring,
+  // schedule, FAQ, terms, and sponsor tiers. Choices:
+  //   "yoyo-contest"    - a yo-yo contest using NYYL freestyle rules (default)
+  //   "kendama-contest" - a kendama contest with a trick ladder and battles
+  //   "trick-battle"    - a casual battle or jam for any skill toy
+  // Anything you set below overrides the preset.
+  "preset": "yoyo-contest",
+
+  "site": {
+    // Your site's address. Leave "" on GitHub Pages; it's filled in automatically.
+    "url": "",
+    "language": "en",
+    // "us" = Sat, Nov 14, 2026 · 10 AM–6 PM   "intl" = Sat 14 Nov 2026 · 10:00–18:00
+    "date_format": "us",
+    // Your time zone, so the site switches to "today" and "that's a wrap" on the right day
+    "timezone": "America/Chicago",
+    "source_url": "",
+    // Small "Site template by" credit line in the footer. Set to false to hide it.
+    "credit": true
+  },
+
+  "contest": {
+    "name": "Springfield Yo-Yo Open",
+    // 1–4 letters for the generated logo, and the short name in the header
+    "short_name": "SYO",
+    // Shown above the name, e.g. "3rd Annual". "" to hide.
+    "edition": "3rd Annual",
+    "tradition": "Central Illinois since 2024",
+    // The contest date. Use YYYY-MM-DD. Two-day contest? Set end_date too.
+    "date": "2026-11-14",
+    "end_date": "",
+    // 24-hour times: "10:00" is 10 AM, "18:00" is 6 PM
+    "start": "10:00",
+    "end": "18:00",
+    // "" = the year of the date
+    "year": "",
+    // "scheduled", "postponed", or "cancelled"
+    "status": "scheduled",
+    "city": "Springfield",
+    "region": "IL",
+    "admission": "Free to spectate",
+    // true tells search engines it's free to watch
+    "free_to_watch": true,
+    // Presenting sponsor ("" to hide): shows "Brought to you by ..."
+    "presented_by": { "name": "", "url": "" },
+    // Who runs it (club or group)
+    "organizer": { "name": "Springfield Throwers", "url": "" },
+    "description": "Central Illinois's yo-yo contest. Three divisions, NYYL rules, and free to watch.",
+    "about_title": "Yo-Yo Contest Day in Springfield",
+    "about": [
+      "The Springfield Yo-Yo Open brings throwers from across the Midwest to compete in 1A, X Division, and Sport. First freestyle or tenth, there's a stage for you.",
+      "Entirely volunteer-run. Every dollar goes straight to the event. Organized by {organizer}."
+    ],
+    // Short highlight tags
+    "features": ["Multi-division", "Free to spectate", "NYYL rules", "Vendor tables", "Livestream"],
+    // Extra buttons under "About" (livestream, spectator survey...)
+    "links": [],
+    // Extra hero buttons
+    "hero_links": []
+  },
+
+  "registration": {
+    // When the "Register" button appears and disappears (YYYY-MM-DD)
+    "opens": "2026-09-15",
+    "closes": "2026-11-07",
+    // Your sign-up form: Google Form, Stripe link, Eventbrite, your own app...
+    "url": "https://example.org/register",
+    "label": "Register Now",
+    // Short fee line for the home page
+    "fee_summary": "From $15 per division",
+    "fees": [
+      { "name": "1A Division", "fee": "$20" },
+      { "name": "X Division (2A–5A)", "fee": "$20" },
+      { "name": "Sport / Beginner", "fee": "$15" },
+      { "name": "Spectators", "fee": "Free" }
+    ],
+    "payment": [
+      "Pay online when you register. Your spot is confirmed when payment goes through.",
+      "Fees are non-refundable once payment clears, except for medical emergencies or a cancelled contest."
+    ],
+    "music": {
+      "deadline": "2026-11-12",
+      "upload_url": "",
+      "steps": [
+        "Name your file DIVISION_LastName_FirstName.mp3, like 1A_Rivera_Sam.mp3.",
+        "MP3 format, clean lyrics only. Include any intro or outro you want played.",
+        "Send it by {music_deadline}. Bring a backup on your phone."
+      ]
+    }
+  },
+
+  // Divisions come from the preset. To change them, copy "divisions" from
+  // presets/yoyo-contest.json into this file and edit.
+
+  // Guest events with their own sign-up (battles, side contests)
+  // { "name": "...", "time": "12:00 PM", "host": "Hosted by ...", "text": "...", "url": "https://...", "url_label": "Rules & sign-up" }
+  "guest_events": [],
+
+  // The day's schedule comes from the preset. Copy "schedule" here to make it yours:
+  // { "time": "10:00 AM", "title": "Doors Open", "text": "...", "url": "", "url_label": "" }
+
+  "venue": {
+    "name": "Springfield Civic Center",
+    "space": "Main Hall, ground floor",
+    "address": "200 Capitol Ave, Springfield IL",
+    "map_url": "",
+    "website": "",
+    // Anything people ask about: parking, Wi-Fi, food
+    "facts": [
+      { "label": "Parking", "text": "Free lot on the north side." },
+      { "label": "Food", "text": "Snack bar on site. Restaurants within a block." }
+    ],
+    // Rules for vendors and competitors (setup times, power, tables)
+    "rules": [
+      { "label": "Setup / teardown", "text": "Setup from 9 AM. Everything out by 7 PM." },
+      { "label": "Tables", "text": "Vendor tables are reserved for sponsors. Ask us about space." }
+    ],
+    // Hotels and room blocks
+    // { "name": "...", "text": "...", "rate": "$119/night", "book_by": "October 30", "distance": "5-minute walk", "url": "https://..." }
+    "hotels": [],
+    // Photos in assets/images/venue/: { "src": "images/venue/hall.jpg", "alt": "...", "caption": "Main Hall" }
+    "photos": []
+  },
+
+  // Sponsors, in the order you want them shown
+  // { "tier": "Gold", "name": "...", "text": "...", "url": "https://...", "perks": ["Giveaway booth"] }
+  "sponsors": [
+    { "tier": "Gold", "name": "Example Yo-Yo Shop", "text": "Prize packs for every division winner." }
+  ],
+  // Not sponsors: leagues, video partners, clubs that show up
+  // { "tier": "Partner", "name": "...", "url": "https://...", "text": "..." }
+  "partners": [],
+  // Sponsor packages come from the preset. Set prices and a goal here:
+  "sponsorship": {
+    "goal": "",
+    // Your sponsor form ("" = an email button)
+    "contact_url": ""
+  },
+
+  // Fill this in after the contest. The site switches to "that's a wrap" the day after.
+  "results": {
+    "intro": "",
+    // { "division": "1A", "podium": [ { "place": 1, "name": "...", "from": "City, ST", "score": "88.10" } ], "video_url": "" }
+    "divisions": [],
+    // { "value": "50", "label": "Competitors" }
+    "stats": [],
+    // { "title": "Full standings", "url": "https://...", "label": "See the full leaderboard" }
+    "links": [],
+    "privacy_note": "Minors are listed by first name and last initial unless a parent opted in to full names."
+  },
+
+  // The home page after the contest: wrap-up numbers and links
+  "wrap": {
+    "title": "That's a wrap · Thank you",
+    "stats": [],
+    "links": []
+  },
+
+  "contact": {
+    // Use a shared contest email, not a personal one
+    "email": "contest@example.org",
+    // { "name": "Instagram", "url": "https://..." }
+    "social": []
+  },
+
+  // Extra FAQ entries (added after the preset's FAQ). "group" is optional.
+  "faq_extra": [
+    { "group": "Attending", "q": "Is there parking?", "a": "Yes. Free lot on the north side of the Civic Center." }
+  ],
+
+  // Terms text comes from the preset. Have someone check it fits your venue and local law.
+  "terms": { "effective": "September 2026" },
+
+  // Colors (hex). Delete a line to use the preset's color.
+  // corners: "sharp" (default), "soft", or "round".
+  "theme": {
+    // "primary": "#1a2744",
+    // "accent": "#c9a84c"
+  }
+}
