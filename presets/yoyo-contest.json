@@ -5,34 +5,47 @@
       "code": "1A",
       "name": "1A Division",
       "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to every skill level.",
+      "length": "2-min freestyle",
+      "music": true,
       "tags": [
-        "Open",
-        "2-min freestyle"
+        "Open"
       ]
     },
     {
       "code": "X",
       "name": "X Division",
       "text": "Multi-style division for 2A, 3A, 4A, and 5A. Pick one style when you register: 2A = looping, 3A = two yo-yos on strings, 4A = offstring, 5A = freehand.",
-      "tags": [
-        "2A · 3A · 4A · 5A",
-        "2-min freestyle"
-      ]
+      "styles": [
+        "2A",
+        "3A",
+        "4A",
+        "5A"
+      ],
+      "length": "2-min freestyle",
+      "music": true
     },
     {
       "code": "Sport",
       "name": "Sport / Beginner",
       "text": "A welcoming first step into contest play. No negative clicks and no major deductions, and most of the score is presentation.",
-      "tags": [
-        "All ages",
-        "90-sec freestyle"
-      ]
+      "ages": "All ages",
+      "length": "90-sec freestyle",
+      "music": true
     }
   ],
   "divisions_notes": [
     "Competing in more than one division? Registration is charged per division.",
     "Divisions are scored with the National Yo-Yo League (NYYL) freestyle rules unless noted otherwise. See the Rules page for how scoring works."
   ],
+  "registration": {
+    "music": {
+      "steps": [
+        "Name your file DIVISION_LastName_FirstName.mp3, like 1A_Rivera_Sam.mp3.",
+        "MP3 format, clean lyrics only. Include any intro or outro you want played.",
+        "Send it by {music_deadline}. Bring a backup on your phone."
+      ]
+    }
+  },
   "guest_events": [],
   "schedule": [
     {
@@ -238,6 +251,9 @@
       "a": "{name} is organized by {organizer}."
     }
   ],
+  "results": {
+    "links_eyebrow": "Everyone who threw"
+  },
   "terms": {
     "effective": "",
     "intro": "By registering as a competitor or attending {name} {year}, you agree to these terms. Parents and guardians registering minor competitors agree on their behalf. They cover refunds, assumption of risk, photo release, conduct, and minors.",
@@ -366,6 +382,7 @@
     "accent": "#c9a84c",
     "background": "#f8f5ee",
     "ink": "#1a2744",
-    "corners": "sharp"
+    "corners": "sharp",
+    "emblem": "yoyo"
   }
 }

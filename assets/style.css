@@ -132,6 +132,12 @@ a:hover { color: var(--accent-ink); }
 /* Divisions */
 .division { border-top-color: var(--accent); }
 .division-code { display: inline-block; font-size: 1.6rem; font-weight: 900; color: var(--primary); border-bottom: 3px solid var(--accent); margin-bottom: .5rem; line-height: 1.2; }
+.style-list { list-style: none; padding: 0; margin: 0 0 1rem; border-top: 1px solid var(--line); }
+.style-list li { padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+.style-list strong { display: inline-block; min-width: 3.2rem; color: var(--accent-ink); font-weight: 900; }
+.division-fee { margin: 0; font-weight: 800; font-size: 1.15rem; color: var(--primary); }
+.division-fee .label { margin-bottom: 0; }
+.fee-note { display: block; font-weight: 400; font-size: .9rem; color: var(--muted); }
 
 /* Rules */
 .rule-blocks { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr); margin-bottom: 1.5rem; }

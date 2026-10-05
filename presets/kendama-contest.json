@@ -5,8 +5,9 @@
       "code": "Open",
       "name": "Open Division",
       "text": "For experienced players. The hardest trick list and the most attempts on the line.",
+      "format": "Trick ladder",
+      "music": false,
       "tags": [
-        "Trick ladder",
         "Open to all"
       ]
     },
@@ -14,25 +15,24 @@
       "code": "Inter",
       "name": "Intermediate",
       "text": "Solid fundamentals, ready to push. A mid-level trick list.",
-      "tags": [
-        "Trick ladder"
-      ]
+      "format": "Trick ladder",
+      "music": false
     },
     {
       "code": "Beg",
       "name": "Beginner",
       "text": "First contest? Start here. Classic tricks, friendly crowd.",
-      "tags": [
-        "Trick ladder",
-        "All ages"
-      ]
+      "format": "Trick ladder",
+      "ages": "All ages",
+      "music": false
     },
     {
       "code": "Battle",
       "name": "Kendama Battles",
       "text": "1v1 bracket. Players trade tricks; judges or the crowd pick who advances.",
+      "format": "Bracket",
+      "music": false,
       "tags": [
-        "Bracket",
         "Crowd vote"
       ]
     }
@@ -320,6 +320,7 @@
     "accent": "#d9a441",
     "background": "#f9f6ee",
     "ink": "#1c241f",
-    "corners": "sharp"
+    "corners": "sharp",
+    "emblem": "kendama"
   }
 }

@@ -5,24 +5,27 @@
       "code": "Beg",
       "name": "Beginner Battle",
       "text": "Under a year of throwing? Battle other newer players. Fun first, nerves second.",
+      "music": false,
       "tags": [
-        "Any toy",
-        "30-sec rounds"
-      ]
+        "Any toy"
+      ],
+      "length": "30-sec rounds"
     },
     {
       "code": "Open",
       "name": "Open Battle",
       "text": "Anyone, any level, any skill toy. Bring your best tricks.",
+      "music": false,
       "tags": [
-        "Any toy",
-        "45-sec rounds"
-      ]
+        "Any toy"
+      ],
+      "length": "45-sec rounds"
     },
     {
       "code": "Ken",
       "name": "Kendama Battle",
       "text": "1v1 kendama: call a trick, land it, pass the turn.",
+      "music": false,
       "tags": [
         "Kendama"
       ]
@@ -31,6 +34,7 @@
       "code": "Games",
       "name": "Side Games",
       "text": "Longest sleeper, around-the-world race, spin top accuracy, and more. Drop in anytime.",
+      "music": false,
       "tags": [
         "Free",
         "Drop in"
@@ -258,6 +262,7 @@
     "accent": "#e0a33a",
     "background": "#fbf8f2",
     "ink": "#1f1a2e",
-    "corners": "sharp"
+    "corners": "sharp",
+    "emblem": "star"
   }
 }
