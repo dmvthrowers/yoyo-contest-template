@@ -55,9 +55,12 @@
     }
   },
   "divisions": [
-    { "code": "1A", "name": "1A / Pro Division", "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to all skill levels.", "tags": ["Open", "2-min freestyle"] },
-    { "code": "X", "name": "X Division", "text": "Multi-style division covering 2A, 3A, 4A, and 5A. Choose one style when you register: 2A = looping, 3A = two-handed string, 4A = offstring, 5A = freehand.", "tags": ["2A · 3A · 4A · 5A", "2-min freestyle"] },
-    { "code": "SBJ", "name": "Sport / Beginner / Junior", "text": "Combined division for newer players. No negative clicks and no major deductions, and most of the score is presentation.", "tags": ["All ages", "90-sec freestyle"] }
+    { "code": "1A", "name": "1A / Pro Division", "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to all skill levels.",
+      "tags": ["Open"], "length": "2-min freestyle", "music": true },
+    { "code": "X", "name": "X Division", "text": "Multi-style division covering 2A, 3A, 4A, and 5A. Choose one style when you register: 2A = looping, 3A = two-handed string, 4A = offstring, 5A = freehand.",
+      "styles": ["2A", "3A", "4A", "5A"], "length": "2-min freestyle", "music": true },
+    { "code": "SBJ", "name": "Sport / Beginner / Junior", "text": "Combined division for newer players. No negative clicks and no major deductions, and most of the score is presentation.",
+      "ages": "All ages", "length": "90-sec freestyle", "music": true }
   ],
   "guest_events": [
     { "name": "Stella Duellum", "time": "12:00 PM", "host": "Hosted by Anneurismz for Prismatic Stars",

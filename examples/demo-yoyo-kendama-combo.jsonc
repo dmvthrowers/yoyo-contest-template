@@ -1,0 +1,101 @@
+// Demo: a made-up combo event using the "skill-toy-contest" preset as its base: a yo-yo contest and
+// a kendama contest on the same day, with one shared sign-up. Shows freestyle, panel judging with
+// criteria, two trick ladders, a Duo team division, and a battle bracket where the audience picks
+// each winner by a live poll on the stream. Registration is open.
+{
+  "preset": "skill-toy-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/Chicago", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Twin Rivers Yo-Yo & Kendama Jam", "short_name": "TRJ", "edition": "2nd Annual", "tradition": "",
+    "date": "2026-11-28", "start": "10:00", "end": "18:00", "status": "scheduled",
+    "city": "Kansas City", "region": "MO", "admission": "Free to watch", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Twin Rivers Skill Toy Club", "url": "" },
+    "description": "A yo-yo contest and a kendama contest on one day in Kansas City, with one sign-up: freestyles, trick ladders, Duo, and audience-voted battles.",
+    "about_title": "Two Contests, One Day, One Sign-Up",
+    "about": ["A yo-yo contest and a kendama contest share the stage: {divisions}. Sign up once for any mix. Organized by {organizer}."],
+    "features": ["Yo-yo", "Kendama", "Trick ladders", "Duo", "Audience-voted battles", "Free to watch"]
+  },
+  "registration": { "opens": "2026-09-20", "closes": "2026-11-21", "url": "https://example.org/register",
+    "label": "Register for both contests",
+    "open_text": "One sign-up covers both contests. Pick any mix of yo-yo and kendama divisions; your spot is confirmed when payment goes through.",
+    "fee_summary": "$10–$20 per division",
+    "combos": [ { "name": "Any two divisions", "fee": "$25" }, { "name": "Any three or more", "fee": "$35" } ],
+    "spectators": "Free",
+    "music": { "deadline": "2026-11-24", "upload_url": "",
+      "steps": [ "Name your file DIVISION_LastName_FirstName.mp3, like KF_Park_Jo.mp3. Duos use both last names.",
+                 "MP3 format, clean lyrics only. Trim it to your division's routine length.",
+                 "Send it by {music_deadline}. Bring a backup on your phone." ] } },
+  "divisions": [
+    { "code": "1A", "name": "1A Yo-Yo Freestyle", "format": "Freestyle", "text": "Single yo-yo on a string, in a routine to your own music.",
+      "length": "2-min freestyle", "music": true, "fee": "$15", "tags": ["Yo-yo"] },
+    { "code": "YL", "name": "Yo-Yo Trick Ladder", "format": "ladder", "text": "Called string tricks from easier to harder. No routine to plan.",
+      "tricks": ["Sleeper", "Breakaway", "Trapeze", "Man on the Flying Trapeze", "Double or Nothing", "Brain Twister", "Split the Atom", "Kwyjibo"],
+      "attempts": 3, "music": false, "fee": "$10", "tags": ["Yo-yo"] },
+    { "code": "KF", "name": "Kendama Freestyle", "format": "panel", "text": "Your best kendama run, to your own music, scored by a judging panel.",
+      "length": "90-sec freestyle", "music": true, "fee": "$15", "tags": ["Kendama"],
+      "criteria": [ { "label": "Difficulty", "points": 40 }, { "label": "Execution", "points": 30 }, { "label": "Flow & style", "points": 30 } ] },
+    { "code": "KL", "name": "Kendama Trick Ladder", "format": "ladder", "text": "Called tricks from easier to harder. Land each one within your tries to move up.",
+      "tricks": ["Big Cup", "Small Cup", "Base Cup", "Spike", "Around Japan", "Around the World", "Lighthouse", "Earth Turn", "Bird", "Lunar"],
+      "attempts": 3, "music": false, "fee": "$10", "tags": ["Kendama"] },
+    { "code": "Duo", "name": "Duo", "format": "Freestyle", "text": "Two players, one routine.",
+      "styles": [ { "name": "Two yo-yos" }, { "name": "Two kendamas" }, { "name": "One of each" } ],
+      "team": { "label": "Duo", "min": 2, "max": 2, "fee": "per duo" },
+      "length": "2-min routine", "music": true, "fee": "$20" },
+    { "code": "Duel", "name": "Star Duels", "format": "Bracket",
+      "text": "Head-to-head routines with any toy. The crowd watching the stream picks every winner.",
+      "bracket": { "decided_by": "audience", "poll": "YouTube chat poll", "stream_url": "https://example.org/live",
+                   "match_format": "one-minute routines", "third_place_by_votes": true },
+      "rules": [ "One-minute routines, head to head.", "Music is random. You hear it when the crowd does.",
+                 "Wait off stage until your turn is called.",
+                 "You can't repeat the same routine twice. Repeating a routine is an instant disqualification." ],
+      "music": "house", "fee": "$10", "tags": ["Any toy"] }
+  ],
+  "divisions_notes": [
+    "One sign-up for both contests. Registration is charged per division unless a combo price applies. Duo is charged per duo.",
+    "Yo-yo and kendama are judged separately. Duo and Star Duels are open to either toy. The Rules page has the trick lists, judging criteria, and duel rules."
+  ],
+  "gear": { "title": "What to Bring", "intro": "Bring your own toys, and spares for anything that can break or wear out.",
+    "items": [ "Yo-yo: spare string already cut to length.", "Kendama: a spare string, and tape if you use it.",
+               "Your music on your phone as a backup, if your division uses your own track." ] },
+  "schedule": [
+    { "time": "10:00 AM", "title": "Check-In & Warm-Up", "text": "One registration desk for both contests." },
+    { "time": "10:30 AM", "title": "Welcome & Rules Briefing", "text": "" },
+    { "time": "11:00 AM", "title": "Kendama Trick Ladder", "text": "" },
+    { "time": "11:45 AM", "title": "Yo-Yo Trick Ladder", "text": "" },
+    { "time": "12:30 PM", "title": "Lunch Break", "text": "Practice area stays open." },
+    { "time": "1:30 PM", "title": "Kendama Freestyle", "text": "" },
+    { "time": "2:30 PM", "title": "Duo", "text": "" },
+    { "time": "3:15 PM", "title": "1A Yo-Yo Freestyle", "text": "" },
+    { "time": "4:30 PM", "title": "Star Duels", "text": "Live on the stream. Vote in the chat poll for each round's winner." },
+    { "time": "5:30 PM", "title": "Awards", "text": "Awards for both contests and sponsor thanks." }
+  ],
+  "rules": {
+    "intro": "Yo-yo and kendama divisions are judged separately, each against the same toy. Freestyles use a typical three-part judging sheet, Kendama Freestyle uses its own criteria, the ladders are scored by the tricks you land, and Star Duels are decided by the audience.",
+    "sections": [
+      { "title": "Freestyle Format", "items": [ "Routine lengths are listed with each division on the Register page.",
+          "Your routine starts with the music and ends when the music stops.", "Music must be suitable for all ages. No explicit lyrics." ] },
+      { "title": "Trick Ladders", "items": [ "Judges call tricks in order, from easier to harder.", "You get three tries per trick.",
+          "Land the trick to move up. Miss every try and your run ends.", "Ties are broken by a sudden-death trick." ] },
+      { "title": "Duo", "items": [ "Both players stay on stage for the whole routine.", "Any mix of toys: two yo-yos, two kendamas, or one of each." ] },
+      { "title": "Safety", "items": [ "Look before you throw. Keep every trick inside the stage area.", "Warm up only in the practice area." ] },
+      { "title": "Judging & Conduct", "items": [ "Judge decisions are final, and the audience poll is final for Star Duels.",
+          "Respectful conduct is required. Unsportsmanlike behavior may mean disqualification." ] }
+    ],
+    "scoring_notes": [ "The Kendama Freestyle criteria and points are this demo's own, not any organization's official rules." ]
+  },
+  "faq": [
+    { "group": "Attending", "q": "Is it free to watch?", "a": "{admission}. No ticket needed for spectators and families." },
+    { "group": "Attending", "q": "Where is it?", "a": "{venue}, {place}. The Venue page has parking and directions." },
+    { "group": "Competing", "q": "Do I sign up twice for yo-yo and kendama?", "a": "No. One sign-up covers both contests. Pick every division you want, and combo prices apply automatically." },
+    { "group": "Competing", "q": "How are Star Duels decided?", "a": "By the audience. Each round's winner is picked by a live chat poll on the stream, and 3rd place goes to the semifinalist with the most votes." },
+    { "group": "Competing", "q": "Can a yo-yo player and a kendama player enter Duo together?", "a": "Yes. Duo takes two yo-yos, two kendamas, or one of each." },
+    { "group": "Competing", "q": "Do I need to send music?", "a": "For 1A, Kendama Freestyle, and Duo, yes: send your track by {music_deadline}. The ladders have none, and Star Duels use random house music." }
+  ],
+  "venue": { "name": "West Bottoms Event Hall", "space": "Main floor", "address": "1500 Example Ave, Kansas City MO" },
+  "sponsors": [ { "tier": "Gold", "name": "Example Toy Shop", "text": "Prizes for both contests." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": { "primary": "#1f3a5f", "accent": "#f2a541", "emblem": "yoyo" }
+}

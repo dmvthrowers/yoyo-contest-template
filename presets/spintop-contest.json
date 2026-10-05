@@ -1,47 +1,76 @@
 {
-  "preset_name": "Yo-yo contest (NYYL rules)",
+  "preset_name": "Spinning top contest",
   "divisions": [
     {
-      "code": "1A",
-      "name": "1A Division",
-      "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to every skill level.",
-      "length": "2-min freestyle",
-      "music": true,
-      "tags": [
-        "Open"
-      ]
-    },
-    {
-      "code": "X",
-      "name": "X Division",
-      "text": "Multi-style division for 2A, 3A, 4A, and 5A. Pick one style when you register: 2A = looping, 3A = two yo-yos on strings, 4A = offstring, 5A = freehand.",
+      "code": "FS",
+      "name": "Trick Freestyle",
+      "format": "Freestyle",
+      "text": "Your best top tricks in a timed routine to your own music. Pick your style when you register.",
       "styles": [
-        "2A",
-        "3A",
-        "4A",
-        "5A"
+        {
+          "code": "String",
+          "name": "String-thrown tops"
+        },
+        {
+          "code": "Hand",
+          "name": "Hand-spun and finger tops"
+        }
       ],
       "length": "2-min freestyle",
       "music": true
     },
     {
-      "code": "Sport",
-      "name": "Sport / Beginner",
-      "text": "A welcoming first step into contest play. No negative clicks and no major deductions, and most of the score is presentation.",
-      "ages": "All ages",
-      "length": "90-sec freestyle",
-      "music": true
+      "code": "Jr",
+      "name": "Junior Tricks",
+      "format": "Freestyle",
+      "text": "A shorter trick routine for younger players, to house music.",
+      "ages": {
+        "max": 12
+      },
+      "length": "90-sec routine",
+      "music": "house"
+    },
+    {
+      "code": "Spin",
+      "name": "Longest Spin",
+      "format": "Timed",
+      "text": "Throw your top and keep it spinning. The longest time wins.",
+      "length": "Best of 3 throws",
+      "music": false,
+      "tags": [
+        "All ages"
+      ]
+    },
+    {
+      "code": "Ring",
+      "name": "Ring Battle",
+      "format": "Bracket",
+      "text": "Tops are thrown into the ring together. The last top spinning inside the ring wins the round.",
+      "music": false,
+      "tags": [
+        "Knockout"
+      ]
     }
   ],
   "divisions_notes": [
-    "Competing in more than one division? Registration is charged per division.",
-    "Divisions are scored with the National Yo-Yo League (NYYL) freestyle rules unless noted otherwise. See the Rules page for how scoring works."
+    "Competing in more than one division? Registration is charged per division unless a combo price is listed.",
+    "Top size limits for Longest Spin and Ring Battle are announced at check-in. See the Rules page."
   ],
+  "gear": {
+    "title": "What to Bring",
+    "intro": "Bring your own tops. Ask us before the day if you need to borrow one.",
+    "items": [
+      "Your tops and strings, plus spare strings. They wear out fast.",
+      "A backup top for each division you enter.",
+      "Your music on your phone as a backup, if you're in Trick Freestyle.",
+      "Closed-toe shoes. Tops land hard."
+    ]
+  },
   "registration": {
     "music": {
       "steps": [
-        "Name your file DIVISION_LastName_FirstName.mp3, like 1A_Rivera_Sam.mp3.",
-        "MP3 format, clean lyrics only. Include any intro or outro you want played.",
+        "Name your file FS_LastName_FirstName.mp3, like FS_Cruz_Maya.mp3.",
+        "MP3 format, clean lyrics only. Trim it to the routine length.",
         "Send it by {music_deadline}. Bring a backup on your phone."
       ]
     }
@@ -50,144 +79,132 @@
   "schedule": [
     {
       "time": "9:00 AM",
-      "title": "Setup & Load-In",
-      "text": "Sponsors, vendors, and staff arrive."
+      "title": "Check-In & Warm-Up",
+      "text": "Registration desk and practice area open. Tops checked for Ring Battle."
     },
     {
       "time": "10:00 AM",
-      "title": "Doors Open · Kickoff",
-      "text": "Registration desk opens. Welcome, sponsor thanks, and rules briefing."
+      "title": "Welcome & Rules Briefing",
+      "text": "Throwing areas, top limits, and how judging works."
     },
     {
       "time": "10:30 AM",
-      "title": "Sport / Beginner Division",
-      "text": "Our entry-level division."
+      "title": "Longest Spin",
+      "text": "Three throws each."
     },
     {
-      "time": "12:00 PM",
+      "time": "11:30 AM",
+      "title": "Junior Tricks",
+      "text": ""
+    },
+    {
+      "time": "12:15 PM",
       "title": "Lunch Break",
-      "text": "Practice space stays open."
+      "text": "Practice area stays open."
     },
     {
-      "time": "1:00 PM",
-      "title": "1A Division",
-      "text": "Single yo-yo on a string."
+      "time": "1:15 PM",
+      "title": "Trick Freestyle",
+      "text": ""
     },
     {
-      "time": "3:00 PM",
-      "title": "X Division",
-      "text": "2A · 3A · 4A · 5A."
+      "time": "2:45 PM",
+      "title": "Ring Battle",
+      "text": "Bracket rounds through the final."
     },
     {
-      "time": "5:00 PM",
+      "time": "4:00 PM",
       "title": "Awards",
       "text": "Awards for every division and sponsor thanks."
-    },
-    {
-      "time": "6:00 PM",
-      "title": "Wrap Up",
-      "text": "Teardown and load-out."
     }
   ],
   "schedule_notes": [
     "Times may change on the day based on the number of competitors. Check the registration desk for the running order."
   ],
   "rules": {
-    "ruleset_name": "NYYL freestyle rules",
-    "sport": "Yo-yo",
+    "ruleset_name": "our contest rules",
+    "sport": "Spinning top",
     "title": "Contest Ruleset",
-    "intro": "Freestyles follow the National Yo-Yo League (NYYL) freestyle rules, the ruleset for U.S. contests. When this page and the NYYL rules disagree, NYYL wins.",
+    "intro": "Spinning top contests don't share one rulebook, so here's exactly how this one works. The events are typical of top contests: a trick freestyle, a longest-spin event, and a ring battle.",
     "sections": [
       {
-        "title": "Freestyle Format",
+        "title": "Trick Freestyle",
         "items": [
           "Routine lengths are listed with each division on the Register page.",
-          "NYYL lets organizers pick routine lengths and rounds to fit the field and the day.",
-          "Music must be appropriate for all audiences. No profanity, slurs, or explicit themes. Inappropriate music means disqualification."
+          "A dropped or stopped top can be rethrown. The clock keeps running.",
+          "Music must be suitable for all ages. No explicit lyrics.",
+          "Be ready when you're called. Missing your slot may forfeit your spot."
+        ]
+      },
+      {
+        "title": "Longest Spin",
+        "items": [
+          "Throw onto the marked surface when the judge says go.",
+          "The timer stops when your top stops spinning or leaves the marked area.",
+          "Your best of three throws counts.",
+          "Ties go to one extra throw each."
+        ]
+      },
+      {
+        "title": "Ring Battle",
+        "items": [
+          "Players throw into the ring together on the judge's count.",
+          "A top is out when it stops spinning, falls over, or leaves the ring.",
+          "The last top spinning in the ring wins the round. Winners advance to the final.",
+          "False starts are rethrown."
         ]
       },
       {
         "title": "Equipment",
         "items": [
-          "Use yo-yos legal for your registered division.",
-          "String and accessories are your responsibility.",
-          "Judges may inspect equipment before you compete."
+          "Hand-spun or string-launched tops only. No launchers, motors, or batteries.",
+          "Tops for Longest Spin and Ring Battle must fit the size limits announced at check-in.",
+          "No sharpened or loose metal tips.",
+          "Judges may inspect any top before you compete."
         ]
       },
       {
-        "title": "Music & Performance",
+        "title": "Safety & Conduct",
         "items": [
-          "Send your music by {music_deadline}.",
-          "Pre-recorded tracks only. No live music.",
-          "Be ready when you're called. Missing your slot forfeits your spot."
-        ]
-      },
-      {
-        "title": "Judging & Conduct",
-        "items": [
-          "Judging follows NYYL scoring. See How Scoring Works below.",
-          "Judge decisions are final. Under NYYL rules, the head judge and contest organizer have the final word.",
+          "Throw only inside the marked areas, and only when the judge says go.",
+          "Spectators stay behind the line around the ring.",
+          "Judge decisions are final.",
           "Respectful conduct is required. Unsportsmanlike behavior may mean disqualification.",
-          "Venue rules apply to everyone. Organizers may adjust the format based on registration numbers."
+          "Organizers may adjust the format based on registration numbers."
         ]
       }
     ],
-    "scoring_title": "How Scoring Works",
-    "scoring_intro": "Every routine gets two scores: Technical Execution from clickers, and a Routine Evaluation in four categories. Major deductions come off the top.",
+    "scoring_title": "How Freestyles Are Judged",
+    "scoring_intro": "Each judge scores three categories for every freestyle. Scores are averaged across the panel. Longest Spin is timed, and Ring Battle is decided round by round.",
     "scoring": [
       {
-        "title": "Points by Division",
+        "title": "Difficulty",
         "items": [
-          "1A and X Division: Technical Execution 60 + Routine Evaluation 40 (four categories, 10 each) = 100.",
-          "Sport / Beginner: Technical Execution 20 + Routine Evaluation 80 (four categories, 20 each) = 100. It rewards presentation, not trick count.",
-          "Your final score is the average across the judging panel."
+          "How hard the tricks are, and how many different kinds you show.",
+          "Harder combinations and smooth transitions score higher than repeats."
         ]
       },
       {
-        "title": "Technical Execution (Clickers)",
+        "title": "Execution",
         "items": [
-          "Each judge holds two counters: one for landed elements, one for misses.",
-          "One click for a hard but low-risk element. Riskier elements can earn more.",
-          "Repeats score less or nothing. No clicks for moves that don't show yo-yo skill.",
-          "Sport / Beginner uses no negative clicks.",
-          "Each judge's top raw score becomes the full 60 (20 in Sport), and everyone else scales against it."
+          "Clean catches, control, and recoveries.",
+          "Drops and unplanned stops cost points. Pick it up and keep going."
         ]
       },
       {
-        "title": "Routine Evaluation",
+        "title": "Performance",
         "items": [
-          "Trick Presentation: mastery of your tricks and the style you show them in.",
-          "Performance Quality: professionalism, stage use, and playing to the audience.",
-          "Musicality: hitting music cues and pacing tricks to the song.",
-          "Routine Construction: trick choice and order, and how it all fits together."
-        ]
-      },
-      {
-        "title": "Major Deductions (1A & X)",
-        "items": [
-          "Stop, −1: the yo-yo stops with the string fully unwound.",
-          "Discard, −3: you swap yo-yos, or can't bring it back to your hand wound when the routine ends.",
-          "Detach, −5: the yo-yo comes off the string (except 4A), the string breaks, or the yo-yo comes apart.",
-          "With two yo-yos, deductions count per yo-yo. Sport / Beginner has no major deductions."
+          "Use of the stage and connection with the audience.",
+          "Musicality: hitting the beats and changes in your song.",
+          "Construction: how the routine fits together from start to finish."
         ]
       }
     ],
-    "scoring_notes": [
-      "X Division clicker scores are multiplied by style before normalization, so styles compete fairly. Check the current NYYL rules for the multipliers."
-    ],
+    "scoring_notes": [],
     "notes": [
       "These rules can change before registration opens. Questions? Email {email}."
     ],
-    "sources": [
-      {
-        "title": "NYYL: Freestyle Rules for NYYL Events",
-        "url": "https://yoyocontest.com/freestyle-rules-for-nyyl-events/"
-      },
-      {
-        "title": "IYYF: Contest Rules",
-        "url": "https://www.iyyf.org/rules"
-      }
-    ]
+    "sources": []
   },
   "faq": [
     {
@@ -208,22 +225,27 @@
     {
       "group": "Competing",
       "q": "What divisions are there?",
-      "a": "See the Register page for every division, its routine length, and entry fee."
+      "a": "{divisions}. The Register page lists each one's format and entry fee."
     },
     {
       "group": "Competing",
-      "q": "How is it judged?",
-      "a": "We use the {rules_name}. Judges click Technical Execution and score four Routine Evaluation categories: Trick Presentation, Performance Quality, Musicality, and Routine Construction. Major deductions come off the top. The Rules page has the full breakdown."
+      "q": "What kind of top can I use?",
+      "a": "Any top you spin by hand or launch with a string. No launchers, motors, or batteries. Size limits for Longest Spin and Ring Battle are announced at check-in."
     },
     {
       "group": "Competing",
       "q": "Do I need to send music?",
-      "a": "Yes. Send your track by {music_deadline}. The Register page explains the file name and format."
+      "a": "Only for Trick Freestyle: send your track by {music_deadline}. Junior Tricks uses house music, and the other events have none."
+    },
+    {
+      "group": "Competing",
+      "q": "Is there a division for kids?",
+      "a": "Yes. Junior Tricks is for players 12 and under, and anyone can enter Longest Spin."
     },
     {
       "group": "Competing",
       "q": "Can I compete in more than one division?",
-      "a": "Yes. Registration is charged per division."
+      "a": "Yes. Registration is charged per division, unless the Register page lists a combo price."
     },
     {
       "group": "Competing",
@@ -231,14 +253,9 @@
       "a": "Fees are non-refundable once payment clears, except for documented medical emergencies, duplicate charges, or a cancelled division. See Terms."
     },
     {
-      "group": "Competing",
-      "q": "I've never competed. Should I?",
-      "a": "Yes! The Sport / Beginner division is built for first freestyles: no negative clicks, no major deductions, and most of the score is presentation."
-    },
-    {
       "group": "Getting Involved",
       "q": "Can I volunteer?",
-      "a": "Yes, please. Email {email}. We need help with check-in, stage, music, and setup."
+      "a": "Yes, please. Email {email}. We need help with check-in, judging, stage, music, and setup."
     },
     {
       "group": "Getting Involved",
@@ -251,9 +268,6 @@
       "a": "{name} is organized by {organizer}."
     }
   ],
-  "results": {
-    "links_eyebrow": "Everyone who threw"
-  },
   "terms": {
     "effective": "",
     "intro": "By registering as a competitor or attending {name} {year}, you agree to these terms. Parents and guardians registering minor competitors agree on their behalf. They cover refunds, assumption of risk, photo release, conduct, and minors.",
@@ -276,7 +290,7 @@
       {
         "title": "Assumption of Risk & Liability Waiver",
         "paragraphs": [
-          "Yo-yo and skill toy activities carry risks, including contact with equipment, unexpected movement of other participants, and falls. By competing or attending, you accept those risks.",
+          "Spinning top and skill toy activities carry risks, including contact with thrown or bouncing tops, unexpected movement of other participants, and falls. By competing or attending, you accept those risks.",
           "{organizer}, its volunteers, and the venue are not liable for injury, loss, theft, or property damage connected with the contest, to the fullest extent the law allows.",
           "Competitors are responsible for keeping their equipment safe and in working order. Organizers may stop any equipment or performance that puts others at risk.",
           "For minors: a parent or legal guardian must acknowledge this waiver at check-in. Minors can't compete without it."
@@ -287,7 +301,7 @@
         "paragraphs": [
           "{name} is a public event. It will be photographed, recorded, and may be livestreamed by organizers, media, sponsors, and attendees.",
           "By competing or attending, you consent to being photographed and recorded, and you give {organizer} a non-exclusive, royalty-free right to use those images for contest records, promotion of future events, and club communications. No payment is provided.",
-          "Stage freestyles are recorded for judging and may be shared publicly as part of the contest archive.",
+          "Freestyles and battles are recorded for judging and may be shared publicly as part of the contest archive.",
           "Don't want to be photographed? Tell an organizer at check-in. We'll make reasonable efforts, but we can't guarantee you won't appear in photos of a public event."
         ]
       },
@@ -328,6 +342,17 @@
         ]
       }
     ]
+  },
+  "results": {
+    "links_eyebrow": "Everyone who competed"
+  },
+  "theme": {
+    "primary": "#4a1d1d",
+    "accent": "#e8b23a",
+    "background": "#faf6ef",
+    "ink": "#2a1a17",
+    "corners": "sharp",
+    "emblem": "top"
   },
   "sponsorship": {
     "intro": "Put your brand in front of competitors, families, and spectators. Every dollar goes to the event.",
@@ -376,13 +401,5 @@
         ]
       }
     ]
-  },
-  "theme": {
-    "primary": "#1a2744",
-    "accent": "#c9a84c",
-    "background": "#f8f5ee",
-    "ink": "#1a2744",
-    "corners": "sharp",
-    "emblem": "yoyo"
   }
 }

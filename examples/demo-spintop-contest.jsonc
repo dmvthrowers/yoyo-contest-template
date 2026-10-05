@@ -1,0 +1,27 @@
+// Demo: a made-up spinning top contest using the "spintop-contest" preset. Registration hasn't opened yet.
+{
+  "preset": "spintop-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/Denver", "source_url": "", "credit": true },
+  "contest": {
+    "name": "High Desert Top Spin", "short_name": "HDT", "edition": "1st Annual", "tradition": "",
+    "date": "2027-04-17", "start": "10:00", "end": "16:00", "status": "scheduled",
+    "city": "Albuquerque", "region": "NM", "admission": "Free", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "High Desert Spinners", "url": "" },
+    "description": "A spinning top contest in Albuquerque: trick freestyles, a junior division, longest spin, and ring battles.",
+    "about_title": "Bring Your Tops",
+    "about": ["Trick freestyles for string and hand-spun tops, a junior division, longest spin, and a ring battle bracket. Organized by {organizer}."],
+    "features": ["Ring battles", "Longest spin", "Juniors 12 & under", "Free"]
+  },
+  "registration": { "opens": "2027-02-01", "closes": "2027-04-10", "url": "https://example.org/register",
+    "fee_summary": "$5–$15 per event",
+    "fees": [ { "division": "FS", "fee": "$15" }, { "division": "Jr", "fee": "$5" },
+              { "division": "Spin", "fee": "$5" }, { "division": "Ring", "fee": "$10" }, { "name": "Spectators", "fee": "Free" } ],
+    "combos": [ { "name": "Every event", "fee": "$25" } ],
+    "music": { "deadline": "2027-04-14", "upload_url": "" } },
+  "venue": { "name": "Mesa Community Center", "space": "Gym", "address": "400 Example Rd, Albuquerque NM" },
+  "sponsors": [], "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": { "corners": "soft" }
+}

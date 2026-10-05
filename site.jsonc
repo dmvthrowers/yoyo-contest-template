@@ -8,11 +8,15 @@
 //  "registration opens soon" > "registration open" > "closed" > "today!" > "that's a wrap".
 // =====================================================================
 {
-  // STEP 1: Pick a starting preset. It fills in divisions, rules, scoring,
-  // schedule, FAQ, terms, and sponsor tiers. Choices:
-  //   "yoyo-contest"    - a yo-yo contest using NYYL freestyle rules (default)
-  //   "kendama-contest" - a kendama contest with a trick ladder and battles
-  //   "trick-battle"    - a casual battle or jam for any skill toy
+  // STEP 1: Pick a starting preset. It fills in divisions, rules, scoring, gear,
+  // schedule, FAQ, terms, sponsor tiers, colors, and the logo's toy. Choices:
+  //   "yoyo-contest"      - a yo-yo contest using NYYL freestyle rules (default)
+  //   "kendama-contest"   - a kendama contest with a trick ladder and battles
+  //   "diabolo-contest"   - a diabolo contest: freestyles, multi-diabolo styles, a trick ladder
+  //   "spintop-contest"   - a spinning top contest: freestyle, longest spin, ring battles
+  //   "skill-toy-contest" - a mixed contest with a division for each toy
+  //   "juggling-contest"  - a juggling contest: solo and team routines, numbers, a battle
+  //   "trick-battle"      - a casual battle or jam for any skill toy
   // Anything you set below overrides the preset.
   "preset": "yoyo-contest",
 
@@ -78,6 +82,9 @@
     "label": "Register Now",
     // Short fee line for the home page
     "fee_summary": "From $15 per division",
+    // The fee table. Each row is { "name": "...", "fee": "$20" }, or { "division": "1A", "fee": "$20" }
+    // to use that division's name and show the fee on its card too.
+    // Leave it [] to list each division's own "fee" (see Divisions below).
     "fees": [
       { "name": "1A Division", "fee": "$20" },
       { "name": "X Division (2A–5A)", "fee": "$20" },
@@ -88,19 +95,40 @@
       "Pay online when you register. Your spot is confirmed when payment goes through.",
       "Fees are non-refundable once payment clears, except for medical emergencies or a cancelled contest."
     ],
+    // Combo deals, added to the fee table: { "name": "Any two divisions", "fee": "$30", "text": "Save $10" }
+    "combos": [],
+    // Music for freestyle divisions. The upload steps come from the preset; copy "steps" here
+    // to change them. Divisions marked "music": false (trick ladders, battles) don't need any.
+    // No music at all? Set "music": false.
     "music": {
       "deadline": "2026-11-12",
-      "upload_url": "",
-      "steps": [
-        "Name your file DIVISION_LastName_FirstName.mp3, like 1A_Rivera_Sam.mp3.",
-        "MP3 format, clean lyrics only. Include any intro or outro you want played.",
-        "Send it by {music_deadline}. Bring a backup on your phone."
-      ]
+      "upload_url": ""
     }
   },
 
-  // Divisions come from the preset. To change them, copy "divisions" from
-  // presets/yoyo-contest.json into this file and edit.
+  // Divisions come from the preset. To change them, copy "divisions" from your preset
+  // (presets/yoyo-contest.json etc.) into this file and edit. Any number of divisions; each one:
+  // {
+  //   "code": "1A",                      short code, shown big on the card
+  //   "name": "1A Division",             required
+  //   "text": "Single yo-yo on a string.",
+  //   "format": "Freestyle",             freestyle, panel, timed, scored, ladder, bracket, showcase
+  //                                      (or any other text); see README "Division formats"
+  //   "length": "2-min freestyle",       routine or round length ("" to hide)
+  //   "fee": "$20",                      shown on the card and in the fee table
+  //   "ages": "Under 13",                or { "min": 8, "max": 12 }; leave out for all ages
+  //   "music": true,                     true = send your own track, false = none, "house" = house music
+  //   "styles": ["2A", "3A", "4A", "5A"],  optional; or [{ "code": "2A", "name": "Looping" }, ...]
+  //   "tags": ["Open"]                   any other short labels
+  // }
+  // Format details (all optional; README "Division formats" has examples):
+  //   "tricks": ["Big Cup", ...], "attempts": 3          trick ladder: the list, tries per trick
+  //   "bracket": { "third_place": true, "match_format": "two 30-second rounds" }   battles
+  //   "criteria": [{ "label": "Choreography", "points": 25 }, ...]                  panel judging
+  //   "unit": "seconds", "better": "lower", "attempts": 3                         timed or scored
+  //   "team": { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" }       team entries
+  //   "rounds": [{ "name": "Prelims", "advance": 10 }, { "name": "Finals" }]       prelims -> finals
+  // A preset section you don't want at all ("gear", "guest_events"...)? Set it to false.
 
   // Guest events with their own sign-up (battles, side contests)
   // { "name": "...", "time": "12:00 PM", "host": "Hosted by ...", "text": "...", "url": "https://...", "url_label": "Rules & sign-up" }

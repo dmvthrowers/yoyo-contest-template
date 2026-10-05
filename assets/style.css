@@ -132,6 +132,21 @@ a:hover { color: var(--accent-ink); }
 /* Divisions */
 .division { border-top-color: var(--accent); }
 .division-code { display: inline-block; font-size: 1.6rem; font-weight: 900; color: var(--primary); border-bottom: 3px solid var(--accent); margin-bottom: .5rem; line-height: 1.2; }
+.style-list { list-style: none; padding: 0; margin: 0 0 1rem; border-top: 1px solid var(--line); }
+.style-list li { padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+.style-list strong { display: inline-block; min-width: 3.2rem; color: var(--accent-ink); font-weight: 900; }
+.division-fee { margin: 0; font-weight: 800; font-size: 1.15rem; color: var(--primary); }
+.division-fee .label { margin-bottom: 0; }
+.division-format { font-weight: 700; font-size: .95rem; color: var(--primary); border-left: 3px solid var(--accent); padding-left: .6rem; margin-bottom: .6rem; }
+.division-more { margin: -.4rem 0 .6rem; }
+.format-label { color: var(--accent-ink); margin-top: 1rem; }
+.trick-list { margin: 0 0 1rem; padding-left: 1.6rem; columns: 2 10rem; column-gap: 1.5rem; }
+.trick-list li { margin-bottom: .3rem; break-inside: avoid; }
+.criteria { margin-top: .5rem; }
+.criteria caption { text-align: left; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); padding-bottom: .35rem; }
+.criteria td { font-weight: 800; width: 6rem; }
+.criteria tfoot th, .criteria tfoot td { border-top: 2px solid var(--primary); }
+.fee-note { display: block; font-weight: 400; font-size: .9rem; color: var(--muted); }
 
 /* Rules */
 .rule-blocks { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr); margin-bottom: 1.5rem; }

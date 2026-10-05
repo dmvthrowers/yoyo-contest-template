@@ -1,0 +1,30 @@
+// Demo: a made-up diabolo contest using the "diabolo-contest" preset. Registration is open.
+// Fees are set by division code, so each card shows its fee too, plus a combo price.
+{
+  "preset": "diabolo-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/Chicago", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Lakeshore Diabolo Classic", "short_name": "LDC", "edition": "2nd Annual", "tradition": "",
+    "date": "2026-12-05", "start": "09:00", "end": "17:00", "status": "scheduled",
+    "city": "Milwaukee", "region": "WI", "admission": "Free to watch", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Lakeshore Circus Arts Club", "url": "" },
+    "description": "A diabolo contest for every level in Milwaukee: single and multi-diabolo freestyles, a beginner division, and a trick ladder.",
+    "about_title": "Diabolo Contest Day in Milwaukee",
+    "about": ["Four divisions under one high ceiling: {divisions}. Bring your sticks. Organized by {organizer}."],
+    "features": ["High ceiling", "Multi-diabolo styles", "Trick ladder", "Free to watch"]
+  },
+  "registration": { "opens": "2026-09-01", "closes": "2026-11-28", "url": "https://example.org/register",
+    "fee_summary": "$10–$20 per division",
+    "fees": [ { "division": "1D", "fee": "$20" }, { "division": "MD", "fee": "$20" },
+              { "division": "Beg", "fee": "$10" }, { "division": "Ladder", "fee": "$10" } ],
+    "combos": [ { "name": "Any two divisions", "fee": "$30", "text": "Save up to $10" } ],
+    "music": { "deadline": "2026-12-01", "upload_url": "" } },
+  "venue": { "name": "Northside Field House", "space": "Main gym (30 ft ceiling)", "address": "1200 N Example Ave, Milwaukee WI",
+    "facts": [ { "label": "Parking", "text": "Free lot behind the building." } ] },
+  "sponsors": [ { "tier": "Gold", "name": "Example Juggling Shop", "text": "Prizes for every division winner." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": {}
+}

@@ -1,6 +1,7 @@
-# Yo-Yo Contest Website Template
+# Yo-Yo & Skill Toy Contest Website Template
 
-A free, fast, mobile-friendly website for a **yo-yo contest, kendama contest, or skill toy trick battle**.
+A free, fast, mobile-friendly website for a **yo-yo, kendama, diabolo, spinning top, or juggling contest, a
+mixed skill toy contest, or a casual trick battle**.
 Edit one settings file, and GitHub builds and publishes the site for you. No coding, servers, or monthly fees.
 
 ![Four contest sites built from this template: VSYC-26 and three demos](.github/preview.png)
@@ -26,9 +27,14 @@ a "page not found" page.
   | The day after | "That's a wrap · Thank you", with your wrap-up numbers | Closed, thank-you note |
 
   Set `contest.status` to `"postponed"` or `"cancelled"` and every page says so.
-- **Divisions, fees, and music upload steps**, plus guest events with their own sign-up.
+- **Divisions your way**: any number, each with its own routine length, fee, age limits, and styles
+  (like X Division's 2A–5A), plus combo prices. Every format is explained: freestyles, panel judging
+  with a criteria table, timed or scored events, trick ladders with their trick lists, battle brackets
+  (judges or an audience poll), and showcases. Team entries (doubles, groups) and prelims → finals too. Music upload steps appear only for divisions that use
+  music; trick ladders and battles don't. Guest events get their own sign-up.
 - **Rules and scoring in plain English.** The yo-yo preset explains the NYYL freestyle rules: clickers,
-  normalization, the four evaluation categories, and major deductions.
+  normalization, the four evaluation categories, and major deductions. The other presets use typical
+  formats for their toy, written so you can change them.
 - **Sponsors by tier**, partners and friends, and sponsorship packages with slot counts and a funding goal.
 - **Results**: a podium for each division, headline stats, and links to standings, photos, and video.
 - **Venue page** with parking and food, vendor rules, venue photos, and hotel room blocks.
@@ -65,17 +71,23 @@ Open **`site.jsonc`**, click the **pencil icon**, and work top to bottom. Every 
    | Preset | For | Comes with |
    | --- | --- | --- |
    | `yoyo-contest` (default) | A yo-yo contest | 1A, X Division, and Sport divisions; NYYL freestyle rules and scoring; music upload steps |
-   | `kendama-contest` | A kendama contest | Beginner, Intermediate, and Open trick ladders, plus a battle bracket |
+   | `kendama-contest` | A kendama contest | Beginner, Intermediate, and Open trick ladders with example trick lists, plus a battle bracket with a 3rd-place match |
+   | `diabolo-contest` | A diabolo contest | Single Diabolo, Multi-Diabolo styles (2D, 3D+, Vertax, fixed axle), Beginner to house music, a trick ladder; ceiling and toss safety |
+   | `spintop-contest` | A spinning top contest | Trick Freestyle (string and hand-spun), Junior Tricks (12 and under), Longest Spin, Ring Battle |
+   | `skill-toy-contest` | A mixed contest, several toys | One division per toy (yo-yo, kendama ladder, diabolo, spin top, open skill toy), Artistic Performance (panel criteria), a Showcase (not judged), and Beginner for any toy |
+   | `juggling-contest` | A juggling contest | Individual Freestyle and Team Routine (2–6 players), both panel judged; Numbers Endurance (catches, best of 3); Juggling Battle (last one juggling); Showcase; prop safety |
    | `trick-battle` | A casual club battle or skill toy jam | Beginner, Open, and Kendama brackets; side games; simple battle rules |
 
 2. **`contest`**: name, edition, date, hours, city, admission, organizer, presenting sponsor.
-3. **`registration`**: when it opens and closes, your sign-up link, fees, and music instructions.
+3. **`registration`**: when it opens and closes, your sign-up link, fees, combo prices, and the music deadline.
 4. **`venue`**: name, address, parking and food, vendor rules, hotels.
 5. **`sponsors`** and **`partners`**, plus prices and a goal in **`sponsorship`**.
 6. **`contact`**: a shared contest email and social links.
 
-Divisions, the schedule, rules, FAQ, and terms come from the preset. To change any of them, copy
-that section from `presets/<your preset>.json` into `site.jsonc` and edit it there.
+Divisions, gear ("What to Bring"), the schedule, rules, FAQ, terms, colors, and the logo's toy come
+from the preset. To change any of them, copy that section from `presets/<your preset>.json` into
+`site.jsonc` and edit it there. To drop a preset section entirely, set it to `false`
+(for example `"gear": false`).
 
 > **Shortcut:** [`examples/vsyc-26.jsonc`](examples/vsyc-26.jsonc) is a complete real contest, results
 > and all. Copy it over `site.jsonc` and change the details.
@@ -117,8 +129,10 @@ The build prints the current status line, so you can check every stage before it
 | Name, edition, date, hours, admission | `site.jsonc` → `contest` | Two-day contest? Set `end_date`. |
 | Postponed or cancelled | `site.jsonc` → `contest.status` | Every page and search engines update. |
 | Registration dates, link, fees | `site.jsonc` → `registration` | The site never takes payments; it links to your form. |
-| Music file rules and deadline | `site.jsonc` → `registration.music` | |
-| Divisions | copy `divisions` from the preset into `site.jsonc` | `code`, `name`, `text`, `tags`. |
+| Music deadline and upload link | `site.jsonc` → `registration.music` | Steps come from the preset; copy `steps` to change them. `"music": false` hides it. |
+| Combo prices | `site.jsonc` → `registration.combos` | `{ "name": "Any two divisions", "fee": "$30" }` |
+| Divisions | copy `divisions` from the preset into `site.jsonc` | See [Divisions](#divisions). |
+| What to bring | copy `gear` from the preset into `site.jsonc` | `title`, `intro`, `items`. |
 | Guest events (battles, side contests) | `site.jsonc` → `guest_events` | Shown on Register with their own link. |
 | The day's schedule | copy `schedule` from the preset into `site.jsonc` | Times are plain text, like "10:30 AM". |
 | Rules and scoring | copy `rules` from the preset into `site.jsonc` | Keep the `sources` links. |
@@ -128,10 +142,98 @@ The build prints the current status line, so you can check every stage before it
 | FAQ | `site.jsonc` → `faq_extra` | Or copy `faq` from the preset to replace it. |
 | Terms | copy `terms` from the preset into `site.jsonc` | Have someone check them. See below. |
 | Colors and corners | `site.jsonc` → `theme` | `"corners"`: `sharp`, `soft`, or `round`. The build warns if text would be hard to read. |
-| Logo | add `assets/emblem.svg` | Otherwise a yo-yo-and-star logo with your initials is generated. |
+| Logo | add `assets/emblem.svg` | Otherwise a logo with your short name is generated. Pick its toy with `theme.emblem`: `yoyo`, `kendama`, `top`, `diabolo`, `juggling`, or `star`. |
 | Social-share image | add `assets/og-card.png` (1200×630) | |
 | A whole extra section on a page | `content/<page>.html` | See [content/README.md](content/README.md). |
 | Page layout or new pages | `build.py` | One short function per page. |
+
+---
+
+## Divisions
+
+Each preset comes with divisions. To change them, copy the whole `divisions` list from your preset
+into `site.jsonc`. You can have any number. Only `name` is required:
+
+```jsonc
+"divisions": [
+  { "code": "1A", "name": "1A Division", "text": "Single yo-yo on a string.",
+    "length": "2-min freestyle", "fee": "$20", "music": true, "tags": ["Open"] },
+  { "code": "X", "name": "X Division", "text": "Pick one style when you register.",
+    "styles": [ { "code": "2A", "name": "Looping" }, { "code": "4A", "name": "Offstring" } ],
+    "length": "2-min freestyle", "music": true },
+  { "code": "Jr", "name": "Junior", "ages": { "max": 12 }, "length": "90-sec routine", "music": "house" },
+  { "code": "KD", "name": "Kendama Ladder", "format": "Trick ladder", "music": false }
+]
+```
+
+| Field | What it does |
+| --- | --- |
+| `code` | Short code shown big on the card, like `1A` or `KD`. Also used by `registration.fees`. |
+| `name`, `text` | The division's name and a sentence or two about it. |
+| `format` | How it runs: `freestyle`, `panel`, `timed`, `scored`, `ladder`, `bracket`, or `showcase` (see [Division formats](#division-formats)). Any other text works as a plain label. |
+| `format_text` | Replaces the format's short default explanation on the Rules page. |
+| `length` | Routine or round length, like `2-min freestyle`. Leave it out for ladders and battles. |
+| `fee` | Shown on the card and, if `registration.fees` is empty, in the fee table. |
+| `ages` | `"Under 13"`, or `{ "min": 8, "max": 12 }` → "Ages 8–12". Leave it out for all ages. |
+| `music` | `true`: competitors send their own track. `false`: no music. `"house"`: house music, nothing to send. The Music Upload section appears only if some division uses its own music, and says which. |
+| `styles` | Styles within the division. Plain codes (`["2A", "3A"]`) show as one label; `{ "code", "name", "text" }` also lists each style on the card. |
+| `tags` | Any other short labels. |
+| `tricks`, `attempts`, `bracket`, `criteria`, `unit`, `better`, `team`, `rounds`, `rules` | Format details. See [Division formats](#division-formats). |
+
+### Division formats
+
+Known formats get a short explanation, and their own fields are shown on the division's card and in a
+"How Each Division Works" block on the Rules page (the card links to it). Every field is optional, and
+the build warns about values it can't use, then ignores them.
+
+```jsonc
+{ "code": "KD", "name": "Kendama Ladder", "format": "ladder",
+  "tricks": ["Big Cup", "Spike", "Lighthouse"], "attempts": 3 },
+{ "code": "Duel", "name": "Battles", "format": "bracket",
+  "bracket": { "third_place": true, "match_format": "two 30-second rounds" } },
+{ "code": "AP", "name": "Artistic Performance", "format": "panel",
+  "criteria": [ { "label": "Choreography", "points": 30 }, { "label": "Musicality", "points": 25 } ] },
+{ "code": "Spin", "name": "Longest Spin", "format": "timed", "unit": "seconds", "better": "higher", "attempts": 3 },
+{ "code": "2P", "name": "Doubles", "format": "freestyle", "fee": "$30",
+  "team": { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" } },
+{ "code": "1A", "name": "1A Division", "rounds": [ { "name": "Prelims", "advance": 10 }, { "name": "Finals" } ] },
+{ "code": "Show", "name": "Showcase", "format": "showcase" }
+```
+
+| Format | Fields | Shows |
+| --- | --- | --- |
+| `freestyle` | `criteria` (optional) | "Freestyle"; a criteria table if you list criteria |
+| `panel` | `criteria`: `{ "label", "points" }` | "Panel judged · 4 judging criteria · 100 points" and a criteria table with a total |
+| `timed`, `scored` | `unit`, `better` (`"lower"` or `"higher"`), `attempts` | "Measured in catches · highest wins · best of 3 attempts" |
+| `ladder` | `tricks` (in order), `attempts` | "8 tricks · 3 tries per trick" and the numbered trick list |
+| `bracket` | `bracket`: `third_place`, `match_format`, `decided_by`, `elimination` | "Single elimination battles · judges vote · two 30-second rounds · 3rd-place match" |
+| `showcase` | none | "Not judged" |
+
+- **No `format`?** It's worked out from the fields: `tricks` → ladder, `bracket` → bracket, `criteria` → panel.
+  Divisions with none of these fields look exactly as before.
+- **Audience-voted battles:** `"bracket": { "decided_by": "audience", "poll": "YouTube chat poll",
+  "stream_url": "https://…", "third_place_by_votes": true }` shows "Winners picked by the audience: YouTube
+  chat poll on the stream" with a **Watch the stream** link, and 3rd place by vote totals. `decided_by`
+  can also be `"judges"` (the default), `"crowd"`, any other text, or `""` to say nothing (for "last
+  one juggling wins" battles, put that in `match_format`).
+- **`rules`:** a list of short sentences for that division, shown in its Rules page block, like
+  `["One-minute routines, head to head.", "No repeating a routine."]`.
+- **Team entries:** `team` shows "Doubles · 2 players" (or "Team · 2–6 players") on the card and in the fee
+  table, and adds `team.fee` to the fee: "$30 per pair".
+- **Rounds:** `rounds` shows "Prelims → Finals (top 10 advance)". A round can also have a `length`. In the
+  schedule, an item can name a division and one of its rounds instead of a title:
+  `{ "time": "10:30 AM", "division": "1A", "round": "Prelims" }` shows "1A Division · Prelims" and
+  "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
+  stay consistent.
+
+[`examples/`](examples/) has a demo of each: the yo-yo AP and Doubles demo (rounds, panel criteria, a
+team), the yo-yo and kendama combo (two ladders, a Duo, an audience-voted battle), and the juggling demo
+(scored, team, battle, showcase).
+
+**Fees.** `registration.fees` is a list of rows: `{ "name": "Spectators", "fee": "Free" }`, or
+`{ "division": "1A", "fee": "$20" }` to use that division's name and show the fee on its card. Leave it
+`[]` and the table lists each division's own `fee`, then `registration.combos`, then
+`registration.spectators` if you set it. The build warns if a fee row names a division code that doesn't exist.
 
 ---
 
@@ -172,6 +274,8 @@ there so the stages switch over on time.
 - Turn on two-factor login for your GitHub account.
 - League, brand, and shop names in the presets are used only to describe rules and link to their
   sites. This template isn't affiliated with or endorsed by any league, brand, or shop.
+- The kendama, diabolo, spin top, juggling, mixed, and battle presets describe *typical* formats, not any
+  organization's official rules. Edit them to match how your contest runs.
 
 ---
 
@@ -180,14 +284,15 @@ there so the stages switch over on time.
 ```
 site.jsonc              ← your contest settings (start here)
 presets/                ← starting divisions, rules, schedule, FAQ, terms, sponsor tiers
-  yoyo-contest.json  kendama-contest.json  trick-battle.json
+  yoyo-contest.json  kendama-contest.json  diabolo-contest.json  spintop-contest.json
+  juggling-contest.json  skill-toy-contest.json  trick-battle.json
 assets/                 ← copied to the site as-is (style.css, site.js, images/venue/)
 content/                ← optional extra HTML for any page
 build.py                ← builds _site/ (standard Python, no installs)
 scripts/check_site.py   ← checks the built site (links, accessibility, security)
 .github/workflows/deploy.yml  ← builds, checks, and publishes on every change, plus daily
 AGENTS.md               ← instructions for AI coding agents
-examples/               ← finished settings files (VSYC-26 plus demos)
+examples/               ← finished settings files (VSYC-26, a demo for each preset, and format demos)
 showcase/, scripts/build_showcase.py  ← the template's own showcase page (safe to delete in your copy)
 ```
 

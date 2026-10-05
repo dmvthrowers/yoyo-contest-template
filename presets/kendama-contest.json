@@ -4,42 +4,75 @@
     {
       "code": "Open",
       "name": "Open Division",
-      "text": "For experienced players. The hardest trick list and the most attempts on the line.",
+      "text": "For experienced players. The hardest trick list, with only two tries per trick.",
+      "format": "Trick ladder",
+      "music": false,
       "tags": [
-        "Trick ladder",
         "Open to all"
-      ]
+      ],
+      "tricks": [
+        "Spacewalk",
+        "Lighthouse Flip",
+        "Lunar Flip",
+        "Stuntplane",
+        "Earth Turn Spike",
+        "Bird Flip"
+      ],
+      "attempts": 2
     },
     {
       "code": "Inter",
       "name": "Intermediate",
       "text": "Solid fundamentals, ready to push. A mid-level trick list.",
-      "tags": [
-        "Trick ladder"
-      ]
+      "format": "Trick ladder",
+      "music": false,
+      "tricks": [
+        "Around the World",
+        "Around the USA",
+        "Earth Turn",
+        "Bird",
+        "Lunar",
+        "Stilt"
+      ],
+      "attempts": 3
     },
     {
       "code": "Beg",
       "name": "Beginner",
       "text": "First contest? Start here. Classic tricks, friendly crowd.",
-      "tags": [
-        "Trick ladder",
-        "All ages"
-      ]
+      "format": "Trick ladder",
+      "ages": "All ages",
+      "music": false,
+      "tricks": [
+        "Big Cup",
+        "Small Cup",
+        "Base Cup",
+        "Candlestick",
+        "Spike",
+        "Around Japan",
+        "Airplane",
+        "Lighthouse"
+      ],
+      "attempts": 3
     },
     {
       "code": "Battle",
       "name": "Kendama Battles",
-      "text": "1v1 bracket. Players trade tricks; judges or the crowd pick who advances.",
+      "text": "1v1 bracket. Players take turns calling and landing tricks, and the judges pick who advances.",
+      "format": "Bracket",
+      "music": false,
       "tags": [
-        "Bracket",
-        "Crowd vote"
-      ]
+        "1v1"
+      ],
+      "bracket": {
+        "third_place": true,
+        "match_format": "three trick turns each"
+      }
     }
   ],
   "divisions_notes": [
     "Competing in more than one division? Registration is charged per division.",
-    "Trick lists for each division are posted on the Rules page before the contest."
+    "Each division's trick list is on the Rules page. Lists are final at the rules briefing."
   ],
   "guest_events": [],
   "schedule": [
@@ -51,7 +84,7 @@
     {
       "time": "10:00 AM",
       "title": "Welcome & Rules Briefing",
-      "text": "How the trick ladder and attempts work."
+      "text": "How the trick ladders and tries per trick work."
     },
     {
       "time": "10:30 AM",
@@ -71,7 +104,7 @@
     {
       "time": "3:00 PM",
       "title": "Kendama Battles",
-      "text": "Bracket rounds through the final."
+      "text": "Single elimination through the final, plus a 3rd-place match."
     },
     {
       "time": "4:30 PM",
@@ -86,13 +119,13 @@
     "ruleset_name": "our contest rules",
     "sport": "Kendama",
     "title": "Contest Ruleset",
-    "intro": "Kendama contests don't share one rulebook, so here's exactly how this one works. Trick lists for each division are posted before the contest.",
+    "intro": "Kendama contests don't share one rulebook, so here's exactly how this one works. Each division's trick list is below; the lists are final at the rules briefing.",
     "sections": [
       {
         "title": "Trick Ladder Format",
         "items": [
-          "Each division has a set list of tricks, from easier to harder.",
-          "You get a set number of attempts per trick, announced at the briefing.",
+          "Each division has its own trick list, from easier to harder. The lists are below.",
+          "You get a set number of tries per trick, listed with each division.",
           "Land the trick to score its points and move on. Miss every attempt and your run ends, or you skip ahead, as announced.",
           "Ties are broken by a sudden-death trick chosen by the judges."
         ]
@@ -100,8 +133,9 @@
       {
         "title": "Battles",
         "items": [
-          "1v1 bracket. Players take turns calling and landing tricks.",
-          "Judges, or a crowd vote, decide who advances each round.",
+          "Single elimination 1v1 bracket. Players take turns calling and landing tricks.",
+          "The judges vote on who advances each battle.",
+          "The two semifinal losers play a match for 3rd place.",
           "Bracket seeding is random unless announced otherwise."
         ]
       },
@@ -320,6 +354,7 @@
     "accent": "#d9a441",
     "background": "#f9f6ee",
     "ink": "#1c241f",
-    "corners": "sharp"
+    "corners": "sharp",
+    "emblem": "kendama"
   }
 }

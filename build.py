@@ -9,7 +9,8 @@ No installs needed: standard-library Python 3.9+ only.
 
 How it fits together:
   site.jsonc        your contest settings (the only file most people edit)
-  presets/*.json    starting rules, divisions, FAQ, and terms (yo-yo, kendama, trick battle)
+  presets/*.json    starting divisions, rules, gear, schedule, FAQ, and terms for each kind of
+                    contest (yo-yo, kendama, diabolo, spin top, mixed skill toys, trick battle)
   assets/           stylesheet, script, and your images (copied as-is)
   content/*.html    optional extra HTML added to the bottom of a page (e.g. content/venue.html)
   build.py          this file: the contest's phase (registration open, today, wrap-up),
@@ -20,6 +21,7 @@ import datetime as dt
 import html
 import http.server
 import json
+import math
 import os
 import re
 import shutil
@@ -226,6 +228,84 @@ def yoyo_png(size_w, size_h, primary, accent, background):
     return png(size_w, size_h, pixel)
 
 
+def star_points(cx, cy, outer, inner):
+    return tuple((round(cx + (outer if i % 2 == 0 else inner) * math.sin(math.pi * i / 5), 2),
+                  round(cy - (outer if i % 2 == 0 else inner) * math.cos(math.pi * i / 5), 2)) for i in range(10))
+
+
+# Toy silhouettes for the generated logo and icons, drawn in a 100x100 box. Pick one with
+# theme.emblem: "yoyo", "kendama", "top", "diabolo", "juggling", or "star" (any skill toy).
+# Each part is (shape, numbers, hole); holes are cut out in the background color.
+TOYS = {
+    "kendama": [("circle", (50, 23, 21), False), ("circle", (50, 23, 4), True),
+                ("poly", ((46, 48), (50, 40), (54, 48)), False),
+                ("rect", (20, 48, 60, 13), False), ("rect", (42, 61, 16, 36), False)],
+    "top": [("rect", (44, 3, 12, 22), False), ("poly", ((10, 25), (90, 25), (90, 38), (50, 97), (10, 38)), False),
+            ("rect", (10, 31, 80, 4), True)],
+    "diabolo": [("poly", ((3, 18), (43, 42), (43, 58), (3, 82)), False),
+                ("poly", ((97, 18), (57, 42), (57, 58), (97, 82)), False),
+                ("rect", (38, 45, 24, 10), False), ("rect", (9, 22, 4, 56), True), ("rect", (87, 22, 4, 56), True)],
+    "juggling": [("circle", (50, 24, 18), False), ("circle", (24, 70, 18), False), ("circle", (76, 70, 18), False)],
+    "star": [("poly", star_points(50, 53, 48, 20), False)],
+}
+EMBLEMS = ["yoyo"] + list(TOYS)
+
+
+def in_poly(x, y, pts):
+    inside = False
+    for (x1, y1), (x2, y2) in zip(pts, pts[1:] + pts[:1]):
+        if (y1 > y) != (y2 > y) and x < x1 + (y - y1) * (x2 - x1) / (y2 - y1):
+            inside = not inside
+    return inside
+
+
+def toy_part_at(toy, u, v):
+    """What covers point (u, v) of a toy's 100x100 box: "fg", "hole", or None."""
+    if not (0 <= u <= 100 and 0 <= v <= 100):
+        return None
+    for shape, n, hole in reversed(TOYS[toy]):
+        if shape == "circle":
+            hit = (u - n[0]) ** 2 + (v - n[1]) ** 2 <= n[2] ** 2
+        elif shape == "rect":
+            hit = n[0] <= u <= n[0] + n[2] and n[1] <= v <= n[1] + n[3]
+        else:
+            hit = in_poly(u, v, list(n))
+        if hit:
+            return "hole" if hole else "fg"
+    return None
+
+
+def toy_svg(toy, fill, hole_fill):
+    out = []
+    for shape, n, hole in TOYS[toy]:
+        f = hole_fill if hole else fill
+        if shape == "circle":
+            out.append(f'<circle cx="{n[0]}" cy="{n[1]}" r="{n[2]}" fill="{f}"/>')
+        elif shape == "rect":
+            out.append(f'<rect x="{n[0]}" y="{n[1]}" width="{n[2]}" height="{n[3]}" fill="{f}"/>')
+        else:
+            points = " ".join(f"{x:g},{y:g}" for x, y in n)
+            out.append(f'<polygon points="{points}" fill="{f}"/>')
+    return "".join(out)
+
+
+def toy_png(toy, size_w, size_h, primary, accent, background):
+    """The emblem's toy for social previews and app icons: the classic yo-yo, or a flat silhouette."""
+    if toy not in TOYS:
+        return yoyo_png(size_w, size_h, primary, accent, background)
+    p, a, bg = hex_rgb(primary), hex_rgb(accent), hex_rgb(background)
+    wide = size_w > size_h
+    cx, cy = (size_w * 0.70, size_h * 0.52) if wide else (size_w / 2, size_h / 2)
+    box = min(size_w, size_h) * (0.62 if wide else 0.70)
+    x0, y0, scale = cx - box / 2, cy - box / 2, box / 100
+    stripe = size_h - max(8, size_h // 30)
+    def pixel(x, y):
+        if wide and y >= stripe:
+            return a
+        return p if toy_part_at(toy, (x - x0) / scale, (y - y0) / scale) == "fg" else bg
+    return png(size_w, size_h, pixel)
+
+
 # ---------------------------------------------------------------- page building
 
 
@@ -355,7 +435,9 @@ class Site:
                   "music_deadline": fmt_date(parse_date((reg.get("music") or {}).get("deadline"), "registration.music.deadline"), self.style)
                   if (reg.get("music") or {}).get("deadline") else "the music deadline",
                   "closes": fmt_date(self.reg_closes, self.style) if self.reg_closes else "the deadline",
-                  "rules_name": self.cfg["rules"].get("ruleset_name", "our rules")}
+                  "rules_name": self.cfg["rules"].get("ruleset_name", "our rules"),
+                  "divisions": ", ".join(d["name"] for d in self.divisions() if d.get("name")),
+                  "division_count": str(len(self.divisions()))}
         return re.sub(r"\{(\w+)\}", lambda mt: values.get(mt.group(1), mt.group(0)), text)
 
     def place(self):
@@ -389,7 +471,7 @@ class Site:
                 f'<a href="{root}{target}.html">{esc(label)}</a></div></div>')
 
     def socials(self):
-        return [s for s in self.cfg["contact"].get("social", []) if s.get("url")]
+        return [s for s in self.cfg["contact"].get("social") or [] if s.get("url")]
 
     def footer(self, current, root):
         c = self.cfg
@@ -532,7 +614,7 @@ class Site:
     def rule_blocks(self, blocks):
         out = []
         for b in blocks:
-            out.append(f'<div class="rule-block"><h3>{esc(b["title"])}</h3>{self.bullets(b.get("items", []))}</div>')
+            out.append(f'<div class="rule-block"><h3>{esc(b["title"])}</h3>{self.bullets(b.get("items") or [])}</div>')
         return '<div class="rule-blocks">' + "".join(out) + "</div>"
 
     def link_list(self, links, cls="btn btn-outline"):
@@ -583,7 +665,7 @@ class Site:
               "description": self.c.get("description", ""), "startDate": stamp(self.date, self.start),
               "endDate": stamp(self.end_date, self.end), "eventStatus": f"https://schema.org/{status}",
               "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-              "sport": self.cfg["rules"].get("sport", "Yo-yo"),
+              "sport": self.cfg["rules"].get("sport") or "Skill toys",
               "location": {"@type": "Place", "name": venue.get("name") or self.place(),
                            "address": venue.get("address") or self.place()}}
         org = self.c.get("organizer") or {}
@@ -593,7 +675,7 @@ class Site:
                 ev["organizer"]["url"] = org["url"]
         if self.c.get("free_to_watch"):
             ev["isAccessibleForFree"] = True
-        sponsors = [s for s in self.cfg.get("sponsors", []) if s.get("name")]
+        sponsors = [s for s in self.cfg.get("sponsors") or [] if s.get("name")]
         if sponsors:
             ev["sponsor"] = [{"@type": "Organization", "name": s["name"], **({"url": s["url"]} if s.get("url") else {})}
                              for s in sponsors]
@@ -634,8 +716,8 @@ class Site:
                          + self.stats_html(wrap["stats"]))
         else:
             wrap_html = f'<section class="banner banner-{esc(p)}"><div class="wrap"><p>{esc(self.status_line())}</p></div></section>'
-        about = "".join(f"<p>{esc(self.fill(x))}</p>" for x in c.get("about", []))
-        chips = "".join(f"<li>{esc(x)}</li>" for x in c.get("features", []))
+        about = "".join(f"<p>{esc(self.fill(x))}</p>" for x in c.get("about") or [])
+        chips = "".join(f"<li>{esc(x)}</li>" for x in c.get("features") or [])
         chips_html = f'<ul class="chips" aria-label="Highlights">{chips}</ul>' if chips else ""
         links_html = ""
         if p == "past" and wrap.get("links"):
@@ -648,7 +730,7 @@ class Site:
                  ("Edition", c.get("edition", "")), ("Entry fee", fee_summary),
                  ("Spectators", c.get("admission", "")), ("Organizer", (c.get("organizer") or {}).get("name", ""))]
         table_html = "".join(f'<tr><th scope="row">{esc(k)}</th><td>{esc(v)}</td></tr>' for k, v in table if v)
-        top = [s for s in cfg.get("sponsors", []) if s.get("name")][:8]
+        top = [s for s in cfg.get("sponsors") or [] if s.get("name")][:8]
         sponsor_html = ""
         if top:
             names = "".join(f'<li><span class="label">{esc(s.get("tier", ""))}</span>'
@@ -690,14 +772,16 @@ class Site:
     def page_schedule(self):
         cfg = self.cfg
         rows = []
-        for item in cfg.get("schedule", []):
+        for item in cfg.get("schedule") or []:
+            title, auto = self.schedule_round(item)
             link = f' {ext_link(item["url"], item.get("url_label") or "More", "more")}' if item.get("url") else ""
-            text = f'<p>{esc(self.fill(item.get("text", "")))}{link}</p>' if item.get("text") or link else ""
+            words = self.fill(item.get("text", "")) or auto
+            text = f'<p>{esc(words)}{link}</p>' if words or link else ""
             rows.append(f'<li><span class="slot-time">{esc(item.get("time", ""))}</span>'
-                        f'<div class="slot-body"><h3>{esc(item["title"])}</h3>{text}</div></li>')
+                        f'<div class="slot-body"><h3>{esc(title)}</h3>{text}</div></li>')
         timeline = f'<ol class="timeline">{"".join(rows)}</ol>' if rows else \
             '<p class="muted center">The schedule will be posted closer to the contest.</p>'
-        notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in cfg.get("schedule_notes", []))
+        notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in cfg.get("schedule_notes") or [])
         body = f"""{self.page_head("Day of event", "Schedule")}
 
 <section class="section">
@@ -709,20 +793,382 @@ class Site:
 </section>"""
         return "Schedule", f"{self.name} {self.year()} schedule: {self.when()}.", body, None
 
+    def schedule_round(self, item):
+        """A schedule item's title, and default text for a division's round ("Top 10 advance to Finals.").
+        Items can set "division" (a code) and "round" (one of its rounds) instead of a title."""
+        d = next((x for x in self.divisions() if item.get("division") and x.get("code") == item["division"]), None)
+        rnd = item.get("round")
+        title = item.get("title") or " · ".join(x for x in ((d or {}).get("name"), rnd) if x)
+        auto = ""
+        rounds = rounds_of(d)
+        names = [r["name"] for r in rounds]
+        if rnd in names:
+            i = names.index(rnd)
+            n = positive_int(rounds[i].get("advance"))
+            if n and i + 1 < len(rounds):
+                auto = f"Top {n} advance to {rounds[i + 1]['name']}."
+        return title, auto
+
+    # --- divisions, fees, and music (all from the "divisions" list; see README "Divisions")
+    def divisions(self):
+        return [d for d in (self.cfg.get("divisions") or []) if isinstance(d, dict)]
+
+    def check_divisions(self):
+        seen = set()
+        for i, d in enumerate(self.cfg.get("divisions") or [], 1):
+            if not isinstance(d, dict) or not d.get("name"):
+                sys.exit(f'\nDivision {i} in "divisions" needs a "name", like {{ "code": "1A", "name": "1A Division" }}.\n')
+            code = d.get("code")
+            if code and code in seen:
+                warnings.append(f'Two divisions use the code "{code}". Give each division its own code.')
+            seen.add(code)
+            if d.get("ages") and not age_text(d["ages"]):
+                warnings.append(f'Division "{d["name"]}": "ages" should be text like "Under 13", or {{ "min": 8, "max": 12 }}.')
+            if d.get("music") not in (None, True, False, "house"):
+                warnings.append(f'Division "{d["name"]}": "music" should be true, false, or "house". Ignored.')
+            self.check_division_format(d)
+        codes = {d.get("code") for d in self.divisions()}
+        for f in (self.cfg.get("registration") or {}).get("fees") or []:
+            if f.get("division") and f["division"] not in codes:
+                warnings.append(f'registration.fees lists division "{f["division"]}", but no division has that code.')
+        self.check_schedule_rounds()
+
+    def check_division_format(self, d):
+        """Warnings for the format fields (format, tricks, attempts, bracket, criteria, unit,
+        better, team, rounds). Bad values are ignored, so the build still works."""
+        def warn(msg):
+            warnings.append(f'Division "{d["name"]}": {msg}')
+        fmt = d.get("format")
+        if fmt is not None and not isinstance(fmt, str):
+            warn(f'"format" should be text, like one of: {", ".join(FORMATS)}. Ignored.')
+        key = format_key(d)
+        if "tricks" in d and tricks_of(d) is None:
+            warn('"tricks" should be a list of trick names, like ["Big Cup", "Spike"]. Ignored.')
+        elif tricks_of(d) and key != "ladder":
+            warn(f'"tricks" are listed only for trick ladders, but "format" is "{fmt}". Ignored.')
+        if "attempts" in d and positive_int(d["attempts"]) is None:
+            warn('"attempts" should be a whole number like 3. Ignored.')
+        b = d.get("bracket")
+        if b is not None:
+            if not isinstance(b, (dict, bool)):
+                warn('"bracket" should be { "third_place": true, "match_format": "two 30-second rounds" }. Ignored.')
+            elif isinstance(b, dict):
+                if "third_place" in b and not isinstance(b["third_place"], bool):
+                    warn('"bracket.third_place" should be true or false. Ignored.')
+                if b.get("elimination") not in (None, "single", "double"):
+                    warn('"bracket.elimination" should be "single" or "double". Using "single".')
+                for k in ("match_format", "vote", "decided_by", "poll"):
+                    if k in b and not isinstance(b[k], str) and not (k == "vote" and b[k] is False):
+                        warn(f'"bracket.{k}" should be text. Ignored.')
+                if "third_place_by_votes" in b and not isinstance(b["third_place_by_votes"], bool):
+                    warn('"bracket.third_place_by_votes" should be true or false. Ignored.')
+                if b.get("third_place") is True and b.get("third_place_by_votes") is True:
+                    warn('"bracket" sets both "third_place" (a match) and "third_place_by_votes". Pick one; showing the match.')
+                if b.get("third_place_by_votes") is True and bracket_decider(b) != "audience":
+                    warn('"bracket.third_place_by_votes" needs "decided_by": "audience". Ignored.')
+                if "stream_url" in b and not (isinstance(b["stream_url"], str) and b["stream_url"].startswith("https://")):
+                    warn('"bracket.stream_url" should be a link starting with https://. Ignored.')
+            if key != "bracket":
+                warn(f'"bracket" is shown only for brackets, but "format" is "{fmt}". Ignored.')
+        if "criteria" in d:
+            crit = d["criteria"]
+            if not isinstance(crit, list) or not all(isinstance(c, (dict, str)) for c in crit):
+                warn('"criteria" should be a list like [{ "label": "Choreography", "points": 25 }]. Ignored.')
+            else:
+                for c in crit:
+                    if isinstance(c, dict) and not c.get("label"):
+                        warn('every item in "criteria" needs a "label". That item is ignored.')
+                    if isinstance(c, dict) and "points" in c and number(c["points"]) is None:
+                        warn(f'"points" for criterion "{c.get("label", "")}" should be a number like 25. Ignored.')
+                if key == "showcase":
+                    warn('showcase divisions are not judged, so "criteria" are ignored.')
+                elif key not in ("panel", "freestyle"):
+                    warn(f'"criteria" are shown only for judged routines (panel or freestyle), but "format" is "{fmt}". Ignored.')
+        if "rules" in d and rules_of(d) is None:
+            warn('"rules" should be a list of short sentences, like ["One-minute routines, head to head."]. Ignored.')
+        if "unit" in d and not (isinstance(d["unit"], str) and d["unit"].strip()):
+            warn('"unit" should be text like "seconds" or "catches". Ignored.')
+        if "better" in d and d["better"] not in ("lower", "higher"):
+            warn('"better" should be "lower" or "higher". Ignored.')
+        if "team" in d:
+            t = d["team"]
+            if not isinstance(t, dict):
+                warn('"team" should be { "label": "Doubles", "min": 2, "max": 2, "fee": "per pair" }. Ignored.')
+            else:
+                lo, hi = t.get("min"), t.get("max")
+                if lo is not None and positive_int(lo) is None or hi is not None and positive_int(hi) is None:
+                    warn('"team.min" and "team.max" should be whole numbers like 2. Ignored.')
+                elif lo and hi and lo > hi:
+                    warn(f'"team.min" ({lo}) is more than "team.max" ({hi}).')
+                for k in ("label", "fee"):
+                    if k in t and not isinstance(t[k], str):
+                        warn(f'"team.{k}" should be text. Ignored.')
+        if "rounds" in d:
+            rounds = d["rounds"]
+            if not isinstance(rounds, list) or not all(isinstance(r, dict) and r.get("name") for r in rounds):
+                warn('"rounds" should be a list like [{ "name": "Prelims", "advance": 10 }, { "name": "Finals" }]. Ignored.')
+            else:
+                last = None
+                for j, r in enumerate(rounds):
+                    if "advance" not in r:
+                        continue
+                    n = positive_int(r["advance"])
+                    if n is None:
+                        warn(f'"advance" for round "{r["name"]}" should be a whole number like 10. Ignored.')
+                    elif j == len(rounds) - 1:
+                        warn(f'"{r["name"]}" is the last round, so no one advances from it. "advance" ignored.')
+                    elif last is not None and n >= last:
+                        warn(f'round "{r["name"]}" advances {n}, but the round before it advanced only {last}.')
+                    else:
+                        last = n
+
+    def check_schedule_rounds(self):
+        """Schedule items can name a division (by code) and one of its rounds; check both exist."""
+        by_code = {d.get("code"): d for d in self.divisions() if d.get("code")}
+        for item in self.cfg.get("schedule") or []:
+            if not isinstance(item, dict) or not (item.get("division") or item.get("round")):
+                continue
+            what = f'Schedule item "{item.get("title") or item.get("time", "")}"'
+            d = by_code.get(item.get("division"))
+            if item.get("division") and not d:
+                warnings.append(f'{what} names division "{item["division"]}", but no division has that code.')
+                continue
+            if item.get("round"):
+                names = [r["name"] for r in rounds_of(d)] if d else \
+                    [r["name"] for x in self.divisions() for r in rounds_of(x)]
+                if item["round"] not in names:
+                    whose = f'division "{d["name"]}" has' if d else "no division has a"
+                    have = f' Its rounds are: {", ".join(names)}.' if d and names else ""
+                    warnings.append(f'{what} names round "{item["round"]}", but {whose} {"no round" if d else "round"} by that name.{have}')
+
+    # --- division formats: short phrases for the card, and details for the Rules page
+    def team_text(self, d):
+        """"Doubles · 2 players" from the "team" field."""
+        t = team_of(d)
+        if not t:
+            return ""
+        lo, hi = positive_int(t.get("min")), positive_int(t.get("max"))
+        if lo and hi and lo <= hi:
+            size = f"{lo} players" if lo == hi else f"{lo}–{hi} players"
+        elif lo or hi:
+            size = f"{lo}+ players" if lo else f"Up to {hi} players"
+        else:
+            size = ""
+        return " · ".join(x for x in (t.get("label") if isinstance(t.get("label"), str) else "Team", size) if x)
+
+    def rounds_text(self, d):
+        """"Prelims → Finals (top 10 advance)" from the "rounds" field."""
+        rounds = rounds_of(d)
+        if not rounds:
+            return ""
+        adv = [positive_int(r.get("advance")) for r in rounds[:-1]]
+        if all(adv):
+            names = " → ".join(r["name"] for r in rounds)
+            tops = ", then ".join(f"top {n}" for n in adv)
+            return f"{names} ({tops} advance)" if tops else names
+        return " → ".join(r["name"] + (f" (top {n} advance)" if n else "") for r, n in zip(rounds, adv + [None]))
+
+    def format_bits(self, d):
+        """Short facts about how the division runs, e.g. ["12 tricks", "3 tries per trick"]."""
+        key, bits = format_key(d), []
+        attempts = positive_int(d.get("attempts"))
+        if key == "ladder":
+            tricks = tricks_of(d) or []
+            if tricks:
+                bits.append(f"{len(tricks)} tricks")
+            if attempts:
+                bits.append(f"{attempts} {'try' if attempts == 1 else 'tries'} per trick")
+        elif key == "bracket" and (isinstance(d.get("bracket"), dict) or d.get("bracket") is True):
+            b = bracket_of(d)
+            elim = "double" if b.get("elimination") == "double" else "single"
+            bits.append(f"{elim} elimination battles")
+            decider = bracket_decider(b)
+            if decider:
+                bits.append({"judges": "judges vote", "crowd": "crowd vote", "audience": "audience vote"}.get(decider, decider))
+            if isinstance(b.get("match_format"), str) and b["match_format"]:
+                bits.append(b["match_format"])
+            if b.get("third_place") is True:
+                bits.append("3rd-place match")
+            elif b.get("third_place_by_votes") is True and decider == "audience":
+                bits.append("3rd place by vote totals")
+        elif key in ("timed", "scored"):
+            unit = d.get("unit") if isinstance(d.get("unit"), str) else ""
+            if unit.strip():
+                bits.append(f"measured in {unit.strip()}")
+            if d.get("better") in ("lower", "higher"):
+                bits.append("lowest wins" if d["better"] == "lower" else "highest wins")
+            if attempts:
+                bits.append(f"best of {attempts} attempts" if attempts > 1 else "1 attempt")
+        elif key == "showcase":
+            bits.append("not judged")
+        if key in ("panel", "freestyle"):
+            crit = criteria_of(d)
+            if crit:
+                total = sum(number(c.get("points")) or 0 for c in crit)
+                bits.append(f"{len(crit)} judging criteria" + (f" · {total:g} points" if total else ""))
+        return bits
+
+    def format_text(self, d):
+        """The format's explanation: the division's "format_text", or a short default for known formats."""
+        if isinstance(d.get("format_text"), str):
+            return self.fill(d["format_text"])
+        return FORMATS.get(format_key(d), "")
+
+    def has_format_details(self, d):
+        """Does this division get its own block under "How Each Division Works" on the Rules page?"""
+        key = format_key(d)
+        return bool((key == "ladder" and tricks_of(d)) or (key in ("panel", "freestyle") and criteria_of(d))
+                    or rounds_of(d) or team_of(d) or rules_of(d) or (key == "bracket" and isinstance(d.get("bracket"), dict))
+                    or (key in ("timed", "scored") and (positive_int(d.get("attempts")) or d.get("unit") or d.get("better")))
+                    or (key == "ladder" and positive_int(d.get("attempts"))))
+
+    def format_anchor(self, d):
+        return "format-" + re.sub(r"[^a-z0-9]+", "-", (d.get("code") or d["name"]).lower()).strip("-")
+
+    def format_block(self, d):
+        """One division's details on the Rules page: format, rounds, team size, trick list, criteria."""
+        facts = []
+        label = format_label(d)
+        bits = self.format_bits(d)
+        if label or bits:
+            facts.append(" · ".join(x for x in [label] + bits if x))
+        if rounds_of(d):
+            facts.append("Rounds: " + self.rounds_text(d))
+            for r in rounds_of(d):
+                extra = " · ".join(x for x in (r.get("length"), self.fill(r.get("text", "")) if isinstance(r.get("text"), str) else "") if x)
+                if extra:
+                    facts.append(f'{r["name"]}: {extra}')
+        if team_of(d):
+            fee = team_of(d).get("fee")
+            facts.append(self.team_text(d) + (f" · entry fee {fee}" if isinstance(fee, str) and fee else ""))
+        if d.get("length") and not any(r.get("length") for r in rounds_of(d)):
+            facts.append(d["length"])
+        b = bracket_of(d) if format_key(d) == "bracket" else {}
+        watch = ""
+        if bracket_decider(b) == "audience":
+            stream = b.get("stream_url") if isinstance(b.get("stream_url"), str) and b["stream_url"].startswith("https://") else ""
+            poll = b.get("poll") if isinstance(b.get("poll"), str) else ""
+            how = f"{poll} on the stream" if poll and stream else (poll or ("live poll on the stream" if stream else ""))
+            facts.append("Winners picked by the audience" + (f": {how}" if how else ""))
+            if stream:
+                watch = f'<p>{ext_link(stream, "Watch the stream", "more")}</p>'
+        facts += [self.fill(r) for r in rules_of(d) or []]
+        explain = self.format_text(d)
+        out = [f'<div class="rule-block" id="{self.format_anchor(d)}"><h3>{esc(d["name"])}</h3>']
+        if explain:
+            out.append(f"<p>{esc(explain)}</p>")
+        if facts:
+            out.append('<ul class="checklist">' + "".join(f"<li>{esc(f)}</li>" for f in facts) + "</ul>")
+        tricks = tricks_of(d) if format_key(d) == "ladder" else None
+        if tricks:
+            attempts = positive_int(d.get("attempts"))
+            tries = f" · {attempts} {'try' if attempts == 1 else 'tries'} per trick" if attempts else ""
+            out.append(f'<p class="label format-label">Trick list{esc(tries)}</p>'
+                       '<ol class="trick-list">' + "".join(f"<li>{esc(t)}</li>" for t in tricks) + "</ol>")
+        if watch:
+            out.append(watch)
+        crit = criteria_of(d) if format_key(d) in ("panel", "freestyle") else []
+        if crit:
+            has_points = any(number(c.get("points")) is not None for c in crit)
+            head = '<th scope="col">Points</th>' if has_points else ""
+            rows = "".join(f'<tr><th scope="row">{esc(c["label"])}</th>'
+                           + (f'<td>{esc(fmt_points(c.get("points")))}</td>' if has_points else "") + "</tr>" for c in crit)
+            total = sum(number(c.get("points")) or 0 for c in crit)
+            foot = f'<tfoot><tr><th scope="row">Total</th><td>{total:g}</td></tr></tfoot>' if has_points and total else ""
+            out.append(f'<div class="table-wrap"><table class="criteria"><caption>Judging criteria</caption>'
+                       f'<thead><tr><th scope="col">Criterion</th>{head}</tr></thead><tbody>{rows}</tbody>{foot}</table></div>')
+        out.append("</div>")
+        return "".join(out)
+
+    def division_fee(self, d):
+        if d.get("fee"):
+            return d["fee"]
+        for f in (self.cfg.get("registration") or {}).get("fees") or []:
+            if d.get("code") and f.get("division") == d["code"]:
+                return f.get("fee", "")
+        return ""
+
+    def fee_rows(self):
+        """(name, fee, note) rows for the fee table: registration.fees if set, otherwise each
+        division's "fee", then combo deals, then spectators."""
+        reg = self.cfg.get("registration") or {}
+        by_code = {d.get("code"): d for d in self.divisions() if d.get("code")}
+        explicit = [f for f in reg.get("fees") or [] if isinstance(f, dict)]
+        def team_note(d, text=""):
+            return " · ".join(x for x in (self.team_text(d) if d else "", text) if x)
+        if explicit:
+            rows = []
+            for f in explicit:
+                d = by_code.get(f.get("division")) if f.get("division") else None
+                rows.append((f.get("name") or (d or {}).get("name") or f.get("division", ""),
+                             self.team_fee(d, f.get("fee", "")) if d else f.get("fee", ""), team_note(d, f.get("text", ""))))
+        else:
+            rows = [(d["name"], self.team_fee(d, d["fee"]), team_note(d)) for d in self.divisions() if d.get("fee")]
+        rows += [(c.get("name", ""), c.get("fee", ""), c.get("text", "")) for c in reg.get("combos") or [] if isinstance(c, dict)]
+        if not explicit and reg.get("spectators"):
+            rows.append(("Spectators", reg["spectators"], ""))
+        return rows
+
+    def team_fee(self, d, fee):
+        """"$30" + team.fee "per pair" -> "$30 per pair"."""
+        per = team_of(d or {}).get("fee")
+        if fee and isinstance(per, str) and per and per.lower() not in fee.lower():
+            return f"{fee} {per}"
+        return fee
+
+    def music_plan(self):
+        """(show the music section?, names of the divisions that need music when only some do)."""
+        music = (self.cfg.get("registration") or {}).get("music") or {}
+        if not isinstance(music, dict) or not music.get("steps"):
+            return False, []
+        divs = self.divisions()
+        if not any("music" in d for d in divs):
+            return True, []                         # no division says either way: music for everyone
+        own = [d for d in divs if d.get("music") is True]
+        if not own:
+            return False, []
+        return True, ([d["name"] for d in own] if len(own) < len(divs) else [])
+
+    def division_card(self, d):
+        styles = [s for s in d.get("styles") or [] if s]
+        mixed = any(x.get("music") is not True for x in self.divisions())     # only some divisions use your own music
+        pills = [format_label(d), self.team_text(d)]
+        if styles:
+            pills.append(" · ".join(s if isinstance(s, str) else (s.get("code") or s.get("name", "")) for s in styles))
+        pills += [age_text(d.get("ages")), *(d.get("tags") or []), d.get("length"),
+                  "House music" if d.get("music") == "house" else ("Own music" if d.get("music") is True and mixed else "")]
+        pills_html = "".join(f"<li>{esc(t)}</li>" for t in pills if t)
+        style_items = "".join(f'<li><strong>{esc(s.get("code") or s.get("name", ""))}</strong> '
+                              + esc(" · ".join(x for x in ((s.get("name") if s.get("code") else ""), self.fill(s.get("text", ""))) if x))
+                              + "</li>" for s in styles if isinstance(s, dict) and (s.get("text") or (s.get("code") and s.get("name"))))
+        fee = self.team_fee(d, self.division_fee(d))
+        how = [" · ".join(self.format_bits(d)), self.rounds_text(d)]
+        how[0] = how[0][:1].upper() + how[0][1:]
+        how_html = "".join(f'<p class="division-format">{esc(x)}</p>' for x in how if x)
+        if self.has_format_details(d):
+            how_html += f'<p class="division-more"><a class="more" href="rules.html#{self.format_anchor(d)}">How it works</a></p>'
+        return (f'\n  <div class="card division"><span class="division-code">{esc(d.get("code", ""))}</span>'
+                f'<h3>{esc(d["name"])}</h3><p>{esc(self.fill(d.get("text") or d.get("description") or "") or self.format_text(d))}</p>'
+                + (f'<ul class="style-list">{style_items}</ul>' if style_items else "") + how_html
+                + (f'<ul class="pill-row">{pills_html}</ul>' if pills_html else "")
+                + (f'<p class="division-fee"><span class="label">Entry fee</span>{esc(fee)}</p>' if fee else "") + "</div>")
+
     def page_register(self):
         cfg = self.cfg
         p = self.phase()
         reg = cfg.get("registration") or {}
-        cards = []
-        for d in cfg.get("divisions", []):
-            tags = "".join(f"<li>{esc(t)}</li>" for t in d.get("tags", []))
-            cards.append(f'\n  <div class="card division"><span class="division-code">{esc(d.get("code", ""))}</span>'
-                         f'<h3>{esc(d["name"])}</h3><p>{esc(self.fill(d.get("text", "")))}</p>'
-                         + (f'<ul class="pill-row">{tags}</ul>' if tags else "") + "</div>")
-        div_note = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in cfg.get("divisions_notes", []))
-        divisions = f'<div class="cards cards-3" id="divisions">{"".join(cards)}\n</div>{div_note}'
+        cards = [self.division_card(d) for d in self.divisions()]
+        div_note = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in cfg.get("divisions_notes") or [])
+        divisions = (f'<div class="cards cards-3" id="divisions">{"".join(cards)}\n</div>{div_note}' if cards else
+                     f'<p class="center muted" id="divisions">Divisions will be announced soon.</p>{div_note}')
+        gear = cfg.get("gear") or {}
+        gear_html = ""
+        if isinstance(gear, dict) and gear.get("items"):
+            intro = f'<p>{esc(self.fill(gear["intro"]))}</p>' if gear.get("intro") else ""
+            gear_html = self.section("Competitors", gear.get("title") or "What to Bring",
+                                     intro + self.bullets(gear["items"]), alt=True, narrow=True, center=False)
         guests = ""
-        for g in cfg.get("guest_events", []):
+        for g in cfg.get("guest_events") or []:
             link = f'<p>{ext_link(g["url"], g.get("url_label") or "Rules & sign-up", "btn btn-primary")}</p>' if g.get("url") else ""
             meta = " · ".join(x for x in (g.get("time"), g.get("host")) if x)
             guests += self.section("Guest event", f'{g["name"]} Signs Up Separately',
@@ -735,21 +1181,26 @@ class Site:
                  "past": ("Registration Is Closed", reg.get("past_text", "Thank you to every competitor who took the stage. Registration for the next contest will open here.")),
                  "cancelled": ("Contest Cancelled", "This contest has been cancelled. Registered competitors will be contacted about refunds."),
                  "postponed": ("Contest Postponed", "This contest has been postponed. Registration details will be updated with the new date.")}[p]
-        fees = "".join(f'<tr><th scope="row">{esc(f["name"])}</th><td>{esc(f["fee"])}</td></tr>' for f in reg.get("fees", []))
+        fees = "".join(f'<tr><th scope="row">{esc(name)}</th><td>{esc(fee)}'
+                       + (f' <span class="fee-note">{esc(self.fill(note))}</span>' if note else "") + "</td></tr>"
+                       for name, fee, note in self.fee_rows())
         fees_html = f'<div class="table-wrap"><table class="fees"><thead><tr><th scope="col">Entry</th><th scope="col">Fee</th></tr></thead><tbody>{fees}</tbody></table></div>' if fees else ""
         closes = f'<p class="center"><strong>Registration closes {esc(long_date(self.reg_closes, self.style))}.</strong></p>' if p == "open" and self.reg_closes else ""
         btn = self.register_button("btn btn-accent btn-big")
-        payment = "".join(f"<p>{esc(self.fill(x))}</p>" for x in reg.get("payment", []))
+        payment = "".join(f"<p>{esc(self.fill(x))}</p>" for x in reg.get("payment") or [])
         music = reg.get("music") or {}
         music_html = ""
-        if music.get("steps"):
+        show_music, only = self.music_plan()
+        if show_music:
             steps = "".join(f'<li class="step"><p>{esc(self.fill(s))}</p></li>' for s in music["steps"])
             up = ext_link(music["upload_url"], music.get("upload_label") or "Upload your music", "btn btn-primary") \
                 if music.get("upload_url") and p in ("open", "closed") else ""
-            music_html = self.section("Competitors", "Music Upload", f'<ol class="steps">{steps}</ol><p class="center">{up}</p>', alt=True)
+            only_html = f'<p class="center intro">Music is needed only for: {esc(", ".join(only))}.</p>' if only else ""
+            music_html = self.section("Competitors", music.get("title") or "Music Upload",
+                                      f'{only_html}<ol class="steps">{steps}</ol><p class="center">{up}</p>', alt=True)
         body = f"""{self.page_head("Competition", "Divisions & Registration")}
 {self.section("Competition", "Divisions", divisions)}
-{guests}
+{gear_html}{guests}
 <section class="section section-reg">
   <div class="wrap narrow">
     <p class="eyebrow center">Competitor registration</p>
@@ -768,18 +1219,24 @@ class Site:
     def page_rules(self):
         cfg = self.cfg
         R = cfg["rules"]
-        sources = " &middot; ".join(ext_link(s["url"], s["title"]) for s in R.get("sources", []) if s.get("url"))
+        sources = " &middot; ".join(ext_link(s["url"], s["title"]) for s in R.get("sources") or [] if s.get("url"))
         src_html = f'<p class="sources">Sources: {sources}</p>' if sources else ""
         scoring = ""
         if R.get("scoring"):
             intro = f'<p class="intro">{esc(self.fill(R.get("scoring_intro", "")))}</p>' if R.get("scoring_intro") else ""
-            notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in R.get("scoring_notes", []))
+            notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in R.get("scoring_notes") or [])
             scoring = self.section("Judging", R.get("scoring_title", "How Scoring Works"),
                                    intro + self.rule_blocks(R["scoring"]) + notes, alt=True, center=False)
-        notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in R.get("notes", []))
+        notes = "".join(f'<p class="note">{esc(self.fill(n))}</p>' for n in R.get("notes") or [])
+        formats = ""
+        detailed = [d for d in self.divisions() if self.has_format_details(d)]
+        if detailed:
+            formats = "\n" + self.section("Divisions", R.get("formats_title") or "How Each Division Works",
+                                           '<div class="rule-blocks">' + "".join(self.format_block(d) for d in detailed) + "</div>",
+                                           alt=not scoring, center=False)
         body = f"""{self.page_head("Contest rules", "Rules")}
-{self.section("Contest rules", R.get("title", "Contest Ruleset"), (f'<p class="intro">{esc(self.fill(R.get("intro", "")))}</p>' if R.get("intro") else "") + self.rule_blocks(R.get("sections", [])) + notes + src_html, center=False)}
-{scoring}"""
+{self.section("Contest rules", R.get("title", "Contest Ruleset"), (f'<p class="intro">{esc(self.fill(R.get("intro", "")))}</p>' if R.get("intro") else "") + self.rule_blocks(R.get("sections") or []) + notes + src_html, center=False)}
+{scoring}{formats}"""
         return "Rules", f"Rules and judging for {self.name} {self.year()}.", body, None
 
     def page_venue(self):
@@ -791,17 +1248,17 @@ class Site:
         if v.get("space"):
             facts.append({"label": "Event space", "text": v["space"]})
         facts.append({"label": "Date & time", "text": " · ".join(x for x in (self.when(long=True), self.hours()) if x)})
-        facts += v.get("facts", [])
+        facts += v.get("facts") or []
         links = []
         if v.get("map_url"):
             links.append(ext_link(v["map_url"], "Get directions", "btn btn-primary"))
         if v.get("website"):
             links.append(ext_link(v["website"], "Venue website", "btn btn-outline"))
         rules = self.section("Venue rules", "Good to Know", f'<div class="fact-list">{rows(v["rules"])}</div>', alt=True, narrow=True, center=False) if v.get("rules") else ""
-        photos = self.photos(v.get("photos", []))
+        photos = self.photos(v.get("photos") or [])
         photos_html = self.section("Venue photos", v.get("name", "The Venue"), photos) if photos else ""
         hotels = []
-        for h in v.get("hotels", []):
+        for h in v.get("hotels") or []:
             meta = "".join(f'<div class="fact-row"><span class="label">{esc(k)}</span><p>{esc(h[key])}</p></div>'
                            for k, key in (("Group rate", "rate"), ("Book by", "book_by"), ("Distance", "distance")) if h.get(key))
             book = f'<p>{ext_link(h["url"], h.get("url_label") or "Book your room", "btn btn-accent")}</p>' if h.get("url") else ""
@@ -825,8 +1282,8 @@ class Site:
         p = self.phase()
         S = cfg.get("sponsorship") or {}
         cards = []
-        for s in cfg.get("sponsors", []):
-            perks = self.bullets(s.get("perks", [])) if s.get("perks") else ""
+        for s in cfg.get("sponsors") or []:
+            perks = self.bullets(s.get("perks") or []) if s.get("perks") else ""
             name = ext_link(s["url"], s["name"]) if s.get("url") else esc(s["name"])
             cards.append(f'\n  <div class="card sponsor"><span class="label">{esc(s.get("tier", ""))}</span><h3>{name}</h3>'
                          f'<p>{esc(s.get("text", ""))}</p>{perks}</div>')
@@ -843,10 +1300,10 @@ class Site:
                                     f'<p class="center intro">{esc(S.get("partners_intro", "Not sponsors. Partners help us put the contest on; friends are the clubs who show up for it."))}</p><ul class="plain-list partner-list">{items}</ul>',
                                     alt=True, narrow=True)
         tiers = []
-        for t in S.get("tiers", []):
+        for t in S.get("tiers") or []:
             status = f'<p class="tier-status">{esc(t["status"])}</p>' if t.get("status") else ""
             tiers.append(f'\n  <div class="card tier"><span class="label">{esc(t.get("slots", ""))}</span><h3>{esc(t["name"])}</h3>'
-                         f'<p class="tier-price">{esc(t.get("price", ""))}</p>{self.bullets(t.get("perks", []))}{status}</div>')
+                         f'<p class="tier-price">{esc(t.get("price", ""))}</p>{self.bullets(t.get("perks") or [])}{status}</div>')
         contact = S.get("contact_url")
         cta = ext_link(contact, S.get("contact_label") or "Sponsor inquiry", "btn btn-accent") if contact else \
             f'<a class="btn btn-accent" href="mailto:{esc(cfg["contact"]["email"])}?subject=Sponsorship">Email us about sponsoring</a>'
@@ -865,14 +1322,14 @@ class Site:
         R = cfg.get("results") or {}
         p = self.phase()
         blocks = []
-        for d in R.get("divisions", []):
+        for d in R.get("divisions") or []:
             pod = []
-            for r in d.get("podium", []):
+            for r in d.get("podium") or []:
                 meta = " · ".join(x for x in (r.get("from"), (f'{r["score"]} pts' if r.get("score") else "")) if x)
                 link = f' {ext_link(r["url"], "Profile", "more")}' if r.get("url") else ""
                 pod.append(f'<li class="place place-{esc(str(r.get("place", "")))}"><span class="place-label">{esc(r.get("label") or ordinal(r.get("place")))}</span>'
                            f'<strong>{esc(r["name"])}</strong><span class="muted">{esc(meta)}</span>{link}</li>')
-            extra = "".join(f'<p class="note">{esc(n)}</p>' for n in d.get("notes", []))
+            extra = "".join(f'<p class="note">{esc(n)}</p>' for n in d.get("notes") or [])
             video = f'<p>{ext_link(d["video_url"], d.get("video_label") or "Watch the runs", "more")}</p>' if d.get("video_url") else ""
             blocks.append(f'<div class="result-block"><p class="eyebrow">{esc(d.get("division", ""))}</p><h3>{esc(d.get("title", "Podium"))}</h3>'
                           f'<ol class="podium">{"".join(pod)}</ol>{extra}{video}</div>')
@@ -884,9 +1341,10 @@ class Site:
             main = f'<p class="center">Results go up here after the contest on {esc(self.when(long=True))}.</p>'
         intro = f'<p class="center intro">{esc(self.fill(R["intro"]))}</p>' if R.get("intro") else ""
         privacy = f'<p class="note">{esc(R["privacy_note"])}</p>' if R.get("privacy_note") else ""
-        stats = self.stats_html(R.get("stats", []))
-        links = self.link_list(R.get("links", []))
-        links_html = self.section("Everyone who threw", "Standings, Photos & Video", links) if links else ""
+        stats = self.stats_html(R.get("stats") or [])
+        links = self.link_list(R.get("links") or [])
+        links_html = self.section(R.get("links_eyebrow") or "Everyone who competed", R.get("links_title") or "Standings, Photos & Video",
+                                  links) if links else ""
         body = f"""{self.page_head("Results", "Results")}
 {stats}
 {self.section(f"{self.name} {self.year()}", "Champions", intro + main + privacy)}
@@ -896,7 +1354,7 @@ class Site:
     def page_faq(self):
         cfg = self.cfg
         groups = {}
-        for f in list(cfg.get("faq", [])) + list(cfg.get("faq_extra", [])):
+        for f in list(cfg.get("faq") or []) + list(cfg.get("faq_extra") or []):
             groups.setdefault(f.get("group") or "More Questions", []).append((self.fill(f["q"]), self.fill(f["a"])))
         blocks, qa_all = [], []
         for title, qa in groups.items():
@@ -913,18 +1371,19 @@ class Site:
     <p class="center">Still wondering? Email {mailto(cfg["contact"]["email"])}.</p>
   </div>
 </section>"""
-        return "FAQ", f"{self.name} {self.year()} FAQ: tickets, divisions, judging, music, parking, and more.", body, ld
+        topics = "tickets, divisions, judging, music, parking" if self.music_plan()[0] else "tickets, divisions, judging, parking"
+        return "FAQ", f"{self.name} {self.year()} FAQ: {topics}, and more.", body, ld
 
     def page_terms(self):
         cfg = self.cfg
         T = cfg["terms"]
         toc, secs = [], []
-        for i, s in enumerate(T.get("sections", []), 1):
+        for i, s in enumerate(T.get("sections") or [], 1):
             anchor = f"terms-{i}"
             toc.append(f'<li><a href="terms.html#{anchor}">{i}. {esc(s["title"])}</a></li>')
-            paras = "".join(f"<p>{esc(self.fill(x))}</p>" for x in s.get("paragraphs", []))
+            paras = "".join(f"<p>{esc(self.fill(x))}</p>" for x in s.get("paragraphs") or [])
             items = self.bullets(s["items"], "") if s.get("items") else ""
-            after = "".join(f"<p>{esc(self.fill(x))}</p>" for x in s.get("after", []))
+            after = "".join(f"<p>{esc(self.fill(x))}</p>" for x in s.get("after") or [])
             secs.append(f'<h2 id="{anchor}">{i}. {esc(s["title"])}</h2>{paras}{items}{after}')
         eff = f'<p class="label">Effective {esc(T["effective"])}</p>' if T.get("effective") else ""
         body = f"""{self.page_head("Competitor terms", "Terms & Policies")}
@@ -982,22 +1441,41 @@ class Site:
 }}
 """
 
+    def emblem(self):
+        """Which toy the generated logo shows (theme.emblem)."""
+        toy = self.theme.get("emblem") or "star"
+        if toy not in EMBLEMS:
+            warnings.append(f'theme.emblem "{toy}" should be one of: {", ".join(EMBLEMS)}. Using "star".')
+            toy = "star"
+        return toy
+
     def emblem_svg(self):
-        """A yo-yo with a star, ringed in the accent color. Replace with assets/emblem.svg for your own logo."""
+        """The generated logo: a toy (theme.emblem) in the accent color, with the short name.
+        Replace with assets/emblem.svg for your own logo."""
         t = self.theme
         label = (self.c.get("short_name") or "".join(w[0] for w in re.findall(r"[A-Za-z0-9]+", self.name)))
         label = re.sub(r"[^A-Za-z0-9]", "", label).upper()[:4]
         size = {1: 34, 2: 28, 3: 22, 4: 17}.get(len(label), 17)
+        text = (f'<text x="50" y="72" text-anchor="middle" dominant-baseline="central" font-family="system-ui, -apple-system, '
+                f'\'Segoe UI\', Roboto, sans-serif" font-weight="900" font-size="{size * 0.75:.0f}" fill="#ffffff">{esc(label)}</text>')
+        toy = self.emblem()
+        if toy == "yoyo":       # a yo-yo with a star, ringed in the accent color
+            art = (f'<rect x="48.5" y="0" width="3" height="22" fill="{t["accent"]}"/>\n'
+                   f'  <circle cx="50" cy="58" r="41" fill="{t["accent"]}"/>\n'
+                   f'  <circle cx="50" cy="58" r="35" fill="{t["primary"]}"/>\n'
+                   f'  <path d="M50 27 l4 9 10 1 -7.5 6.5 2.5 10 -9 -5.5 -9 5.5 2.5 -10 -7.5 -6.5 10 -1 z" fill="{t["accent"]}"/>')
+        else:                   # a round badge with the toy above the short name
+            art = (f'<circle cx="50" cy="50" r="48" fill="{t["accent"]}"/>\n'
+                   f'  <circle cx="50" cy="50" r="42" fill="{t["primary"]}"/>\n'
+                   f'  <g transform="translate(32 15) scale(0.36)">{toy_svg(toy, t["accent"], t["primary"])}</g>')
         return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="{esc(self.name)}">
-  <rect x="48.5" y="0" width="3" height="22" fill="{t["accent"]}"/>
-  <circle cx="50" cy="58" r="41" fill="{t["accent"]}"/>
-  <circle cx="50" cy="58" r="35" fill="{t["primary"]}"/>
-  <path d="M50 27 l4 9 10 1 -7.5 6.5 2.5 10 -9 -5.5 -9 5.5 2.5 -10 -7.5 -6.5 10 -1 z" fill="{t["accent"]}"/>
-  <text x="50" y="72" text-anchor="middle" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="{size * 0.75:.0f}" fill="#ffffff">{esc(label)}</text>
+  {art}
+  {text}
 </svg>
 """
 
     def build(self):
+        self.check_divisions()
         if OUT.exists():
             shutil.rmtree(OUT)
         shutil.copytree(ROOT / "assets", OUT)
@@ -1009,9 +1487,9 @@ class Site:
             shutil.copy(OUT / "emblem.svg", OUT / "favicon.svg")
         t = self.theme
         if not (OUT / "og-card.png").exists():                     # your own assets/og-card.png wins
-            (OUT / "og-card.png").write_bytes(yoyo_png(1200, 630, t["accent"], t["primary"], t["primary"]))
+            (OUT / "og-card.png").write_bytes(toy_png(self.emblem(), 1200, 630, t["accent"], t["primary"], t["primary"]))
         if not (OUT / "apple-touch-icon.png").exists():
-            (OUT / "apple-touch-icon.png").write_bytes(yoyo_png(180, 180, t["accent"], t["primary"], t["primary"]))
+            (OUT / "apple-touch-icon.png").write_bytes(toy_png(self.emblem(), 180, 180, t["accent"], t["primary"], t["primary"]))
         (OUT / "site.webmanifest").write_text(json.dumps({
             "name": f"{self.name} {self.year()}", "short_name": self.c.get("short_name") or self.name[:24],
             "start_url": "./", "display": "browser", "background_color": t["background"],
@@ -1036,6 +1514,119 @@ class Site:
         # The base path lets scripts/check_site.py resolve 404.html's absolute links.
         if OUT == ROOT / "_site":
             (ROOT / ".build-base-path").write_text(self.base_path)
+
+
+# Division formats (README "Division formats"). "format" can be any text; these known ones also
+# get a default explanation, and their own fields (tricks, bracket, criteria, unit...) are shown.
+FORMATS = {
+    "freestyle": "A routine of your own tricks, judged as a whole.",
+    "panel": "A panel of judges scores each routine on set criteria.",
+    "timed": "The clock decides. Each attempt is timed, and your best one counts.",
+    "scored": "A measured result decides the placing. Every attempt is measured, and your best one counts.",
+    "ladder": "Called tricks from easier to harder. Land each one within your tries to move up the ladder.",
+    "bracket": "Head-to-head battles. Win a battle to move on to the next round.",
+    "showcase": "A performance for the crowd. Not judged and not ranked.",
+}
+FORMAT_LABELS = {"freestyle": "Freestyle", "panel": "Panel judged", "timed": "Timed", "scored": "Scored",
+                 "ladder": "Trick ladder", "bracket": "Bracket", "showcase": "Showcase"}
+FORMAT_NAMES = {"freestyle": "freestyle", "panel": "panel", "panel judged": "panel", "panel-judged": "panel",
+                "judged": "panel", "timed": "timed", "scored": "scored", "manual": "scored", "ladder": "ladder",
+                "trick ladder": "ladder", "trick-ladder": "ladder", "bracket": "bracket", "battle": "bracket",
+                "battles": "bracket", "battle bracket": "bracket", "showcase": "showcase", "exhibition": "showcase"}
+
+
+def format_key(d):
+    """The known format a division uses ("ladder", "bracket"...), or None for free text.
+    With no "format", it's taken from the fields: tricks -> ladder, bracket -> bracket, criteria -> panel."""
+    fmt = d.get("format")
+    if isinstance(fmt, str) and fmt.strip():
+        return FORMAT_NAMES.get(fmt.strip().lower())
+    if fmt is None:
+        if tricks_of(d):
+            return "ladder"
+        if isinstance(d.get("bracket"), dict) or d.get("bracket") is True:
+            return "bracket"
+        if criteria_of(d):
+            return "panel"
+    return None
+
+
+def format_label(d):
+    """The format pill: what you wrote ("Trick ladder"), or a label for a bare key ("ladder")."""
+    fmt, key = d.get("format"), format_key(d)
+    if isinstance(fmt, str) and fmt.strip():
+        return FORMAT_LABELS[key] if key and fmt == fmt.lower() else fmt
+    return FORMAT_LABELS.get(key, "") if fmt is None else ""
+
+
+def positive_int(v):
+    return v if isinstance(v, int) and not isinstance(v, bool) and v > 0 else None
+
+
+def number(v):
+    return v if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+
+
+def fmt_points(v):
+    n = number(v)
+    return f"{n:g}" if n is not None else ""
+
+
+def tricks_of(d):
+    t = d.get("tricks")
+    if t is None:
+        return []
+    return t if isinstance(t, list) and all(isinstance(x, str) and x.strip() for x in t) else None
+
+
+def bracket_of(d):
+    b = d.get("bracket")
+    return b if isinstance(b, dict) else {}
+
+
+def bracket_decider(b):
+    """Who picks each battle's winner: "judges" (default), "crowd", "audience", other text, or ""."""
+    v = b.get("decided_by", b.get("vote", "judges"))
+    return v.strip() if isinstance(v, str) else ""
+
+
+def criteria_of(d):
+    c = d.get("criteria")
+    if not isinstance(c, list):
+        return []
+    return [x if isinstance(x, dict) else {"label": x} for x in c
+            if (isinstance(x, dict) and x.get("label")) or (isinstance(x, str) and x)]
+
+
+def team_of(d):
+    return d["team"] if isinstance(d.get("team"), dict) else {}
+
+
+def rounds_of(d):
+    r = (d or {}).get("rounds")
+    return r if isinstance(r, list) and all(isinstance(x, dict) and x.get("name") for x in r) else []
+
+
+def rules_of(d):
+    r = d.get("rules")
+    if r is None:
+        return []
+    return r if isinstance(r, list) and all(isinstance(x, str) for x in r) else None
+
+
+def age_text(ages):
+    """Division age limits: text as-is ("Under 13"), or { "min": 8, "max": 12 } -> "Ages 8–12"."""
+    if isinstance(ages, str):
+        return ages
+    if isinstance(ages, dict):
+        lo, hi = ages.get("min"), ages.get("max")
+        if lo and hi:
+            return f"Ages {lo}–{hi}"
+        if lo:
+            return f"Ages {lo}+"
+        if hi:
+            return f"Ages {hi} & under"
+    return ""
 
 
 def ordinal(n):
