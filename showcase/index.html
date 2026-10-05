@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free Website Template for Yo-Yo & Skill Toy Contests</title>
-  <meta name="description" content="A free, open-source website template for yo-yo, kendama, diabolo, spinning top, and skill toy contests. Edit one file, publish on GitHub Pages for $0. Registration status, countdown, and results switch over by themselves.">
+  <meta name="description" content="A free, open-source website template for yo-yo, kendama, diabolo, spinning top, juggling, and skill toy contests. Edit one file, publish on GitHub Pages for $0. Registration status, countdown, and results switch over by themselves.">
   <meta name="robots" content="index, follow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#1a2744">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free Website Template for Yo-Yo & Skill Toy Contests">
-  <meta property="og:description" content="Edit one file, publish on GitHub Pages, $0. Yo-yo (NYYL rules), kendama, diabolo, spin top, mixed skill toy, and trick battle presets.">
+  <meta property="og:description" content="Edit one file, publish on GitHub Pages, $0. Yo-yo (NYYL rules), kendama, diabolo, spin top, juggling, mixed skill toy, and trick battle presets.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="showcase.css">
 </head>
@@ -92,6 +92,24 @@
         <span class="tag tag-demo">Demo</span>
         <strong>Skill Toy Contest</strong>
         <span><code>skill-toy-contest</code> preset, a division for every toy</span>
+      </a>
+      <a class="example" href="examples/demo-juggling-contest/index.html">
+        <img src="images/demo-juggling-contest.png" alt="Home page of the juggling contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Juggling Contest</strong>
+        <span><code>juggling-contest</code> preset, team routines, numbers, and a battle</span>
+      </a>
+      <a class="example" href="examples/demo-yoyo-ap-doubles/index.html">
+        <img src="images/demo-yoyo-ap-doubles.png" alt="Home page of the yo-yo contest demo with Artistic Performance and Doubles" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Yo-Yo AP &amp; Doubles</strong>
+        <span><code>yoyo-contest</code> preset plus AP, Doubles, and 1A prelims and finals</span>
+      </a>
+      <a class="example" href="examples/demo-yoyo-kendama-combo/index.html">
+        <img src="images/demo-yoyo-kendama-combo.png" alt="Home page of the combined yo-yo and kendama contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Yo-Yo &amp; Kendama Combo</strong>
+        <span>Two contests, one sign-up: ladders, Duo, and audience-voted duels</span>
       </a>
       <a class="example" href="examples/demo-trick-battle/index.html">
         <img src="images/demo-trick-battle.png" alt="Home page of the trick battle demo site" width="390" height="700" loading="lazy">
@@ -182,10 +200,11 @@ confirm the GitHub Pages site is live.</code></pre>
         <thead><tr><th scope="col">Preset</th><th scope="col">For</th><th scope="col">Comes with</th></tr></thead>
         <tbody>
           <tr><td><code>yoyo-contest</code></td><td>A yo-yo contest (default)</td><td>1A, X Division, and Sport divisions; NYYL freestyle rules and a scoring explainer; music upload steps</td></tr>
-          <tr><td><code>kendama-contest</code></td><td>A kendama contest</td><td>Beginner, Intermediate, and Open trick ladders plus a battle bracket</td></tr>
+          <tr><td><code>kendama-contest</code></td><td>A kendama contest</td><td>Beginner, Intermediate, and Open trick ladders with their trick lists, plus a battle bracket with a 3rd-place match</td></tr>
           <tr><td><code>diabolo-contest</code></td><td>A diabolo contest</td><td>Single Diabolo, Multi-Diabolo styles (2D, 3D+, Vertax, fixed axle), Beginner to house music, and a trick ladder; ceiling and toss safety rules</td></tr>
           <tr><td><code>spintop-contest</code></td><td>A spinning top contest</td><td>Trick Freestyle (string and hand-spun styles), Junior Tricks (12 and under), Longest Spin, and Ring Battle</td></tr>
-          <tr><td><code>skill-toy-contest</code></td><td>A mixed contest with several toys</td><td>A division for each toy: yo-yo, kendama ladder, diabolo, spin top, open skill toy, plus a beginner division for any toy</td></tr>
+          <tr><td><code>juggling-contest</code></td><td>A juggling contest</td><td>Individual Freestyle and Team Routine (2–6 players) with panel criteria, Numbers Endurance (catches, best of 3), Juggling Battle (last one juggling), and a Showcase; prop safety rules</td></tr>
+          <tr><td><code>skill-toy-contest</code></td><td>A mixed contest with several toys</td><td>A division for each toy: yo-yo, kendama ladder, diabolo, spin top, open skill toy, plus Artistic Performance, a Showcase (not judged), and a beginner division for any toy</td></tr>
           <tr><td><code>trick-battle</code></td><td>A casual club battle or skill toy jam</td><td>Beginner, Open, and Kendama brackets; side games; simple battle rules</td></tr>
         </tbody>
       </table>
@@ -202,6 +221,7 @@ confirm the GitHub Pages site is live.</code></pre>
       <li><strong>9 pages</strong>: Home, Schedule, Register, Rules, Venue, Sponsors, Results, FAQ, Terms</li>
       <li><strong>A site that follows the calendar</strong>: registration opens and closes, a countdown, contest day, and "that's a wrap", rebuilt daily</li>
       <li><strong>Divisions &amp; fees</strong>: any number, with styles, age limits, combo prices, and music only where it's needed</li>
+      <li><strong>Every format explained</strong>: freestyle, panel judging with a criteria table, timed or scored events, trick ladders with their trick lists, battle brackets (judges or an audience poll), showcases, team entries, and prelims → finals</li>
       <li><strong>Rules &amp; scoring</strong> explained in plain English, with sources</li>
       <li><strong>Sponsors</strong> by tier, partners and friends, and sponsorship packages with slots</li>
       <li><strong>Results</strong>: podiums by division, stats, and links to standings, photos, and video</li>

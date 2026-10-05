@@ -1,20 +1,24 @@
 # Instructions for AI coding agents
 
-You're helping someone launch a website for a yo-yo, kendama, diabolo, or spinning top contest, a mixed
-skill toy contest, or a casual trick battle from this template. The human-facing guide is [README.md](README.md). Read it, then follow this.
+You're helping someone launch a website for a yo-yo, kendama, diabolo, spinning top, or juggling contest, a
+mixed skill toy contest, or a casual trick battle from this template. The human-facing guide is [README.md](README.md). Read it, then follow this.
 
 ## Goal
 Get a correct, live contest site in one session with as few human steps as possible.
 
 ## Steps
 1. **Collect facts from the user**:
-   - preset (`yoyo-contest`, `kendama-contest`, `diabolo-contest`, `spintop-contest`, `skill-toy-contest`,
-     `trick-battle`)
+   - preset (`yoyo-contest`, `kendama-contest`, `diabolo-contest`, `spintop-contest`, `juggling-contest`,
+     `skill-toy-contest`, `trick-battle`)
    - contest name, edition, date (and end date), hours, city, region, and time zone
    - admission for spectators, the organizer, and any presenting sponsor
    - registration open and close dates, the sign-up link, and fees per division
    - divisions (if they differ from the preset): code, name, routine length, fee, age limits, styles,
      and whether each one uses the competitor's own music, house music, or none; any combo prices
+   - each division's format and its details: trick list and tries per trick (ladder), bracket rules and
+     who picks winners (judges, crowd, or an audience poll on a stream), judging criteria and points
+     (panel), unit and lower/higher is better (timed or scored), team size and per-team fee, and rounds
+     (prelims → finals, how many advance)
    - guest events and the day's schedule
    - music file rules and deadline (only if some division uses the competitor's own music)
    - what competitors should bring (gear), if it differs from the preset
@@ -26,7 +30,10 @@ Get a correct, live contest site in one session with as few human steps as possi
 2. **Edit `site.jsonc` only** for content. `examples/vsyc-26.jsonc` is a complete real contest; use it
    as a model. To change preset sections (divisions, gear, schedule, rules, FAQ, terms), copy the section
    into `site.jsonc`; don't edit the preset. Set a section to `false` to drop it. The division fields are
-   documented in README "Divisions".
+   documented in README "Divisions" and "Division formats". Use the same format words as the
+   registration app (`freestyle`, `panel`, `timed`/`scored`, `ladder`, `bracket`, `showcase`, plus `team`
+   and `rounds`) so the site and the sign-up form describe each division the same way. If the schedule
+   names rounds, use `"division"` + `"round"` items so the build checks them against the divisions.
 3. **Check every stage.** Run the build with `--today` set before registration opens, while it's open,
    after it closes, on contest day, and the day after. Each build prints the status line. Confirm
    the dates with the user.
@@ -51,7 +58,9 @@ facts the user gives you. For next year, update the dates and clear `results` an
 - **Rules accuracy:** the yo-yo preset summarizes the NYYL freestyle rules and links to the source.
   Don't add numbers (multipliers, routine lengths) the user hasn't confirmed from the current rules.
   The other presets describe typical formats, not any organization's official rules. Never present
-  them as an official ruleset, and don't invent a league, sanctioning body, or point system.
+  them as an official ruleset, and don't invent a league, sanctioning body, or point system. Trick
+  lists, judging criteria, and points in presets and demos are examples: confirm the real ones with the
+  user before publishing them.
 - **Toy wording** (gear, equipment, music, safety) belongs in the preset or `site.jsonc`, never in
   `build.py`. Keep `build.py`'s own text neutral so every toy works.
 - **Security:**
