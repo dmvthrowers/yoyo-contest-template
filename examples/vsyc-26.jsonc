@@ -1,0 +1,197 @@
+// VSYC-26: the real contest this template came from (https://dmvthrowers.club/vsyc26.html).
+// Its live pages are hand-built; this file shows the same contest built from the template,
+// in its post-contest "that's a wrap" state. Copy it over site.jsonc as a head start.
+{
+  "preset": "yoyo-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/New_York",
+            "source_url": "https://github.com/dmvthrowers/yoyo-contest-template", "credit": true },
+  "contest": {
+    "name": "Virginia State Yo-Yo Contest",
+    "short_name": "VSYC",
+    "edition": "16th Annual",
+    "tradition": "Virginia tradition since 2006",
+    "date": "2026-09-19",
+    "start": "10:00",
+    "end": "19:00",
+    "status": "scheduled",
+    "city": "Sterling",
+    "region": "VA",
+    "admission": "Free to spectate",
+    "free_to_watch": true,
+    "presented_by": { "name": "Goodles", "url": "https://www.goodles.com/" },
+    "organizer": { "name": "DMV Throwers Yo-Yo & Skill Toy Club", "url": "https://dmvthrowers.club/" },
+    "description": "The 16th annual Virginia State Yo-Yo Contest at Dulles Town Center, Sterling VA. Three divisions under NYYL rules. Free to spectate.",
+    "about_title": "Virginia's Yo-Yo Contest Comes to Northern VA",
+    "about": [
+      "The Virginia State Yo-Yo Contest has been a Virginia tradition since 2006, when the first contest was held on January 21. In 2026 it came to Northern Virginia for the first time: Center Court at Dulles Town Center, Saturday crowds, and a community that loves what it does.",
+      "Emceed by Brian Melford. Stella Duellum, hosted by Anneurismz for Prismatic Stars, ran at 12:00 PM with its own sign-up.",
+      "Entirely volunteer-run. Every dollar goes straight to the event. Organized by {organizer}."
+    ],
+    "features": ["Multi-division", "Free to spectate", "Indoor mall", "Free parking", "Stella Duellum", "Maker Corner", "Merch table", "Livestream replay"],
+    "links": [
+      { "title": "Livestream", "url": "https://youtube.com/@yoyocontestcentral", "label": "YoYo Contest Central" }
+    ]
+  },
+  "registration": {
+    "opens": "2026-07-06",
+    "closes": "2026-09-18",
+    "url": "https://register.dmvthrowers.club/",
+    "fee_summary": "TBD for the next contest",
+    "fees": [
+      { "name": "1A / Pro Division", "fee": "TBD" },
+      { "name": "X Division (2A–5A)", "fee": "TBD" },
+      { "name": "Sport / Beginner / Junior", "fee": "TBD" },
+      { "name": "Spectators", "fee": "Free" }
+    ],
+    "payment": ["Online payments are handled by Stripe in the registration portal. Registration is confirmed once payment completes."],
+    "past_text": "Registration for VSYC-26 is closed. Thank you to every competitor who registered and took the stage.",
+    "music": {
+      "deadline": "2026-09-17",
+      "steps": [
+        "Name your file DIVISION_LastName_FirstName.mp3, like 1A_Rogers_Brandon.mp3.",
+        "MP3 format, no explicit content. Include any intro or outro you want used.",
+        "Upload by {music_deadline}, two days before the event, in the registration app."
+      ]
+    }
+  },
+  "divisions": [
+    { "code": "1A", "name": "1A / Pro Division", "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to all skill levels.", "tags": ["Open", "2-min freestyle"] },
+    { "code": "X", "name": "X Division", "text": "Multi-style division covering 2A, 3A, 4A, and 5A. Choose one style when you register: 2A = looping, 3A = two-handed string, 4A = offstring, 5A = freehand.", "tags": ["2A · 3A · 4A · 5A", "2-min freestyle"] },
+    { "code": "SBJ", "name": "Sport / Beginner / Junior", "text": "Combined division for newer players. No negative clicks and no major deductions, and most of the score is presentation.", "tags": ["All ages", "90-sec freestyle"] }
+  ],
+  "guest_events": [
+    { "name": "Stella Duellum", "time": "12:00 PM", "host": "Hosted by Anneurismz for Prismatic Stars",
+      "text": "Stella Duellum is not one of the divisions. It has its own sign-up, rules, and entry: one-minute routines, random music, and a crowd vote.",
+      "url": "https://dmvthrowers.club/vsyc26-dueling-stars.html", "url_label": "Stella Duellum rules & results" }
+  ],
+  "schedule": [
+    { "time": "9:00 AM", "title": "Setup & Load-In", "text": "Sponsors, vendors, and staff arrive before the mall opens. Rubber-wheeled hand trucks only." },
+    { "time": "10:00 AM", "title": "Doors Open · Kickoff", "text": "Registration desk open. Welcome, sponsor thanks, and rules briefing, emceed by Brian Melford." },
+    { "time": "10:30 AM", "title": "Sport / Beginner / Junior Division", "text": "Our entry-level division: all ages, all levels." },
+    { "time": "12:00 PM", "title": "Stella Duellum · Prismatic Stars", "text": "One-minute routines, random music, crowd vote. Separate sign-up." },
+    { "time": "1:00 PM", "title": "Pro Division (1A)", "text": "The flagship division: single yo-yo on a string." },
+    { "time": "3:00 PM", "title": "X Division", "text": "2A · 3A · 4A · 5A multi-style division." },
+    { "time": "5:00 PM", "title": "Closing Ceremony", "text": "Awards for all divisions and sponsor thanks." },
+    { "time": "6:00 PM", "title": "Wrap Up & Breakdown", "text": "Teardown and load-out." },
+    { "time": "7:00 PM", "title": "Event Ends", "text": "Everything out by 7 PM (venue rule)." }
+  ],
+  "venue": {
+    "name": "Dulles Town Center",
+    "space": "Center Court, Lower Level",
+    "address": "21100 Dulles Town Circle, Sterling, VA 20166",
+    "map_url": "https://maps.google.com/?q=21100+Dulles+Town+Circle+Sterling+VA+20166",
+    "website": "https://www.dullestowncenter.com",
+    "facts": [
+      { "label": "Parking", "text": "Free at all mall entrances." },
+      { "label": "Food", "text": "Food court on site, plus restaurants throughout the mall." },
+      { "label": "Wi-Fi", "text": "Free mall Wi-Fi." }
+    ],
+    "rules": [
+      { "label": "Setup / teardown", "text": "Setup before 10 AM, before the mall opens. Everything out by 7 PM. Rubber-wheeled hand trucks only." },
+      { "label": "Floor items", "text": "Rubber mats or carpet pads under anything touching the floor. No tape on floor or fixtures." },
+      { "label": "Signage", "text": "Banners and signs need written mall approval at least 2 weeks out. We handle it." },
+      { "label": "Power", "text": "Up to 500W per outlet. No exposed cords. Bring your own extension cord." },
+      { "label": "Mall policies", "text": "Everyone follows the mall's code of conduct and guest policies during the event." }
+    ],
+    "hotels": [
+      { "name": "Courtyard by Marriott Dulles Town Center", "text": "Restaurant on site, airport shuttle.", "rate": "$125/night · DMV Throwers room block",
+        "book_by": "Saturday, August 29, 2026", "distance": "Walking distance to the mall" }
+    ]
+  },
+  "sponsors": [
+    { "tier": "Presenting", "name": "Goodles", "url": "https://www.goodles.com/", "text": "Virginia State Yo-Yo Contest 2026, brought to you by Goodles.",
+      "perks": ["Giveaway booth all day", "Postcards for a free shirt + Twirly Mac", "Stickers and temporary tattoos"] },
+    { "tier": "Platinum", "name": "Freshly Dirty", "text": "Proud sponsor of the Virginia State Yo-Yo Contest 2026." },
+    { "tier": "Gold", "name": "YoYoSam.com", "text": "" },
+    { "tier": "Gold", "name": "Recess & Jake Bullock", "text": "Shared booth." },
+    { "tier": "Gold", "name": "Slow & Steady Bikes and Goods", "url": "https://www.slowsteadybikesandgoods.com/", "text": "Hosts Seven Cities YoYo Club, Hampton Roads." },
+    { "tier": "Gold", "name": "Unparalleled", "text": "" },
+    { "tier": "Silver", "name": "Knot Creators", "text": "" },
+    { "tier": "Silver", "name": "SWVA Throwers", "text": "" },
+    { "tier": "Silver", "name": "BigBoi YoYo's", "text": "" },
+    { "tier": "Silver", "name": "Duncan Toys", "text": "" },
+    { "tier": "Silver", "name": "ThrowYo", "text": "" },
+    { "tier": "Silver", "name": "TimCor Productions", "text": "" },
+    { "tier": "In-Kind", "name": "YoYoExpert", "text": "" },
+    { "tier": "In-Kind", "name": "Krom Kendama", "text": "" },
+    { "tier": "In-Kind", "name": "MINISO (Dulles Town Center)", "text": "Winner prize baskets and a mascot appearance." },
+    { "tier": "In-Kind", "name": "July Yoyo", "text": "" }
+  ],
+  "partners": [
+    { "tier": "Partner", "name": "National Yo-Yo League", "url": "https://nyyl.org/", "text": "Our freestyles follow the NYYL ruleset." },
+    { "tier": "Partner", "name": "Prismatic Stars", "url": "https://www.prismaticstars.com/", "text": "Hosts Stella Duellum." },
+    { "tier": "Partner", "name": "YoYo Contest Central", "url": "https://youtube.com/@yoyocontestcentral", "text": "Video and livestream partner." },
+    { "tier": "Friend", "name": "Bmore YoYo Club", "url": "https://www.instagram.com/bmoreyoyoclub/", "text": "Baltimore" },
+    { "tier": "Friend", "name": "DC Kendama Club", "url": "https://www.instagram.com/dckenclub/", "text": "Washington DC" }
+  ],
+  "sponsorship": {
+    "intro": "No yo-yo or skill toy retailers at the venue. Your brand is the only one in the room, in front of competitors, families, and Saturday shoppers.",
+    "goal": "$3,500",
+    "tiers": [
+      { "name": "Diamond", "price": "$2,000+", "slots": "Max 1 slot", "status": "Slot filled",
+        "perks": ["\"{name} Presented by [Your Brand]\"", "Logo on all materials", "12ft double-wide table", "MC callouts all day", "3 free competitor registrations", "Livestream credit"] },
+      { "name": "Platinum", "price": "$500+", "slots": "Max 2 slots", "status": "1 slot filled",
+        "perks": ["XL logo: banner, flyers, socials", "6ft table with power", "MC shoutout 3x", "2 free competitor registrations", "Livestream credit"] },
+      { "name": "Gold", "price": "$250+", "slots": "Max 4 slots", "status": "4 slots filled",
+        "perks": ["Large logo: banner & flyer", "6ft table with power", "MC shoutout 2x", "Social media thank-you"] },
+      { "name": "Silver", "price": "$75+", "slots": "Open", "perks": ["Medium logo: banner & flyer", "MC shoutout at opening", "Social media thank-you", "Add a table for $75"] },
+      { "name": "Bronze", "price": "$50", "slots": "Open", "perks": ["Name on sponsor banner", "Name in event program", "MC shoutout at opening", "Add a table for $75"] },
+      { "name": "In-Kind / Local", "price": "$25+", "slots": "Any form", "perks": ["Name on sponsor banner", "Social media thank-you", "Cash, product, gift cards, food. Anything counts"] }
+    ]
+  },
+  "results": {
+    "intro": "Congratulations to every competitor who threw at Dulles Town Center. Each division's top Virginia finisher is the VA State Champion.",
+    "divisions": [
+      { "division": "1A · Single string", "podium": [
+          { "place": 1, "name": "Ryan Kim", "from": "Rosedale, MD", "score": "95.50" },
+          { "place": 2, "name": "Connor Sheahan", "from": "Boulder, CO", "score": "84.71" },
+          { "place": 3, "name": "Colin Beckford", "from": "Cleveland, OH", "score": "79.56" },
+          { "place": "VA", "label": "VA State Champion", "name": "Bryant Baus", "from": "Virginia Beach, VA", "score": "48.48" } ] },
+      { "division": "X Division", "podium": [
+          { "place": 1, "name": "Chandler Steele", "from": "Xenia, OH", "score": "91.00" },
+          { "place": 2, "name": "Drew Buscemi", "from": "Long Island, NY", "score": "59.93" },
+          { "place": 3, "name": "Richard Pigkaso", "from": "Bronx, NY", "score": "52.64" },
+          { "place": "VA", "label": "VA State Champion", "name": "Alex Curfman", "from": "Henrico, VA", "score": "40.77" } ] },
+      { "division": "Sport / Beginner / Junior", "podium": [
+          { "place": 1, "name": "Steen H.", "from": "GA", "score": "74.03" },
+          { "place": 2, "name": "Larkin M.", "from": "NC", "score": "71.62" },
+          { "place": 3, "name": "Joshua Russell", "from": "Mooresville, NC", "score": "59.52" },
+          { "place": "VA", "label": "VA State Champion", "name": "Christian E.", "from": "VA", "score": "54.91" } ] }
+    ],
+    "stats": [
+      { "value": "50", "label": "Competitors" }, { "value": "14", "label": "States" },
+      { "value": "13", "label": "Clubs" }, { "value": "95.50", "label": "Top score" }
+    ],
+    "links": [
+      { "title": "Full leaderboard", "url": "https://register.dmvthrowers.club/results", "label": "Full leaderboard" },
+      { "title": "NYYL results archive", "url": "https://compete.yoyocontest.com/results/2026-virginia-state-yo-yo-contest", "label": "NYYL results archive" },
+      { "title": "Winners playlist", "url": "https://www.youtube.com/watch?v=HR3JGZqPU1A", "label": "Winners playlist" },
+      { "title": "Livestream replay", "url": "https://www.youtube.com/live/yVLew1sJqNA", "label": "Livestream replay" },
+      { "title": "Photo album", "url": "https://photos.app.goo.gl/tSxb2QX8mzap5dYY7", "label": "Photo album" }
+    ],
+    "privacy_note": "Some competitors are minors whose families haven't opted into public name and city listing, so they are shown as first name and last initial."
+  },
+  "wrap": {
+    "title": "That's a wrap · Thank you",
+    "stats": [
+      { "value": "50", "label": "Competitors" }, { "value": "14", "label": "States" },
+      { "value": "13", "label": "Clubs" }, { "value": "20", "label": "Volunteers" }
+    ],
+    "links": [
+      { "title": "Results", "url": "https://dmvthrowers.club/vsyc26-results.html", "label": "See the results" },
+      { "title": "Winners playlist", "url": "https://www.youtube.com/watch?v=HR3JGZqPU1A", "label": "Watch the runs" },
+      { "title": "Photos", "url": "https://photos.app.goo.gl/tSxb2QX8mzap5dYY7", "label": "See the photos" },
+      { "title": "Survey", "url": "https://register.dmvthrowers.club/feedback?src=direct", "label": "Take the spectator survey" }
+    ]
+  },
+  "contact": {
+    "email": "vastateyoyocontest@gmail.com",
+    "social": [ { "name": "Instagram", "url": "https://instagram.com/vastateyoyocontest" } ]
+  },
+  "faq_extra": [
+    { "group": "Attending", "q": "Where should I stay overnight?", "a": "The Courtyard by Marriott Dulles Town Center had a $125/night room block, within walking distance. See the Venue page." },
+    { "group": "Attending", "q": "Will there be a livestream?", "a": "Yes. The day-of livestream ran on the YoYo Contest Central YouTube channel, and the full replay is up there now." }
+  ],
+  "terms": { "effective": "April 2026" },
+  "theme": { "primary": "#1a2744", "accent": "#C9A84C", "background": "#f5f0e8", "ink": "#1a2744", "corners": "sharp" }
+}

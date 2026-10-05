@@ -1,0 +1,67 @@
+# Instructions for AI coding agents
+
+You're helping someone launch a website for a yo-yo contest, kendama contest, or skill toy trick battle
+from this template. The human-facing guide is [README.md](README.md). Read it, then follow this.
+
+## Goal
+Get a correct, live contest site in one session with as few human steps as possible.
+
+## Steps
+1. **Collect facts from the user**:
+   - preset (`yoyo-contest`, `kendama-contest`, `trick-battle`)
+   - contest name, edition, date (and end date), hours, city, region, and time zone
+   - admission for spectators, the organizer, and any presenting sponsor
+   - registration open and close dates, the sign-up link, and fees per division
+   - divisions and routine lengths (if they differ from the preset), guest events, and the day's schedule
+   - music file rules and deadline
+   - venue name, space, address, parking, vendor rules, and hotel blocks
+   - sponsors by tier, partners, and sponsorship package prices and slots
+   - a shared contact email and social links
+
+   Never invent facts. Leave a value empty (`""`), or use "TBD", rather than guess.
+2. **Edit `site.jsonc` only** for content. `examples/vsyc-26.jsonc` is a complete real contest; use it
+   as a model. To change preset sections (divisions, schedule, rules, FAQ, terms), copy the section
+   into `site.jsonc`; don't edit the preset.
+3. **Check every stage.** Run the build with `--today` set before registration opens, while it's open,
+   after it closes, on contest day, and the day after. Each build prints the status line. Confirm
+   the dates with the user.
+4. **Build and check:** `python3 build.py && python3 scripts/check_site.py`. Fix every WARNING (contrast,
+   missing photos, bad dates) and every check failure.
+5. **Deploy (GitHub Pages):** the human must create the repository from the template and set
+   **Settings → Pages → Source: GitHub Actions**. Then push to `main`. The workflow builds, checks,
+   deploys, and rebuilds daily. Confirm the run is green and the page loads.
+6. **Report** the live URL and what's left: the sign-up form, sponsor logos, venue photos, a custom
+   domain, a review of the terms, and two-factor login.
+
+## After the contest
+Fill in `results` (podium per division, stats, links) and `wrap` (home page numbers and links) with
+facts the user gives you. For next year, update the dates and clear `results` and `wrap`.
+
+## Rules
+- **Competitor privacy:** list minors by first name and last initial unless a parent opted in. Never
+  publish ages of minors, home addresses, personal phone numbers, or registration data. Photos only
+  with the user's confirmation of permission; resize to ~1200px, under 500 KB, and strip EXIF/GPS.
+- **Terms:** the preset terms aren't legal advice. Tell the user to have them reviewed. Don't invent
+  new legal promises.
+- **Rules accuracy:** the yo-yo preset summarizes the NYYL freestyle rules and links to the source.
+  Don't add numbers (multipliers, routine lengths) the user hasn't confirmed from the current rules.
+- **Security:**
+  - No inline `<script>`, `<style>`, `style=""`, or `on*=` handlers. The CSP blocks them and the check fails.
+  - No `http://` links, no trackers, embeds, or third-party scripts unless the user asks. If they do,
+    update `Site.csp()` in `build.py`.
+  - The site never handles payments or personal data; it links out to the sign-up tool.
+- **Look:** square corners and flat cards with no shadows, like the VSYC-26 pages. Change it through
+  `theme.corners`, not `style.css`, unless asked.
+- **Consistency:** every page shares one header (with the status bar) and footer. The check fails if they differ.
+- **Pages:** each page is one `page_<slug>()` method in `build.py`, listed in `self.pages`.
+- **Showcase:** `showcase/`, `examples/`, and `scripts/build_showcase.py` only run in the original
+  template repository. Ignore them (or delete them) in a user's copy.
+- **No dependencies:** keep `build.py` and `scripts/check_site.py` standard-library Python 3.9+.
+
+## Useful commands
+```sh
+python3 build.py --serve                     # build + preview at http://localhost:8000/
+python3 build.py --today 2026-11-15          # preview another day (any stage)
+python3 build.py --base-url https://x.org/   # build for a specific address
+python3 scripts/check_site.py                # must print "OK"
+```

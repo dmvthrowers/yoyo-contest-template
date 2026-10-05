@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Website Template for Yo-Yo & Skill Toy Contests</title>
+  <meta name="description" content="A free, open-source website template for yo-yo, kendama, and skill toy contests. Edit one file, publish on GitHub Pages for $0. Registration status, countdown, and results switch over by themselves.">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#1a2744">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free Website Template for Yo-Yo & Skill Toy Contests">
+  <meta property="og:description" content="Edit one file, publish on GitHub Pages, $0. Yo-yo (NYYL rules), kendama, and trick battle presets.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="showcase.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="36" height="36"><span>Yo-Yo Contest Site Template</span></a>
+    <nav aria-label="Page sections">
+      <a href="#examples">Examples</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/dmvthrowers/yoyo-contest-template" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Free &bull; Open source &bull; No coding</p>
+    <h1>A website for your yo-yo contest</h1>
+    <p class="lede">Divisions, schedule, rules, venue, sponsors, and results, from one settings file.
+      The site follows your contest's calendar by itself: "registration opens soon", then the register button,
+      then "registration closed", then "today!", then a "that's a wrap" page with your results.
+      GitHub builds and hosts it for free.</p>
+    <p class="btn-row">
+      <a class="btn btn-accent" href="https://github.com/dmvthrowers/yoyo-contest-template/generate" rel="noopener noreferrer">Use this template</a>
+      <a class="btn btn-ghost" href="#examples">See examples</a>
+    </p>
+    <ul class="facts">
+      <li><strong>$0</strong><span>hosting on GitHub Pages</span></li>
+      <li><strong>1 file</strong><span>to edit: site.jsonc</span></li>
+      <li><strong>5 stages</strong><span>that switch over by date</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="examples">
+  <div class="wrap">
+    <h2>See It in Action</h2>
+    <p class="intro">Every example below was built by this template from one settings file. Click to explore the full site.</p>
+    <div class="examples">
+      <a class="example featured" href="examples/vsyc-26/index.html">
+        <img src="images/vsyc-26.png" alt="Home page of the Virginia State Yo-Yo Contest 2026 example site" width="390" height="700" loading="lazy">
+        <span class="tag">Real contest</span>
+        <strong>VSYC-26</strong>
+        <span>Sterling, VA &bull; after the contest, with results</span>
+      </a>
+      <a class="example" href="examples/demo-yoyo-contest/index.html">
+        <img src="images/demo-yoyo-contest.png" alt="Home page of the yo-yo contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Yo-Yo Contest</strong>
+        <span><code>yoyo-contest</code> preset, registration open</span>
+      </a>
+      <a class="example" href="examples/demo-kendama-contest/index.html">
+        <img src="images/demo-kendama-contest.png" alt="Home page of the kendama contest demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Kendama Contest</strong>
+        <span><code>kendama-contest</code> preset, registration opens soon</span>
+      </a>
+      <a class="example" href="examples/demo-trick-battle/index.html">
+        <img src="images/demo-trick-battle.png" alt="Home page of the trick battle demo site" width="390" height="700" loading="lazy">
+        <span class="tag tag-demo">Demo</span>
+        <strong>Trick Battle</strong>
+        <span><code>trick-battle</code> preset, any skill toy</span>
+      </a>
+    </div>
+    <p class="note">VSYC-26's settings are in
+      <a href="https://github.com/dmvthrowers/yoyo-contest-template/blob/main/examples/vsyc-26.jsonc" rel="noopener noreferrer">examples/vsyc-26.jsonc</a>.
+      The contest's own hand-built pages are at <a href="https://dmvthrowers.club/vsyc26.html" rel="noopener noreferrer">dmvthrowers.club/vsyc26</a>.
+      The demos rebuild every day, so their stages move with the calendar.</p>
+  </div>
+</section>
+
+<section class="section alt" id="deploy">
+  <div class="wrap">
+    <h2>Deploy in 4 Steps</h2>
+    <p class="intro">You need a free <a href="https://github.com/signup" rel="noopener noreferrer">GitHub account</a>. Everything happens in your web browser.</p>
+    <ol class="steps">
+      <li>
+        <h3>Copy the template</h3>
+        <p>Click <strong>Use this template</strong> → <strong>Create a new repository</strong>.
+          Name it (e.g. <code>springfield-open</code>), keep it <strong>Public</strong>, and click <strong>Create repository</strong>.</p>
+        <p class="time">1 minute</p>
+      </li>
+      <li>
+        <h3>Turn on GitHub Pages</h3>
+        <p>In your new repository: <strong>Settings → Pages → Source → GitHub Actions</strong>. That's the only setting.</p>
+        <p class="time">1 minute</p>
+      </li>
+      <li>
+        <h3>Fill in your contest</h3>
+        <p>Open <code>site.jsonc</code>, click the pencil icon, and work top to bottom: date, venue,
+          registration dates and link, fees, sponsors. Every line has a note. Click <strong>Commit changes</strong>.</p>
+        <p class="time">20–40 minutes</p>
+      </li>
+      <li>
+        <h3>You're live</h3>
+        <p>Open the <strong>Actions</strong> tab and wait for the green check. Your site is at
+          <code>https://YOUR-NAME.github.io/YOUR-REPO/</code>. After the contest, add your results.</p>
+        <p class="time">1 minute</p>
+      </li>
+    </ol>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>What you edit</h3>
+        <p>One file, <code>site.jsonc</code>. The preset fills in divisions, rules, scoring, FAQ, and terms.</p>
+<pre><code>{
+  "preset": "yoyo-contest",
+  "contest": {
+    "name": "Springfield Yo-Yo Open",
+    "edition": "3rd Annual",
+    "date": "2026-11-14",
+    "start": "10:00", "end": "18:00",
+    "admission": "Free to spectate"
+  },
+  "registration": {
+    "opens": "2026-09-15", "closes": "2026-11-07",
+    "url": "https://your-signup-form"
+  },
+  "venue": { "name": "Springfield Civic Center" }
+}</code></pre>
+      </div>
+      <div class="panel">
+        <h3>Or let an AI agent do it</h3>
+        <p>Paste this into Claude Code or another coding agent after step 2:</p>
+<pre><code>Set up my contest's website from this repository.
+Read AGENTS.md first. Ask me for our preset, contest
+name and edition, date and hours, venue, registration
+dates, sign-up link, fees, divisions, schedule,
+sponsors, and contact email. Edit site.jsonc only,
+run the build and the check for each stage with
+--today, fix every warning, then push to main and
+confirm the GitHub Pages site is live.</code></pre>
+        <p>The agent instructions in <code>AGENTS.md</code> keep it to your facts and competitors' privacy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Pick Your Preset</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Preset</th><th scope="col">For</th><th scope="col">Comes with</th></tr></thead>
+        <tbody>
+          <tr><td><code>yoyo-contest</code></td><td>A yo-yo contest (default)</td><td>1A, X Division, and Sport divisions; NYYL freestyle rules and a scoring explainer; music upload steps</td></tr>
+          <tr><td><code>kendama-contest</code></td><td>A kendama contest</td><td>Beginner, Intermediate, and Open trick ladders plus a battle bracket</td></tr>
+          <tr><td><code>trick-battle</code></td><td>A casual club battle or skill toy jam</td><td>Beginner, Open, and Kendama brackets; side games; simple battle rules</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Running a club, not a contest? Use the sister template,
+      <a href="https://github.com/dmvthrowers/yoyoclub-template" rel="noopener noreferrer">yoyoclub-template</a>.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <h2>What's Included</h2>
+    <ul class="features">
+      <li><strong>9 pages</strong>: Home, Schedule, Register, Rules, Venue, Sponsors, Results, FAQ, Terms</li>
+      <li><strong>A site that follows the calendar</strong>: registration opens and closes, a countdown, contest day, and "that's a wrap", rebuilt daily</li>
+      <li><strong>Divisions &amp; fees</strong>, guest events with their own sign-up, and music upload steps</li>
+      <li><strong>Rules &amp; scoring</strong> explained in plain English, with sources</li>
+      <li><strong>Sponsors</strong> by tier, partners and friends, and sponsorship packages with slots</li>
+      <li><strong>Results</strong>: podiums by division, stats, and links to standings, photos, and video</li>
+      <li><strong>Venue</strong> facts, vendor rules, photos, and hotel room blocks</li>
+      <li><strong>Competitor terms</strong>: refunds, waiver, photo release, conduct, and minors</li>
+      <li><strong>Found on Google</strong>, works on every phone, and private: no cookies, trackers, or outside fonts</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="wrap narrow">
+    <h2>Questions</h2>
+    <details><summary>Does it handle registration and payments?</summary><p>No. The site links to whatever sign-up you use: a Google Form, a Stripe payment link, Eventbrite, or your own app. The Register button appears and disappears on your dates.</p></details>
+    <details><summary>What happens after the contest?</summary><p>The day after, the home page switches to "that's a wrap" with your wrap-up numbers and links. Fill in the results section of <code>site.jsonc</code> and the Results page shows each division's podium.</p></details>
+    <details><summary>Do I have to use NYYL rules?</summary><p>No. The <code>yoyo-contest</code> preset starts from them because most U.S. contests do. Copy the <code>rules</code> section into <code>site.jsonc</code> and write your own.</p></details>
+    <details><summary>Are the terms legal advice?</summary><p>No. They're a plain-English starting point from a real contest. Have someone check them against your venue's requirements and local law.</p></details>
+    <details><summary>Why is this separate from the club template?</summary><p>Clubs and contests rarely share the same organizers, dates, or audience. Two small templates are easier to run than one big one.</p></details>
+    <details><summary>Is it really free?</summary><p>Yes. The template is public domain, and GitHub Pages hosts public sites for free.</p></details>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Ready?</h2>
+    <p class="btn-row">
+      <a class="btn btn-accent" href="https://github.com/dmvthrowers/yoyo-contest-template/generate" rel="noopener noreferrer">Use this template</a>
+      <a class="btn btn-ghost" href="https://github.com/dmvthrowers/yoyo-contest-template#readme" rel="noopener noreferrer">Read the full guide</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Public domain (<a href="https://github.com/dmvthrowers/yoyo-contest-template/blob/main/LICENSE" rel="noopener noreferrer">Unlicense</a>).
+      Built by the volunteers behind the <a href="https://dmvthrowers.club/vsyc26.html" rel="noopener noreferrer">Virginia State Yo-Yo Contest</a>.
+      Not affiliated with any yo-yo league, brand, or shop.</p>
+    <p><a href="https://github.com/dmvthrowers/yoyo-contest-template" rel="noopener noreferrer">Source on GitHub</a> &bull;
+      <a href="https://github.com/dmvthrowers/yoyo-contest-template/issues" rel="noopener noreferrer">Report a problem</a></p>
+    <p class="credit">Template by Brandon Rogers &amp; <a href="https://dmvthrowers.club/" rel="noopener noreferrer">DMV Throwers</a></p>
+  </div>
+</footer>
+</body>
+</html>

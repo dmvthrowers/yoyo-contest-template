@@ -1,0 +1,24 @@
+// Demo: a made-up club trick battle using the "trick-battle" preset. Registration is open.
+{
+  "preset": "trick-battle",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/Chicago", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Prairie Spin Battle Day", "short_name": "PSB", "edition": "Fall Edition", "tradition": "",
+    "date": "2026-11-07", "start": "12:00", "end": "16:30", "status": "scheduled",
+    "city": "Lincoln", "region": "NE", "admission": "Free", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Prairie Spin Collective", "url": "" },
+    "description": "A free afternoon of trick battles and skill toy games in Lincoln. Any toy, any level.",
+    "about_title": "Bring a Toy. Battle a Friend.",
+    "about": ["An afternoon of 1v1 trick battles and drop-in games for yo-yo, kendama, spin tops, and more. Organized by {organizer}."],
+    "features": ["Any skill toy", "Beginner bracket", "Side games", "Free"]
+  },
+  "registration": { "opens": "2026-10-01", "closes": "2026-11-06", "url": "https://example.org/battle", "label": "Sign Up",
+    "fee_summary": "Free", "fees": [ { "name": "Every bracket", "fee": "Free" } ] },
+  "venue": { "name": "Riverside Community Center", "space": "Gym", "address": "500 River St, Lincoln NE" },
+  "sponsors": [ { "tier": "Prize Sponsor", "name": "Example Toy Shop", "text": "Prizes for every bracket winner." } ],
+  "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
+  "contact": { "email": "hello@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": {}
+}

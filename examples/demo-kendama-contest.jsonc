@@ -1,0 +1,24 @@
+// Demo: a made-up kendama contest using the "kendama-contest" preset. Registration hasn't opened yet.
+{
+  "preset": "kendama-contest",
+  "site": { "url": "", "language": "en", "date_format": "us", "timezone": "America/Los_Angeles", "source_url": "", "credit": true },
+  "contest": {
+    "name": "Pacific Northwest Kendama Open", "short_name": "PNW", "edition": "1st Annual", "tradition": "",
+    "date": "2027-03-13", "start": "10:00", "end": "17:00", "status": "scheduled",
+    "city": "Tacoma", "region": "WA", "admission": "Free to watch", "free_to_watch": true,
+    "presented_by": { "name": "", "url": "" },
+    "organizer": { "name": "Cascade Kendama Club", "url": "" },
+    "description": "A kendama contest for every level in Tacoma: trick ladders for Beginner, Intermediate, and Open, plus 1v1 battles.",
+    "about_title": "Kendama Contest Day in Tacoma",
+    "about": ["Three trick-ladder divisions and a battle bracket. Bring your kendama and your friends. Organized by {organizer}."],
+    "features": ["Trick ladders", "1v1 battles", "Free to watch", "All ages"]
+  },
+  "registration": { "opens": "2027-01-15", "closes": "2027-03-06", "url": "https://example.org/register", "fee_summary": "$10 per division",
+    "fees": [ { "name": "Any division", "fee": "$10" }, { "name": "Kendama Battles", "fee": "$5" }, { "name": "Spectators", "fee": "Free" } ] },
+  "venue": { "name": "Eastside Rec Center", "space": "Gym", "address": "300 E Park Way, Tacoma WA", "facts": [ { "label": "Parking", "text": "Free lot." } ] },
+  "sponsors": [], "partners": [], "sponsorship": {},
+  "results": {}, "wrap": {},
+  "contact": { "email": "contest@example.org", "social": [] },
+  "faq_extra": [], "terms": { "effective": "" },
+  "theme": { "corners": "soft" }
+}

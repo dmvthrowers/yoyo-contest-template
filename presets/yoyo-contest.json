@@ -1,0 +1,371 @@
+{
+  "preset_name": "Yo-yo contest (NYYL rules)",
+  "divisions": [
+    {
+      "code": "1A",
+      "name": "1A Division",
+      "text": "Single yo-yo on a string. The flagship division: technical, expressive, and open to every skill level.",
+      "tags": [
+        "Open",
+        "2-min freestyle"
+      ]
+    },
+    {
+      "code": "X",
+      "name": "X Division",
+      "text": "Multi-style division for 2A, 3A, 4A, and 5A. Pick one style when you register: 2A = looping, 3A = two yo-yos on strings, 4A = offstring, 5A = freehand.",
+      "tags": [
+        "2A · 3A · 4A · 5A",
+        "2-min freestyle"
+      ]
+    },
+    {
+      "code": "Sport",
+      "name": "Sport / Beginner",
+      "text": "A welcoming first step into contest play. No negative clicks and no major deductions, and most of the score is presentation.",
+      "tags": [
+        "All ages",
+        "90-sec freestyle"
+      ]
+    }
+  ],
+  "divisions_notes": [
+    "Competing in more than one division? Registration is charged per division.",
+    "Divisions are scored with the National Yo-Yo League (NYYL) freestyle rules unless noted otherwise. See the Rules page for how scoring works."
+  ],
+  "guest_events": [],
+  "schedule": [
+    {
+      "time": "9:00 AM",
+      "title": "Setup & Load-In",
+      "text": "Sponsors, vendors, and staff arrive."
+    },
+    {
+      "time": "10:00 AM",
+      "title": "Doors Open · Kickoff",
+      "text": "Registration desk opens. Welcome, sponsor thanks, and rules briefing."
+    },
+    {
+      "time": "10:30 AM",
+      "title": "Sport / Beginner Division",
+      "text": "Our entry-level division."
+    },
+    {
+      "time": "12:00 PM",
+      "title": "Lunch Break",
+      "text": "Practice space stays open."
+    },
+    {
+      "time": "1:00 PM",
+      "title": "1A Division",
+      "text": "Single yo-yo on a string."
+    },
+    {
+      "time": "3:00 PM",
+      "title": "X Division",
+      "text": "2A · 3A · 4A · 5A."
+    },
+    {
+      "time": "5:00 PM",
+      "title": "Awards",
+      "text": "Awards for every division and sponsor thanks."
+    },
+    {
+      "time": "6:00 PM",
+      "title": "Wrap Up",
+      "text": "Teardown and load-out."
+    }
+  ],
+  "schedule_notes": [
+    "Times may change on the day based on the number of competitors. Check the registration desk for the running order."
+  ],
+  "rules": {
+    "ruleset_name": "NYYL freestyle rules",
+    "sport": "Yo-yo",
+    "title": "Contest Ruleset",
+    "intro": "Freestyles follow the National Yo-Yo League (NYYL) freestyle rules, the ruleset for U.S. contests. When this page and the NYYL rules disagree, NYYL wins.",
+    "sections": [
+      {
+        "title": "Freestyle Format",
+        "items": [
+          "Routine lengths are listed with each division on the Register page.",
+          "NYYL lets organizers pick routine lengths and rounds to fit the field and the day.",
+          "Music must be appropriate for all audiences. No profanity, slurs, or explicit themes. Inappropriate music means disqualification."
+        ]
+      },
+      {
+        "title": "Equipment",
+        "items": [
+          "Use yo-yos legal for your registered division.",
+          "String and accessories are your responsibility.",
+          "Judges may inspect equipment before you compete."
+        ]
+      },
+      {
+        "title": "Music & Performance",
+        "items": [
+          "Send your music by {music_deadline}.",
+          "Pre-recorded tracks only. No live music.",
+          "Be ready when you're called. Missing your slot forfeits your spot."
+        ]
+      },
+      {
+        "title": "Judging & Conduct",
+        "items": [
+          "Judging follows NYYL scoring. See How Scoring Works below.",
+          "Judge decisions are final. Under NYYL rules, the head judge and contest organizer have the final word.",
+          "Respectful conduct is required. Unsportsmanlike behavior may mean disqualification.",
+          "Venue rules apply to everyone. Organizers may adjust the format based on registration numbers."
+        ]
+      }
+    ],
+    "scoring_title": "How Scoring Works",
+    "scoring_intro": "Every routine gets two scores: Technical Execution from clickers, and a Routine Evaluation in four categories. Major deductions come off the top.",
+    "scoring": [
+      {
+        "title": "Points by Division",
+        "items": [
+          "1A and X Division: Technical Execution 60 + Routine Evaluation 40 (four categories, 10 each) = 100.",
+          "Sport / Beginner: Technical Execution 20 + Routine Evaluation 80 (four categories, 20 each) = 100. It rewards presentation, not trick count.",
+          "Your final score is the average across the judging panel."
+        ]
+      },
+      {
+        "title": "Technical Execution (Clickers)",
+        "items": [
+          "Each judge holds two counters: one for landed elements, one for misses.",
+          "One click for a hard but low-risk element. Riskier elements can earn more.",
+          "Repeats score less or nothing. No clicks for moves that don't show yo-yo skill.",
+          "Sport / Beginner uses no negative clicks.",
+          "Each judge's top raw score becomes the full 60 (20 in Sport), and everyone else scales against it."
+        ]
+      },
+      {
+        "title": "Routine Evaluation",
+        "items": [
+          "Trick Presentation: mastery of your tricks and the style you show them in.",
+          "Performance Quality: professionalism, stage use, and playing to the audience.",
+          "Musicality: hitting music cues and pacing tricks to the song.",
+          "Routine Construction: trick choice and order, and how it all fits together."
+        ]
+      },
+      {
+        "title": "Major Deductions (1A & X)",
+        "items": [
+          "Stop, −1: the yo-yo stops with the string fully unwound.",
+          "Discard, −3: you swap yo-yos, or can't bring it back to your hand wound when the routine ends.",
+          "Detach, −5: the yo-yo comes off the string (except 4A), the string breaks, or the yo-yo comes apart.",
+          "With two yo-yos, deductions count per yo-yo. Sport / Beginner has no major deductions."
+        ]
+      }
+    ],
+    "scoring_notes": [
+      "X Division clicker scores are multiplied by style before normalization, so styles compete fairly. Check the current NYYL rules for the multipliers."
+    ],
+    "notes": [
+      "These rules can change before registration opens. Questions? Email {email}."
+    ],
+    "sources": [
+      {
+        "title": "NYYL: Freestyle Rules for NYYL Events",
+        "url": "https://yoyocontest.com/freestyle-rules-for-nyyl-events/"
+      },
+      {
+        "title": "IYYF: Contest Rules",
+        "url": "https://www.iyyf.org/rules"
+      }
+    ]
+  },
+  "faq": [
+    {
+      "group": "Attending",
+      "q": "Is it free to watch?",
+      "a": "{admission}. No ticket needed for spectators and families."
+    },
+    {
+      "group": "Attending",
+      "q": "What time does it run?",
+      "a": "{date}, {hours}. See the Schedule page for the full day."
+    },
+    {
+      "group": "Attending",
+      "q": "Where is it?",
+      "a": "{venue}, {place}. The Venue page has parking, directions, and hotels."
+    },
+    {
+      "group": "Competing",
+      "q": "What divisions are there?",
+      "a": "See the Register page for every division, its routine length, and entry fee."
+    },
+    {
+      "group": "Competing",
+      "q": "How is it judged?",
+      "a": "We use the {rules_name}. Judges click Technical Execution and score four Routine Evaluation categories: Trick Presentation, Performance Quality, Musicality, and Routine Construction. Major deductions come off the top. The Rules page has the full breakdown."
+    },
+    {
+      "group": "Competing",
+      "q": "Do I need to send music?",
+      "a": "Yes. Send your track by {music_deadline}. The Register page explains the file name and format."
+    },
+    {
+      "group": "Competing",
+      "q": "Can I compete in more than one division?",
+      "a": "Yes. Registration is charged per division."
+    },
+    {
+      "group": "Competing",
+      "q": "What's the refund policy?",
+      "a": "Fees are non-refundable once payment clears, except for documented medical emergencies, duplicate charges, or a cancelled division. See Terms."
+    },
+    {
+      "group": "Competing",
+      "q": "I've never competed. Should I?",
+      "a": "Yes! The Sport / Beginner division is built for first freestyles: no negative clicks, no major deductions, and most of the score is presentation."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Can I volunteer?",
+      "a": "Yes, please. Email {email}. We need help with check-in, stage, music, and setup."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "How do I become a sponsor?",
+      "a": "See the Sponsors page for packages, or email {email}."
+    },
+    {
+      "group": "Getting Involved",
+      "q": "Who organizes it?",
+      "a": "{name} is organized by {organizer}."
+    }
+  ],
+  "terms": {
+    "effective": "",
+    "intro": "By registering as a competitor or attending {name} {year}, you agree to these terms. Parents and guardians registering minor competitors agree on their behalf. They cover refunds, assumption of risk, photo release, conduct, and minors.",
+    "sections": [
+      {
+        "title": "Refund & Cancellation Policy",
+        "paragraphs": [
+          "Registration fees are non-refundable once payment is confirmed, except:"
+        ],
+        "items": [
+          "Medical emergency: if a documented medical emergency keeps you from competing, email {email} before the contest. We'll consider a full or partial refund.",
+          "Duplicate payment: if you're charged twice by mistake, the duplicate charge is refunded in full.",
+          "Division cancelled: if we cancel a division and can't move you to another, that division's fee is refunded in full."
+        ],
+        "after": [
+          "Other reasons, like schedule conflicts or travel problems, aren't eligible. Fees pay for the venue, equipment, and awards ahead of time.",
+          "Registration is personal and can't be transferred to another competitor. To request a refund, email {email} with the subject \"Refund Request\" as early as you can."
+        ]
+      },
+      {
+        "title": "Assumption of Risk & Liability Waiver",
+        "paragraphs": [
+          "Yo-yo and skill toy activities carry risks, including contact with equipment, unexpected movement of other participants, and falls. By competing or attending, you accept those risks.",
+          "{organizer}, its volunteers, and the venue are not liable for injury, loss, theft, or property damage connected with the contest, to the fullest extent the law allows.",
+          "Competitors are responsible for keeping their equipment safe and in working order. Organizers may stop any equipment or performance that puts others at risk.",
+          "For minors: a parent or legal guardian must acknowledge this waiver at check-in. Minors can't compete without it."
+        ]
+      },
+      {
+        "title": "Photo & Video Release",
+        "paragraphs": [
+          "{name} is a public event. It will be photographed, recorded, and may be livestreamed by organizers, media, sponsors, and attendees.",
+          "By competing or attending, you consent to being photographed and recorded, and you give {organizer} a non-exclusive, royalty-free right to use those images for contest records, promotion of future events, and club communications. No payment is provided.",
+          "Stage freestyles are recorded for judging and may be shared publicly as part of the contest archive.",
+          "Don't want to be photographed? Tell an organizer at check-in. We'll make reasonable efforts, but we can't guarantee you won't appear in photos of a public event."
+        ]
+      },
+      {
+        "title": "Code of Conduct",
+        "paragraphs": [
+          "Everyone at the contest, including competitors, spectators, volunteers, and staff, is expected to:"
+        ],
+        "items": [
+          "Treat others with respect, whatever their age, skill level, background, or identity.",
+          "Never harass, intimidate, discriminate against, or threaten anyone.",
+          "Compete with integrity. Don't interfere with other competitors' performances or equipment.",
+          "Follow instructions from contest staff and venue staff.",
+          "Keep the competition area and venue clean and safe.",
+          "Clear the stage and warm-up space when staff ask."
+        ],
+        "after": [
+          "Breaking this code can mean disqualification, removal from the venue, or a ban from future events. The contest director's decisions are final. To report a problem, talk to any staff member or email {email}."
+        ]
+      },
+      {
+        "title": "Minor Participant Policy",
+        "paragraphs": [
+          "Competitors and spectators of all ages are welcome. For anyone under 18:"
+        ],
+        "items": [
+          "Registration: a parent or legal guardian must register the competitor and agrees to these terms on their behalf.",
+          "Waiver: a parent or guardian must be present at check-in, or have sent written acknowledgment of the waiver, before the minor competes.",
+          "Supervision: minors watching the contest should come with a parent or guardian. Organizers aren't responsible for unaccompanied minors.",
+          "Names and photos: results for minors are shown as first name and last initial unless a parent opts in to full names. Parents can ask staff at check-in to limit their child's appearance in event media."
+        ]
+      },
+      {
+        "title": "Event Cancellation",
+        "paragraphs": [
+          "If the contest is cancelled entirely for reasons beyond our control, like severe weather, venue closure, or a public health emergency, competitors get a full refund within 30 days of the announcement.",
+          "If the contest changes significantly but still happens (fewer divisions, a new venue), we'll tell competitors as early as possible and work with each person case by case."
+        ]
+      }
+    ]
+  },
+  "sponsorship": {
+    "intro": "Put your brand in front of competitors, families, and spectators. Every dollar goes to the event.",
+    "tiers": [
+      {
+        "name": "Presenting",
+        "price": "Ask us",
+        "slots": "1 slot",
+        "perks": [
+          "\"{name} Presented by [Your Brand]\"",
+          "Logo on everything",
+          "Large vendor table",
+          "Emcee callouts all day",
+          "Free competitor registrations"
+        ]
+      },
+      {
+        "name": "Gold",
+        "price": "Ask us",
+        "slots": "Limited",
+        "perks": [
+          "Large logo on banner and flyers",
+          "Vendor table",
+          "Emcee shoutouts",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "Silver",
+        "price": "Ask us",
+        "slots": "Open",
+        "perks": [
+          "Logo on banner",
+          "Emcee shoutout at opening",
+          "Social media thank-you"
+        ]
+      },
+      {
+        "name": "In-Kind",
+        "price": "Any amount",
+        "slots": "Open",
+        "perks": [
+          "Name on sponsor banner",
+          "Social media thank-you",
+          "Prizes, product, gift cards, and food all count"
+        ]
+      }
+    ]
+  },
+  "theme": {
+    "primary": "#1a2744",
+    "accent": "#c9a84c",
+    "background": "#f8f5ee",
+    "ink": "#1a2744",
+    "corners": "sharp"
+  }
+}
