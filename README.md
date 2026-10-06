@@ -4,7 +4,7 @@ A free, fast, mobile-friendly website for a **yo-yo, kendama, diabolo, spinning 
 mixed skill toy contest, or a casual trick battle**.
 Edit one settings file, and GitHub builds and publishes the site for you. No coding, servers, or monthly fees.
 
-![Four contest sites built from this template: VSYC-26 and three demos](.github/preview.png)
+![Ten contest sites built from this template: VSYC-26 and nine demos for yo-yo, kendama, diabolo, spin top, juggling, mixed skill toys, AP and doubles, a yo-yo and kendama combo, and a trick battle](.github/preview.png)
 
 - **Cost:** $0 on GitHub Pages. An optional custom domain is about $10–20/year.
 - **Time:** about 30–60 minutes from "Use this template" to a live site, most of it gathering your contest's details.
