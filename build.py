@@ -83,6 +83,11 @@ def ext_link(url, label, cls=""):
     return f'<a{c} href="{esc(url)}" rel="noopener noreferrer">{esc(label)}</a>'
 
 
+def join_words(items):
+    items = list(items)
+    return " and ".join(items) if len(items) <= 2 else ", ".join(items[:-1]) + ", and " + items[-1]
+
+
 def mailto(email, subject=""):
     if not (email or "").strip():
         sys.exit('\ncontact.email is empty in site.jsonc. Add a shared club email address '
@@ -476,6 +481,43 @@ class Site:
     def socials(self):
         return [s for s in self.cfg["contact"].get("social") or [] if s.get("url")]
 
+    def report_link_html(self):
+        url = ((self.cfg.get("conduct") or {}).get("report_url") or "").strip()
+        if url and not url.startswith("https://"):
+            sys.exit(f'\nconduct.report_url "{url}" should be a full https:// address.\n')
+        return f'<p>{ext_link(url, "Report a concern privately")}</p>' if url else ""
+
+    def conduct_html(self):
+        """Who handles conduct reports and how, from the conduct settings (empty when unset)."""
+        cc = self.cfg.get("conduct") or {}
+        url = (cc.get("report_url") or "").strip()
+        team = [m for m in cc.get("team") or [] if (m.get("name") or "").strip()]
+        steps = [x for x in cc.get("steps") or [] if x]
+        changes = [ch for ch in cc.get("changes") or [] if ch.get("text")]
+        if not (url or team or steps or changes or cc.get("response")):
+            return ""
+        if len(team) == 1:
+            warnings.append("conduct.team lists one person. Name at least two, so someone can step aside "
+                            "when a report is about them.")
+        email = mailto(self.cfg["contact"]["email"], "Conduct report")
+        out = ["<h2 id=\"conduct-reports\">Reporting a Conduct Problem</h2>",
+               "<p>" + (f'Use our {ext_link(url, "private report form")} (you can leave your name off), or email {email}.'
+                        if url else f"Email {email}.") + " Reports are kept as private as we can.</p>"]
+        if team:
+            who = join_words(esc(m["name"]) + (f' ({esc(m["role"])})' if m.get("role") else "") for m in team)
+            out.append(f"<p>Reports go to our conduct team: {who}. If a report is about one of them, they step "
+                       "aside and the others handle it."
+                       + (f" We reply within {esc(cc['response'])}." if cc.get("response") else "") + "</p>")
+        elif cc.get("response"):
+            out.append(f"<p>We reply within {esc(cc['response'])}.</p>")
+        if steps:
+            out.append("<p>What can happen, mildest first:</p><ul>" + "".join(f"<li>{esc(x)}</li>" for x in steps) + "</ul>")
+        if changes:
+            out.append("<h2>Changes to These Terms</h2><ul>" + "".join(
+                f'<li>{esc(ch.get("date", ""))}{": " if ch.get("date") else ""}{esc(ch["text"])}</li>' for ch in changes)
+                + "</ul>")
+        return "\n    ".join(out)
+
     def footer(self, current, root):
         c = self.cfg
         org = self.c.get("organizer") or {}
@@ -499,6 +541,7 @@ class Site:
       </ul>
     </nav>
     <p>{mailto(c["contact"]["email"])}</p>
+    {self.report_link_html()}
     {f'<p>{socials}</p>' if socials else ''}
     {org_html}
     {source_html}
@@ -1397,6 +1440,7 @@ class Site:
     <p>{esc(self.fill(T.get("intro", "")))}</p>
     <nav class="toc" aria-label="On this page"><p class="label">On this page</p><ol>{"".join(toc)}</ol></nav>
     {"".join(secs)}
+    {self.conduct_html()}
     <h2>Questions</h2>
     <p>Email {mailto(cfg["contact"]["email"], "Terms question")}.</p>
   </div>

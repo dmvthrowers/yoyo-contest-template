@@ -209,6 +209,24 @@
   // Terms text comes from the preset. Have someone check it fits your venue and local law.
   "terms": { "effective": "September 2026" },
 
+  // How conduct problems are reported, shown on the terms page. The rules themselves come from
+  // the preset's terms. All optional; leave empty to show only the contact email.
+  "conduct": {
+    // Who handles reports. Name at least two, so one can step aside if a report is about them.
+    // { "name": "Jordan Example", "role": "Head judge" }
+    "team": [],
+    // How fast you reply, e.g. "2 days" ("" to hide)
+    "response": "",
+    // Optional private report form that allows anonymous reports (e.g. a Google Form with
+    // "collect email" off). Shown on the terms page and in every footer.
+    "report_url": "",
+    // What can happen after a report, mildest first, e.g.
+    // ["A private conversation", "A warning", "Removal from the event"]
+    "steps": [],
+    // Changes over time: { "date": "September 2026", "text": "First version." }
+    "changes": []
+  },
+
   // Colors (hex). Delete a line to use the preset's color.
   // corners: "sharp" (default), "soft", or "round".
   "theme": {

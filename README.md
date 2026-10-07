@@ -39,6 +39,8 @@ a "page not found" page.
 - **Results**: a podium for each division, headline stats, and links to standings, photos, and video.
 - **Venue page** with parking and food, vendor rules, venue photos, and hotel room blocks.
 - **Competitor terms**: refunds, waiver, photo release, conduct, minors, and cancellation.
+  Name a conduct team, reply time and a private report form in `site.jsonc` → `conduct`; the
+  report link then appears in every footer.
 - **Found on Google**: the contest is a `SportsEvent` search engines understand, with your sponsors, and the FAQ shows in results.
 
 Every page works on phones and is accessible. It's privacy-friendly (no cookies, trackers, or outside
