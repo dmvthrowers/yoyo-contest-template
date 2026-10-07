@@ -372,8 +372,11 @@ class Site:
         self.reg_opens = parse_date(reg.get("opens"), "registration.opens")
         self.reg_closes = parse_date(reg.get("closes"), "registration.closes")
         self.start, self.end = parse_time(self.c.get("start"), "contest.start"), parse_time(self.c.get("end"), "contest.end")
-        self.pages = [("index", "Home"), ("schedule", "Schedule"), ("register", "Register"), ("rules", "Rules"),
-                      ("venue", "Venue"), ("sponsors", "Sponsors"), ("results", "Results"), ("faq", "FAQ")]
+        self.pages = [("index", "Home"), ("schedule", "Schedule")]
+        if any(isinstance(b, dict) for b in cfg.get("brackets") or []):   # the Brackets page exists only when one is listed
+            self.pages.append(("brackets", "Brackets"))
+        self.pages += [("register", "Register"), ("rules", "Rules"),
+                       ("venue", "Venue"), ("sponsors", "Sponsors"), ("results", "Results"), ("faq", "FAQ")]
         self.footer_pages = self.pages + [("terms", "Terms")]
 
     # --- where are we in the contest's life?
@@ -1363,6 +1366,91 @@ class Site:
 {become}"""
         return "Sponsors", f"Sponsors and sponsorship packages for {self.name} {self.year()}.", body, None
 
+    def bracket_blocks(self):
+        """Each configured bracket as (eyebrow, title, html); builds the schedule of matches from entrants and results."""
+        by_code = {d.get("code"): d for d in self.divisions() if d.get("code")}
+        blocks = []
+        for i, b in enumerate(self.cfg.get("brackets") or [], 1):
+            if not isinstance(b, dict):
+                warnings.append(f"Bracket {i} in \"brackets\" should be a {{ ... }} block. Ignored.")
+                continue
+            div = by_code.get(b.get("division"))
+            if b.get("division") and not div:
+                warnings.append(f'Bracket {i}: division "{b["division"]}" is not one of your divisions.')
+            title = b.get("title") or (div["name"] if div else f"Bracket {i}")
+            spec = bracket_of(div) if div else {}
+            ents = [e.strip() for e in b.get("entrants") or [] if isinstance(e, str) and e.strip()]
+            if len(set(ents)) != len(ents):
+                warnings.append(f'Bracket "{title}": two entrants have the same name. Add a last initial to tell them apart.')
+                ents = list(dict.fromkeys(ents))
+            for e in ents:
+                words = e.split()
+                if len(words) == 2 and len(words[1].rstrip(".")) > 1 and not b.get("full_names_ok"):
+                    warnings.append(f'Bracket "{title}": "{e}" looks like a full name. List minors by first name and last initial '
+                                    'unless a parent opted in. (Set "full_names_ok": true if everyone here agreed.)')
+            if len(ents) > 64:
+                warnings.append(f'Bracket "{title}" has {len(ents)} entrants; only the first 64 are used.')
+                ents = ents[:64]
+            if (spec.get("elimination") or b.get("elimination")) == "double":
+                warnings.append(f'Bracket "{title}": only single elimination is drawn. Showing a single-elimination bracket.')
+            if len(ents) < 2:
+                blocks.append((title, "Bracket", '<p class="center">The bracket goes up here once entries are set.</p>'))
+                continue
+            results = {}
+            for r in b.get("results") or []:
+                if isinstance(r, dict) and isinstance(r.get("match"), int):
+                    results[r["match"]] = r
+                else:
+                    warnings.append(f'Bracket "{title}": each result needs a match number, like {{ "match": 1, "winner": "Sam R." }}.')
+            third_place = b.get("third_place", spec.get("third_place")) is True
+            rounds, third, champion, problems = solve_bracket(ents, results, third_place)
+            for p in problems:
+                warnings.append(f'Bracket "{title}": {p}')
+            blocks.append(("" if (div and title == div["name"]) or not div else div["name"], title, self.bracket_html(b, spec, rounds, third, champion, i)))
+        return blocks
+
+    def bracket_html(self, b, spec, rounds, third, champion, n=1):
+        def side(name, seed, win):
+            if name == BYE:
+                return '<div class="bm-side bm-bye"><span>Bye</span></div>'
+            if name == TBD:
+                return '<div class="bm-side bm-tbd"><span>To be decided</span></div>'
+            tag = f'<span class="bm-seed" aria-label="seed {seed}">{seed}</span>' if seed else ""
+            flag = ' <span class="sr-only">(winner)</span>' if win else ""
+            return f'<div class="bm-side{" bm-win" if win else ""}">{tag}<span class="bm-name">{esc(name)}</span>{flag}</div>'
+        def match(m, label=""):
+            win_a = bool(m["winner"]) and m["winner"] == m["a"]
+            win_b = bool(m["winner"]) and m["winner"] == m["b"]
+            score = f'<span class="bm-score">{esc(m["score"])}</span>' if m["score"] else ""
+            return (f'<li class="bm" id="bracket{n}-match-{m["id"]}"><span class="bm-id">{esc(label or "Match")} {m["id"]}</span>'
+                    f'{side(m["a"], m["seed_a"], win_a)}{side(m["b"], m["seed_b"], win_b)}{score}</li>')
+        cols = []
+        for i, ms in enumerate(rounds, 1):
+            name = bracket_round_name(i, len(rounds))
+            cols.append(f'<section class="bracket-round" aria-label="{esc(name)}"><h3>{esc(name)}</h3>'
+                        f'<ol>{"".join(match(m) for m in ms)}</ol></section>')
+        if third:
+            cols[-1] = cols[-1].replace("</ol></section>", "</ol>") + (
+                f'<h3 class="bm-third">3rd-Place Match</h3><ol>{match(third, "3rd place")}</ol></section>')
+        facts = [x for x in (bracket_decider(spec) and {"judges": "Judges pick each winner", "crowd": "The crowd picks each winner",
+                             "audience": "The audience picks each winner"}.get(bracket_decider(spec), bracket_decider(spec)),
+                             spec.get("match_format")) if isinstance(x, str) and x]
+        stream = b.get("stream_url") or spec.get("stream_url")
+        watch = f'<p class="center">{ext_link(stream, "Watch the stream", "btn btn-outline")}</p>' if isinstance(stream, str) and stream.startswith("https://") else ""
+        champ = f'<p class="bracket-champion"><span class="place-label">Champion</span><strong>{esc(champion)}</strong></p>' if champion not in (TBD, BYE) else ""
+        note = f'<p class="note center">{esc(b["note"])}</p>' if isinstance(b.get("note"), str) and b["note"] else ""
+        info = f'<p class="center muted">{esc(" · ".join(facts))}</p>' if facts else ""
+        return f'{info}{champ}<div class="bracket" role="group" aria-label="Single elimination bracket">{"".join(cols)}</div>{watch}{note}'
+
+    def page_brackets(self):
+        blocks = self.bracket_blocks()
+        intro = self.cfg.get("brackets_intro")
+        lede = self.fill(intro) if isinstance(intro, str) and intro else "Who plays who, and who moves on."
+        body = self.page_head("Brackets", "Brackets", lede)
+        for i, (eyebrow, title, inner) in enumerate(blocks):
+            body += self.section(eyebrow, title, inner, alt=bool(i % 2))
+        return "Brackets", f"Brackets for {self.name} {self.year()}: matchups and results.", body, None
+
     def page_results(self):
         cfg = self.cfg
         R = cfg.get("results") or {}
@@ -1624,6 +1712,82 @@ def tricks_of(d):
     if t is None:
         return []
     return t if isinstance(t, list) and all(isinstance(x, str) and x.strip() for x in t) else None
+
+
+BYE, TBD = "\0bye", ""
+
+
+def bracket_slots(n):
+    """Seed numbers in bracket order for the next power of two at or above n: 1 v 8, 4 v 5, 2 v 7, 3 v 6 for eight."""
+    size = 1
+    while size < max(n, 2):
+        size *= 2
+    order = [1]
+    while len(order) < size:
+        m = len(order) * 2
+        order = [x for seed in order for x in (seed, m + 1 - seed)]
+    return order
+
+
+def solve_bracket(entrants, results, third_place=False):
+    """Work out every match from the seeded entrants and the recorded results.
+    Returns (rounds, third, champion, problems). A match is a dict with id, a, b (names, BYE or TBD),
+    seed_a, seed_b, winner and score. Results are { match number: { "winner": name, "score": text } }."""
+    problems = []
+    seeds = bracket_slots(len(entrants))
+    size = len(seeds)
+    slot = [entrants[s - 1] if s <= len(entrants) else BYE for s in seeds]
+    rounds, mid, prev = [], 1, None
+    for r in range(1, size.bit_length()):
+        ms = []
+        for i in range(size // 2 ** r):
+            if r == 1:
+                a, b = slot[2 * i], slot[2 * i + 1]
+                sa, sb = (seeds[2 * i] if a != BYE else None), (seeds[2 * i + 1] if b != BYE else None)
+            else:
+                a, b, sa, sb = prev[2 * i]["winner"], prev[2 * i + 1]["winner"], None, None
+            m = {"id": mid, "a": a, "b": b, "seed_a": sa, "seed_b": sb, "winner": TBD, "score": ""}
+            mid += 1
+            res = results.get(m["id"]) or {}
+            if a == BYE or b == BYE:
+                m["winner"] = b if a == BYE else a
+            elif res.get("winner"):
+                if res["winner"] in (a, b) and a != TBD and b != TBD:
+                    m["winner"] = res["winner"]
+                else:
+                    problems.append(f'match {m["id"]}: winner "{res["winner"]}" is not one of the two players in it.')
+            if isinstance(res.get("score"), str):
+                m["score"] = res["score"]
+            ms.append(m)
+        rounds.append(ms)
+        prev = ms
+    third = None
+    if third_place and len(rounds) >= 2:
+        semis = rounds[-2]
+        def loser(m):
+            if m["winner"] in (TBD, BYE) or m["a"] in (BYE, TBD) or m["b"] in (BYE, TBD):
+                return TBD
+            return m["b"] if m["winner"] == m["a"] else m["a"]
+        third = {"id": mid, "a": loser(semis[0]), "b": loser(semis[1]), "seed_a": None, "seed_b": None, "winner": TBD, "score": ""}
+        res = results.get(mid) or {}
+        if res.get("winner"):
+            if res["winner"] in (third["a"], third["b"]) and TBD not in (third["a"], third["b"]):
+                third["winner"] = res["winner"]
+            else:
+                problems.append(f'match {mid}: winner "{res["winner"]}" is not one of the two players in it.')
+        if isinstance(res.get("score"), str):
+            third["score"] = res["score"]
+    known = {m["id"] for ms in rounds for m in ms} | ({third["id"]} if third else set())
+    for k in results:
+        if k not in known:
+            problems.append(f"result for match {k}, but this bracket has matches 1 to {max(known)}.")
+    return rounds, third, rounds[-1][0]["winner"], problems
+
+
+def bracket_round_name(index, total):
+    """Final, Semifinals, Quarterfinals, then Round of 16 and so on. index is 1-based."""
+    left = total - index
+    return {0: "Final", 1: "Semifinals", 2: "Quarterfinals"}.get(left, f"Round of {2 ** (left + 1)}")
 
 
 def bracket_of(d):

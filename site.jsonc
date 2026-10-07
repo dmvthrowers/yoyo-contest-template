@@ -175,6 +175,15 @@
     "contact_url": ""
   },
 
+  // Brackets (optional): a "Brackets" page appears when you list at least one. "entrants" are in seed order
+  // (the first name is the top seed); the build draws every match, gives byes to the top seeds when the
+  // number isn't a power of two, and moves winners forward. Matches are numbered round by round (the 3rd-place
+  // match is last), so record results as you go: { "match": 1, "winner": "Sam R.", "score": "2-1" }.
+  // "division" links it to one of your divisions and uses that division's bracket settings (3rd-place match,
+  // who picks the winner, stream link). List minors by first name and last initial.
+  // { "division": "Duel", "title": "Open Battles", "entrants": ["Sam R.", "Jo L.", "Max T.", "Lee P."], "results": [] }
+  "brackets": [],
+
   // Fill this in after the contest. The site switches to "that's a wrap" the day after.
   "results": {
     "intro": "",

@@ -232,6 +232,22 @@ the build warns about values it can't use, then ignores them.
   "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
   stay consistent.
 
+### Brackets
+
+For a battle bracket, list it under `brackets` in `site.jsonc` and the build adds a **Brackets** page and menu item (and nothing changes for sites that list none). Give the entrants in seed order. The build draws every match, gives byes to the top seeds when the number isn't a power of two, and moves each winner forward.
+
+```jsonc
+"brackets": [
+  { "division": "Duel", "entrants": ["Sam R.", "Jo L.", "Max T.", "Lee P."],
+    "results": [ { "match": 1, "winner": "Sam R.", "score": "2-1" } ] }
+]
+```
+
+- Matches are numbered round by round, and the 3rd-place match comes last. Check the numbers on the built page, then add each `results` line as battles finish.
+- `division` links it to a division, so its `bracket` settings apply: `third_place`, who picks the winners, and a `stream_url` link.
+- It is one plain page: no script, no outside embed. Single elimination only; a `double` setting is flagged and drawn as single.
+- Names are first name and last initial for minors. The build warns about anything that looks like a full name; set `"full_names_ok": true` on a bracket if everyone in it agreed.
+
 [`examples/`](examples/) has a demo of each: the yo-yo AP and Doubles demo (rounds, panel criteria, a
 team), the yo-yo and kendama combo (two ladders, a Duo, an audience-voted battle), and the juggling demo
 (scored, team, battle, showcase).
