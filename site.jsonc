@@ -184,7 +184,20 @@
     "stats": [],
     // { "title": "Full standings", "url": "https://...", "label": "See the full leaderboard" }
     "links": [],
+    // Routine videos, embedded from YouTube's no-cookie player. Only post videos of people who
+    // agreed to be filmed (a parent or guardian for minors).
+    // { "title": "1A Final · First place", "youtube": "https://youtu.be/VIDEO_ID", "division": "1A", "caption": "" }
+    "videos": [],
     "privacy_note": "Minors are listed by first name and last initial unless a parent opted in to full names."
+  },
+
+  // Optional recap page, linked from Results and the footer once it has paragraphs or videos.
+  "recap": {
+    "title": "",
+    "intro": "",
+    "paragraphs": [],
+    // Same format as results.videos
+    "videos": []
   },
 
   // The home page after the contest: wrap-up numbers and links
