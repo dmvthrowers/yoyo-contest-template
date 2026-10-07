@@ -209,6 +209,22 @@ tbody th { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; c
 
 /* Merch and side-event cards */
 .card-pic { display: block; width: 100%; height: auto; margin: -.2rem 0 1rem; border: 1px solid var(--line); }
+/* Brackets */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.bracket { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); text-align: left; }
+.bracket-round h3 { font-size: .8rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: .6rem; }
+.bracket-round ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.bracket-round .bm-third { margin-top: 1.25rem; }
+.bm { background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--primary); padding: .5rem .75rem .6rem; border-radius: var(--radius); }
+.bm-id { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+.bm-side { display: flex; gap: .5rem; align-items: baseline; padding: .15rem 0; }
+.bm-side + .bm-side { border-top: 1px solid var(--line); }
+.bm-win { font-weight: 900; color: var(--primary); }
+.bm-bye, .bm-tbd { color: var(--muted); font-style: italic; }
+.bm-seed { min-width: 1.25rem; font-size: .75rem; font-weight: 700; color: var(--muted); }
+.bm-score { display: block; margin-top: .25rem; font-size: .85rem; color: var(--muted); }
+.bracket-champion { text-align: center; margin: 0 0 1.25rem; }
+.bracket-champion strong { display: block; font-size: 1.6rem; font-weight: 900; color: var(--primary); }
 
 /* Terms */
 .prose ul { padding-left: 1.2rem; }
@@ -265,8 +281,10 @@ figcaption { padding: .6rem .9rem; font-size: .78rem; font-weight: 800; letter-s
   .hero h1 { font-size: 3.4rem; }
   .hero-year { font-size: 3.6rem; }
   .cards-2, .cards-3, .rule-blocks, .results-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bracket { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 960px) {
+  .bracket { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
   .site-header { position: sticky; top: 0; z-index: 50; }
   .nav-toggle { display: none; }
   .header-inner { padding-bottom: .2rem; }
