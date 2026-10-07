@@ -39,6 +39,8 @@ a "page not found" page.
 - **Results**: a podium for each division, headline stats, and links to standings, photos, and video.
 - **Venue page** with parking and food, vendor rules, venue photos, and hotel room blocks.
 - **Competitor terms**: refunds, waiver, photo release, conduct, minors, and cancellation.
+  Name a conduct team, reply time and a private report form in `site.jsonc` → `conduct`; the
+  report link then appears in every footer.
 - **Found on Google**: the contest is a `SportsEvent` search engines understand, with your sponsors, and the FAQ shows in results.
 
 Every page works on phones and is accessible. It's privacy-friendly (no cookies, trackers, or outside
@@ -98,6 +100,10 @@ site is live at `https://YOUR-GITHUB-NAME.github.io/YOUR-REPO-NAME/`.
 
 **A red X** means the automatic check found a problem, such as a typo in `site.jsonc`. Click the run to
 see a plain-English message. Your live site stays as it was until it's fixed.
+
+**"The site still shows the template's sample content"** means `site.jsonc` still has the sample
+contest (Springfield Yo-Yo Open, `example.org` links). The check won't publish a site with
+someone else's placeholder details; replace them with your contest's and push again.
 
 ### 5. After the contest
 The day after, the home page switches to "that's a wrap" by itself. Then:
@@ -226,6 +232,22 @@ the build warns about values it can't use, then ignores them.
   `{ "time": "10:30 AM", "division": "1A", "round": "Prelims" }` shows "1A Division · Prelims" and
   "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
   stay consistent.
+
+### Brackets
+
+For a battle bracket, list it under `brackets` in `site.jsonc` and the build adds a **Brackets** page and menu item (and nothing changes for sites that list none). Give the entrants in seed order. The build draws every match, gives byes to the top seeds when the number isn't a power of two, and moves each winner forward.
+
+```jsonc
+"brackets": [
+  { "division": "Duel", "entrants": ["Sam R.", "Jo L.", "Max T.", "Lee P."],
+    "results": [ { "match": 1, "winner": "Sam R.", "score": "2-1" } ] }
+]
+```
+
+- Matches are numbered round by round, and the 3rd-place match comes last. Check the numbers on the built page, then add each `results` line as battles finish.
+- `division` links it to a division, so its `bracket` settings apply: `third_place`, who picks the winners, and a `stream_url` link.
+- It is one plain page: no script, no outside embed. Single elimination only; a `double` setting is flagged and drawn as single.
+- Names are first name and last initial for minors. The build warns about anything that looks like a full name; set `"full_names_ok": true` on a bracket if everyone in it agreed.
 
 [`examples/`](examples/) has a demo of each: the yo-yo AP and Doubles demo (rounds, panel criteria, a
 team), the yo-yo and kendama combo (two ladders, a Duo, an audience-voted battle), and the juggling demo

@@ -175,6 +175,15 @@
     "contact_url": ""
   },
 
+  // Brackets (optional): a "Brackets" page appears when you list at least one. "entrants" are in seed order
+  // (the first name is the top seed); the build draws every match, gives byes to the top seeds when the
+  // number isn't a power of two, and moves winners forward. Matches are numbered round by round (the 3rd-place
+  // match is last), so record results as you go: { "match": 1, "winner": "Sam R.", "score": "2-1" }.
+  // "division" links it to one of your divisions and uses that division's bracket settings (3rd-place match,
+  // who picks the winner, stream link). List minors by first name and last initial.
+  // { "division": "Duel", "title": "Open Battles", "entrants": ["Sam R.", "Jo L.", "Max T.", "Lee P."], "results": [] }
+  "brackets": [],
+
   // Fill this in after the contest. The site switches to "that's a wrap" the day after.
   "results": {
     "intro": "",
@@ -212,6 +221,24 @@
   // Retired pages: keep old links working. Each old page name sends visitors to a page on
   // this site (or an https:// address). Example: { "divisions": "register.html#divisions" }
   "redirects": {},
+
+  // How conduct problems are reported, shown on the terms page. The rules themselves come from
+  // the preset's terms. All optional; leave empty to show only the contact email.
+  "conduct": {
+    // Who handles reports. Name at least two, so one can step aside if a report is about them.
+    // { "name": "Jordan Example", "role": "Head judge" }
+    "team": [],
+    // How fast you reply, e.g. "2 days" ("" to hide)
+    "response": "",
+    // Optional private report form that allows anonymous reports (e.g. a Google Form with
+    // "collect email" off). Shown on the terms page and in every footer.
+    "report_url": "",
+    // What can happen after a report, mildest first, e.g.
+    // ["A private conversation", "A warning", "Removal from the event"]
+    "steps": [],
+    // Changes over time: { "date": "September 2026", "text": "First version." }
+    "changes": []
+  },
 
   // Colors (hex). Delete a line to use the preset's color.
   // corners: "sharp" (default), "soft", or "round".

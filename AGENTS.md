@@ -61,6 +61,8 @@ facts the user gives you. For next year, update the dates and clear `results` an
   them as an official ruleset, and don't invent a league, sanctioning body, or point system. Trick
   lists, judging criteria, and points in presets and demos are examples: confirm the real ones with the
   user before publishing them.
+- **Brackets:** `brackets` entrants are first name and last initial for minors. Never invent entrants or results; record only
+  what the user gives you, by match number. Don't set `full_names_ok` unless the user says everyone agreed.
 - **Toy wording** (gear, equipment, music, safety) belongs in the preset or `site.jsonc`, never in
   `build.py`. Keep `build.py`'s own text neutral so every toy works.
 - **Security:**

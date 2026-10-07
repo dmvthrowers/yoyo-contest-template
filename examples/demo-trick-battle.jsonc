@@ -17,6 +17,11 @@
     "fee_summary": "Free", "fees": [ { "name": "Every bracket", "fee": "Free" } ] },
   "venue": { "name": "Riverside Community Center", "space": "Gym", "address": "500 River St, Lincoln NE" },
   "sponsors": [ { "tier": "Prize Sponsor", "name": "Example Toy Shop", "text": "Prizes for every bracket winner." } ],
+  // Sample bracket for the "Open" division: six sample entrants (two get byes) and the first round's results.
+  "brackets": [
+    { "division": "Open", "entrants": ["Sample A.", "Sample B.", "Sample C.", "Sample D.", "Sample E.", "Sample F."],
+      "results": [ { "match": 2, "winner": "Sample D.", "score": "2-1" }, { "match": 4, "winner": "Sample C." } ] }
+  ],
   "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
   "contact": { "email": "hello@example.org", "social": [] },
   "faq_extra": [], "terms": { "effective": "" },
