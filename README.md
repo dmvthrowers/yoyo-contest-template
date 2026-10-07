@@ -101,6 +101,10 @@ site is live at `https://YOUR-GITHUB-NAME.github.io/YOUR-REPO-NAME/`.
 **A red X** means the automatic check found a problem, such as a typo in `site.jsonc`. Click the run to
 see a plain-English message. Your live site stays as it was until it's fixed.
 
+**"The site still shows the template's sample content"** means `site.jsonc` still has the sample
+contest (Springfield Yo-Yo Open, `example.org` links). The check won't publish a site with
+someone else's placeholder details; replace them with your contest's and push again.
+
 ### 5. After the contest
 The day after, the home page switches to "that's a wrap" by itself. Then:
 
