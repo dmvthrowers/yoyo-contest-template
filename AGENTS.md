@@ -61,6 +61,9 @@ facts the user gives you. For next year, update the dates and clear `results` an
   them as an official ruleset, and don't invent a league, sanctioning body, or point system. Trick
   lists, judging criteria, and points in presets and demos are examples: confirm the real ones with the
   user before publishing them.
+- **Merch and side events:** list only what the user tells you is on offer, with their prices and wording. The site never takes
+  payments, so say where and how things are sold in `merch.note`. Pictures need `alt` text.
+
 - **Brackets:** `brackets` entrants are first name and last initial for minors. Never invent entrants or results; record only
   what the user gives you, by match number. Don't set `full_names_ok` unless the user says everyone agreed.
 - **Toy wording** (gear, equipment, music, safety) belongs in the preset or `site.jsonc`, never in

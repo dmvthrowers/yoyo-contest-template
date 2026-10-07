@@ -233,6 +233,13 @@ the build warns about values it can't use, then ignores them.
   "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
   stay consistent.
 
+### Merch and side events
+
+Two more pages appear only when you fill them in. Neither takes payments; they say what's on offer and where.
+
+- **Merch** (`merch`): `items` (name, text, price, a picture in `assets/images/` with `alt`, an `https://` link if it's sold online), a `note` such as "Sold at the booth on contest day, cash and card", and `vendors` (who's tabling, with a tier and a link).
+- **Side events** (`side_events`): `items` with a title, text, when, where, a picture and a link, for things like a beginner table, a maker corner or a sponsor tour.
+
 ### Brackets
 
 For a battle bracket, list it under `brackets` in `site.jsonc` and the build adds a **Brackets** page and menu item (and nothing changes for sites that list none). Give the entrants in seed order. The build draws every match, gives byes to the top seeds when the number isn't a power of two, and moves each winner forward.
