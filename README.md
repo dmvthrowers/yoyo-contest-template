@@ -140,6 +140,7 @@ The build prints the current status line, so you can check every stage before it
 | Sponsors and packages | `site.jsonc` → `sponsors`, `partners`, `sponsorship` | Tiers come from the preset; set prices and slots. |
 | Results and wrap-up | `site.jsonc` → `results`, `wrap` | See [Competitor privacy](#competitor-privacy). |
 | FAQ | `site.jsonc` → `faq_extra` | Or copy `faq` from the preset to replace it. |
+| Retired pages | `site.jsonc` → `redirects` | `{ "old-page": "rules.html" }` keeps old links working: `old-page.html` sends visitors to the new page. |
 | Terms | copy `terms` from the preset into `site.jsonc` | Have someone check them. See below. |
 | Colors and corners | `site.jsonc` → `theme` | `"corners"`: `sharp`, `soft`, or `round`. The build warns if text would be hard to read. |
 | Logo | add `assets/emblem.svg` | Otherwise a logo with your short name is generated. Pick its toy with `theme.emblem`: `yoyo`, `kendama`, `top`, `diabolo`, `juggling`, or `star`. |

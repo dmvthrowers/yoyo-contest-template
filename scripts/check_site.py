@@ -35,6 +35,7 @@ class Page(HTMLParser):
         self.meta = {}
         self.csp = None
         self.security = []
+        self.redirect = False
 
     def handle_starttag(self, tag, attrs):
         # HTMLParser lower-cases tag and attribute names and handles any quoting style.
@@ -52,6 +53,8 @@ class Page(HTMLParser):
             self.title = True
         if tag == "meta" and a.get("name"):
             self.meta[a["name"].lower()] = a.get("content", "")
+        if tag == "meta" and (a.get("http-equiv") or "").lower() == "refresh":
+            self.redirect = True
         if tag == "meta" and (a.get("http-equiv") or "").lower() == "content-security-policy":
             self.csp = a.get("content") or ""
         is_ld = tag == "script" and (a.get("type") or "").lower() == "application/ld+json"
@@ -96,6 +99,7 @@ if not SITE.exists():
     sys.exit("No _site/ folder. Run: python3 build.py")
 
 pages = sorted(SITE.glob("*.html"))
+redirects = set()
 for page in pages:
     html = page.read_text(encoding="utf-8")
     p = Page()
@@ -111,12 +115,15 @@ for page in pages:
         err(problem)
     if not p.title:
         err("missing <title>")
-    if not p.meta.get("description"):
-        err("missing meta description")
-    if "main-content" not in p.ids:
-        err('missing <main id="main-content">')
-    if 'class="skip-link"' not in html:
-        err("missing skip link")
+    if p.redirect:
+        redirects.add(page.name)  # a "redirects" stub: only its target link is checked below
+    else:
+        if not p.meta.get("description"):
+            err("missing meta description")
+        if "main-content" not in p.ids:
+            err('missing <main id="main-content">')
+        if 'class="skip-link"' not in html:
+            err("missing skip link")
     for block in p.ld:
         try:
             json.loads(block)
@@ -150,6 +157,8 @@ reference = (SITE / "index.html").read_text(encoding="utf-8")
 for label, start, end in (("header", "<header", "</header>"), ("footer", "<footer", "</footer>")):
     want = shared_block(reference, start, end)
     for page in pages:
+        if page.name in redirects:
+            continue
         if shared_block(page.read_text(encoding="utf-8"), start, end) != want:
             errors.append(f"{page.name}: {label} differs from index.html")
 

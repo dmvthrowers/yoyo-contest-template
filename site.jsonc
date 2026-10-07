@@ -209,6 +209,10 @@
   // Terms text comes from the preset. Have someone check it fits your venue and local law.
   "terms": { "effective": "September 2026" },
 
+  // Retired pages: keep old links working. Each old page name sends visitors to a page on
+  // this site (or an https:// address). Example: { "divisions": "register.html#divisions" }
+  "redirects": {},
+
   // Colors (hex). Delete a line to use the preset's color.
   // corners: "sharp" (default), "soft", or "round".
   "theme": {
