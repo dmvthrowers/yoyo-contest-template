@@ -218,6 +218,10 @@
   // Terms text comes from the preset. Have someone check it fits your venue and local law.
   "terms": { "effective": "September 2026" },
 
+  // Retired pages: keep old links working. Each old page name sends visitors to a page on
+  // this site (or an https:// address). Example: { "divisions": "register.html#divisions" }
+  "redirects": {},
+
   // How conduct problems are reported, shown on the terms page. The rules themselves come from
   // the preset's terms. All optional; leave empty to show only the contact email.
   "conduct": {

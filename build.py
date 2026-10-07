@@ -459,6 +459,51 @@ class Site:
             return ""
         return self.base_url if page == "index" else f"{self.base_url}{page}.html"
 
+    def redirects(self):
+        """Retired pages: "redirects": { "old-page": "rules.html" } writes old-page.html that sends
+        visitors (and search engines) to the new address, so old links keep working."""
+        out = []
+        taken = {slug for slug, _ in self.footer_pages} | {"404"}
+        for old, target in (self.cfg.get("redirects") or {}).items():
+            old = str(old).removesuffix(".html")
+            target = str(target).strip()
+            if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", old):
+                warnings.append(f'redirects: "{old}" should be a page name like "old-page" (lowercase, dashes). Ignored.')
+            elif old in taken:
+                warnings.append(f'redirects: "{old}" is one of the site\'s own pages, so it can\'t redirect. Ignored.')
+            elif target.startswith("https://"):
+                out.append((old, target))
+            elif target.split("#")[0].removesuffix(".html") in taken:
+                page = target.split("#")[0].removesuffix(".html")
+                frag = "#" + target.split("#", 1)[1] if "#" in target else ""
+                out.append((old, f"{page}.html{frag}"))
+            else:
+                warnings.append(f'redirects: "{old}" points to "{target}", which isn\'t a page on this site '
+                                'or an https:// address. Ignored.')
+        return out
+
+    def redirect_page(self, target):
+        external = target.startswith("https://")
+        href = target if external else f"{self.base_path}{target}"
+        canonical = target if external else (f"{self.base_url}{target.split('#')[0]}" if self.base_url else "")
+        canon = f'\n  <link rel="canonical" href="{esc(canonical)}">' if canonical else ""
+        return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="{self.csp()}">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex, follow">
+  <meta http-equiv="refresh" content="0; url={esc(href)}">{canon}
+  <title>Page moved · {esc(self.name)}</title>
+</head>
+<body>
+  <p>This page moved. <a href="{esc(href)}">Go to the new page</a>.</p>
+</body>
+</html>
+"""
+
     def csp(self):
         return ("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
                 "font-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; "
@@ -1635,6 +1680,8 @@ class Site:
             title, desc, body, ld = getattr(self, f"page_{slug}")()
             robots = "noindex, follow" if slug == "404" or getattr(self, "noindex", False) else "index, follow"
             (OUT / f"{slug}.html").write_text(self.layout(slug, title, desc, body, ld, robots), encoding="utf-8")
+        for slug, target in self.redirects():
+            (OUT / f"{slug}.html").write_text(self.redirect_page(target), encoding="utf-8")
         robots = "User-agent: *\nAllow: /\n"
         if self.base_url:
             robots += f"\nSitemap: {self.base_url}sitemap.xml\n"
