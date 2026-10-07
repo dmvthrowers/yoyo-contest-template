@@ -207,6 +207,9 @@ tbody th { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; c
 .place-label { display: block; font-size: .7rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
 .place .muted { display: block; font-size: .9rem; }
 
+/* Merch and side-event cards */
+.card-pic { display: block; width: 100%; height: auto; margin: -.2rem 0 1rem; border: 1px solid var(--line); }
+
 /* Terms */
 .prose ul { padding-left: 1.2rem; }
 .prose li { margin-bottom: .5rem; }

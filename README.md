@@ -226,6 +226,13 @@ the build warns about values it can't use, then ignores them.
   "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
   stay consistent.
 
+### Merch and side events
+
+Two more pages appear only when you fill them in. Neither takes payments; they say what's on offer and where.
+
+- **Merch** (`merch`): `items` (name, text, price, a picture in `assets/images/` with `alt`, an `https://` link if it's sold online), a `note` such as "Sold at the booth on contest day, cash and card", and `vendors` (who's tabling, with a tier and a link).
+- **Side events** (`side_events`): `items` with a title, text, when, where, a picture and a link, for things like a beginner table, a maker corner or a sponsor tour.
+
 [`examples/`](examples/) has a demo of each: the yo-yo AP and Doubles demo (rounds, panel criteria, a
 team), the yo-yo and kendama combo (two ladders, a Duo, an audience-voted battle), and the juggling demo
 (scored, team, battle, showcase).

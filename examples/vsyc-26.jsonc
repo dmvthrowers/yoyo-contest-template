@@ -120,6 +120,17 @@
     { "tier": "In-Kind", "name": "MINISO (Dulles Town Center)", "text": "Winner prize baskets and a mascot appearance." },
     { "tier": "In-Kind", "name": "July Yoyo", "text": "" }
   ],
+  // From the live vsyc26-merch.html: what was on the merch table (pictures live on the real site).
+  "merch": {
+    "intro": "Buttons and shirts. Entirely volunteer-run, and every dollar goes straight to the event.",
+    "note": "Sold at the Bmore YoYo Club booth on September 19 only, cash and card. No online store, no preorders, no shipping.",
+    "items": [
+      { "name": "VA State Button", "text": "Enamel-style pin." },
+      { "name": "VA State Tee", "text": "Embroidered chest logo." },
+      { "name": "Contest Art Tee", "text": "Full-back screen print." }
+    ]
+  },
+
   "partners": [
     { "tier": "Partner", "name": "National Yo-Yo League", "url": "https://nyyl.org/", "text": "Our freestyles follow the NYYL ruleset." },
     { "tier": "Partner", "name": "Prismatic Stars", "url": "https://www.prismaticstars.com/", "text": "Hosts Stella Duellum." },

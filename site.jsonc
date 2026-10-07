@@ -175,6 +175,16 @@
     "contact_url": ""
   },
 
+  // Merch (optional): a "Merch" page appears when you list items or vendors. Each item: name, text, price,
+  // image (a file in assets/images/, with "alt"), and an https:// "url" if it can be bought online.
+  // "note" says where and how it's sold. This site never takes payments.
+  // { "name": "Contest Tee", "text": "Black tee, back print.", "price": "$25", "image": "images/merch/tee.jpg", "alt": "Black t-shirt with a yo-yo print" }
+  "merch": { "intro": "", "note": "", "items": [], "vendors": [] },
+
+  // Side events (optional): a "Side Events" page appears when you list at least one. Each item: title, text,
+  // when, where, image and alt, and an https:// "url" with a "label".
+  "side_events": { "intro": "", "items": [] },
+
   // Fill this in after the contest. The site switches to "that's a wrap" the day after.
   "results": {
     "intro": "",

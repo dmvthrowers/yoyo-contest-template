@@ -368,7 +368,14 @@ class Site:
         self.reg_closes = parse_date(reg.get("closes"), "registration.closes")
         self.start, self.end = parse_time(self.c.get("start"), "contest.start"), parse_time(self.c.get("end"), "contest.end")
         self.pages = [("index", "Home"), ("schedule", "Schedule"), ("register", "Register"), ("rules", "Rules"),
-                      ("venue", "Venue"), ("sponsors", "Sponsors"), ("results", "Results"), ("faq", "FAQ")]
+                      ("venue", "Venue"), ("sponsors", "Sponsors")]
+        # Optional pages: each exists only when its settings list something.
+        merch = cfg.get("merch") if isinstance(cfg.get("merch"), dict) else {}
+        if merch.get("items") or merch.get("vendors"):
+            self.pages.append(("merch", "Merch"))
+        if isinstance(cfg.get("side_events"), dict) and cfg["side_events"].get("items"):
+            self.pages.append(("side-events", "Side Events"))
+        self.pages += [("results", "Results"), ("faq", "FAQ")]
         self.footer_pages = self.pages + [("terms", "Terms")]
 
     # --- where are we in the contest's life?
@@ -1320,6 +1327,70 @@ class Site:
 {become}"""
         return "Sponsors", f"Sponsors and sponsorship packages for {self.name} {self.year()}.", body, None
 
+    def item_card(self, item, kind):
+        """One card for a merch item or a side event: optional picture, name, text, a few facts and a link."""
+        name = (item.get("name") or item.get("title") or "").strip()
+        if not name:
+            warnings.append(f"A {kind} in site.jsonc has no name. Skipped.")
+            return ""
+        pic = ""
+        if item.get("image"):
+            src = ROOT / "assets" / item["image"]
+            size = image_size(src) if src.exists() else None
+            if not src.exists():
+                warnings.append(f'{kind.capitalize()} "{name}": assets/{item["image"]} was not found. Showing it without a picture.')
+            elif not size:
+                warnings.append(f'Could not read the size of {item["image"]}; use a JPG, PNG, GIF, or WebP file.')
+            else:
+                if src.stat().st_size > 500_000:
+                    warnings.append(f'{item["image"]} is {src.stat().st_size // 1024} KB; resize it under 500 KB so pages load fast.')
+                if not item.get("alt"):
+                    warnings.append(f'{kind.capitalize()} "{name}" has a picture but no "alt" description; screen-reader users need one.')
+                pic = (f'<img class="card-pic" src="{esc(item["image"])}" alt="{esc(item.get("alt", ""))}" width="{size[0]}" '
+                       f'height="{size[1]}" loading="lazy" decoding="async">')
+        facts = [item.get(k) for k in ("price", "when", "where") if isinstance(item.get(k), str) and item.get(k)]
+        meta = f'<p class="label">{esc(" · ".join(facts))}</p>' if facts else ""
+        text = f'<p>{esc(self.fill(item["text"]))}</p>' if item.get("text") else ""
+        link = ""
+        if item.get("url"):
+            if str(item["url"]).startswith("https://"):
+                link = f'<p>{ext_link(item["url"], item.get("label") or "Learn more", "btn btn-outline")}</p>'
+            else:
+                warnings.append(f'{kind.capitalize()} "{name}": "url" must start with https://. Link left out.')
+        return f'\n  <div class="card">{pic}{meta}<h3>{esc(name)}</h3>{text}{link}</div>'
+
+    def page_merch(self):
+        M = self.cfg.get("merch") or {}
+        cards = "".join(self.item_card(i, "merch item") for i in M.get("items") or [] if isinstance(i, dict))
+        note = f'<p class="note center">{esc(self.fill(M["note"]))}</p>' if M.get("note") else ""
+        shop = self.section(M.get("eyebrow") or "Shop", M.get("title") or "Contest Merch",
+                            (f'<p class="center intro">{esc(self.fill(M["intro"]))}</p>' if M.get("intro") else "")
+                            + note + f'<div class="cards cards-3">{cards}\n</div>') if cards else ""
+        vendors = ""
+        rows = []
+        for v in M.get("vendors") or []:
+            if not isinstance(v, dict) or not v.get("name"):
+                continue
+            nm = ext_link(v["url"], v["name"]) if str(v.get("url", "")).startswith("https://") else esc(v["name"])
+            rows.append(f'<li><span class="label">{esc(v.get("tier", "Vendor"))}</span>{nm}'
+                        + (f' <span class="muted">{esc(v["text"])}</span>' if v.get("text") else "") + "</li>")
+        if rows:
+            vendors = self.section("Vendors", M.get("vendors_title") or "Who's Tabling",
+                                   (f'<p class="center intro">{esc(self.fill(M["vendors_intro"]))}</p>' if M.get("vendors_intro") else "")
+                                   + f'<ul class="plain-list partner-list">{"".join(rows)}</ul>', alt=True, narrow=True)
+        body = f"""{self.page_head("Merch", "Merch")}
+{shop}
+{vendors}"""
+        return "Merch", f"Merch and vendors at {self.name} {self.year()}.", body, None
+
+    def page_side_events(self):
+        E = self.cfg.get("side_events") or {}
+        cards = "".join(self.item_card(i, "side event") for i in E.get("items") or [] if isinstance(i, dict))
+        intro = f'<p class="center intro">{esc(self.fill(E["intro"]))}</p>' if E.get("intro") else ""
+        body = f"""{self.page_head("Side events", "Side Events", E.get("lede"))}
+{self.section(E.get("eyebrow") or "More to do", E.get("title") or "Around the Contest", intro + f'<div class="cards cards-3">{cards}\n</div>')}"""
+        return "Side Events", f"Side events and extras at {self.name} {self.year()}.", body, None
+
     def page_results(self):
         cfg = self.cfg
         R = cfg.get("results") or {}
@@ -1500,7 +1571,7 @@ class Site:
             "icons": [{"src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
                       {"src": "emblem.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=2))
         for slug, _ in self.footer_pages + [("404", "")]:
-            title, desc, body, ld = getattr(self, f"page_{slug}")()
+            title, desc, body, ld = getattr(self, "page_" + slug.replace("-", "_"))()
             robots = "noindex, follow" if slug == "404" or getattr(self, "noindex", False) else "index, follow"
             (OUT / f"{slug}.html").write_text(self.layout(slug, title, desc, body, ld, robots), encoding="utf-8")
         robots = "User-agent: *\nAllow: /\n"
