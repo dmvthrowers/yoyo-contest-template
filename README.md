@@ -36,7 +36,8 @@ a "page not found" page.
   normalization, the four evaluation categories, and major deductions. The other presets use typical
   formats for their toy, written so you can change them.
 - **Sponsors by tier**, partners and friends, and sponsorship packages with slot counts and a funding goal.
-- **Results**: a podium for each division, headline stats, and links to standings, photos, and video.
+- **Results**: a podium for each division, headline stats, links to standings and photos, embedded
+  routine videos (YouTube's no-cookie player), and an optional recap page with the story of the day.
 - **Venue page** with parking and food, vendor rules, venue photos, and hotel room blocks.
 - **Competitor terms**: refunds, waiver, photo release, conduct, minors, and cancellation.
   Name a conduct team, reply time and a private report form in `site.jsonc` → `conduct`; the
@@ -108,8 +109,9 @@ someone else's placeholder details; replace them with your contest's and push ag
 ### 5. After the contest
 The day after, the home page switches to "that's a wrap" by itself. Then:
 
-1. Fill in **`results`**: a podium for each division, a few stats, and links to the full standings,
-   photos, and video.
+1. Fill in **`results`**: a podium for each division, a few stats, links to the full standings and
+   photos, and `videos` for the routines (only of people who agreed to be filmed). Add a `recap` if
+   you like.
 2. Fill in **`wrap`**: the headline numbers and links for the home page.
 3. Next year, change the date and registration dates, clear the results, and you're set.
 

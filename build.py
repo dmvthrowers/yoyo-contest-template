@@ -83,6 +83,19 @@ def ext_link(url, label, cls=""):
     return f'<a{c} href="{esc(url)}" rel="noopener noreferrer">{esc(label)}</a>'
 
 
+YOUTUBE = "https://www.youtube-nocookie.com"
+
+
+def youtube_id(value):
+    """An 11-character YouTube video ID from an ID or any common YouTube link."""
+    v = (value or "").strip()
+    m = re.search(r"(?:v=|youtu\.be/|/embed/|/shorts/|/live/)([A-Za-z0-9_-]{11})", v) or re.fullmatch(r"([A-Za-z0-9_-]{11})", v)
+    if not m:
+        sys.exit(f'\nVideo "{value}" is not a YouTube link or video ID. Use a link like '
+                 '"https://www.youtube.com/watch?v=dQw4w9WgXcQ" or just the ID.\n')
+    return m.group(1)
+
+
 def join_words(items):
     items = list(items)
     return " and ".join(items) if len(items) <= 2 else ", ".join(items[:-1]) + ", and " + items[-1]
@@ -384,6 +397,9 @@ class Site:
             self.pages.append(("side-events", "Side Events"))
         self.pages += [("results", "Results"), ("faq", "FAQ")]
         self.footer_pages = self.pages + [("terms", "Terms")]
+        recap = cfg.get("recap") or {}
+        if recap.get("paragraphs") or recap.get("videos"):
+            self.footer_pages.append(("recap", recap.get("nav_label") or "Recap"))
 
     # --- where are we in the contest's life?
     def phase(self):
@@ -510,10 +526,34 @@ class Site:
 </html>
 """
 
-    def csp(self):
+    def csp(self, slug=""):
+        # Only pages that show videos may load frames, and only from YouTube's no-cookie host.
+        frame = YOUTUBE if self.page_videos(slug) else "'none'"
         return ("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
-                "font-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; "
+                f"font-src 'self'; frame-src {frame}; connect-src 'self'; base-uri 'self'; "
                 "form-action 'none'; object-src 'none'; upgrade-insecure-requests")
+
+    def page_videos(self, slug):
+        if slug == "results":
+            return (self.cfg.get("results") or {}).get("videos") or []
+        if slug == "recap":
+            return (self.cfg.get("recap") or {}).get("videos") or []
+        return []
+
+    def videos_html(self, videos):
+        """Privacy-friendly YouTube embeds: youtube-nocookie.com, loaded only when scrolled to."""
+        cards = []
+        for v in videos:
+            vid = youtube_id(v.get("youtube", ""))
+            title = v.get("title") or "Video"
+            meta = " · ".join(x for x in (v.get("division"), v.get("caption")) if x)
+            meta_html = f'<span class="muted">{esc(meta)}</span>' if meta else ""
+            cards.append(f'<figure class="video"><div class="video-frame"><iframe src="{YOUTUBE}/embed/{vid}" '
+                         f'title="{esc(title)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" '
+                         'allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>'
+                         f'<figcaption><strong>{esc(title)}</strong>'
+                         f'{meta_html}</figcaption></figure>')
+        return f'<div class="video-grid">{"".join(cards)}</div>' if cards else ""
 
     def nav(self, current, pages, root):
         items = []
@@ -640,7 +680,7 @@ class Site:
   <meta name="robots" content="{robots}">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="{esc(self.theme['primary'])}">
-  <meta http-equiv="Content-Security-Policy" content="{self.csp()}">
+  <meta http-equiv="Content-Security-Policy" content="{self.csp(slug)}">
   {chr(10).join('  ' + h for h in head_urls).strip()}
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{esc(full)}">
@@ -1594,11 +1634,34 @@ class Site:
         links = self.link_list(R.get("links") or [])
         links_html = self.section(R.get("links_eyebrow") or "Everyone who competed", R.get("links_title") or "Standings, Photos & Video",
                                   links) if links else ""
+        videos = self.videos_html(R.get("videos") or [])
+        videos_html = self.section(R.get("videos_eyebrow") or "On stage", R.get("videos_title") or "Watch the Routines",
+                                   videos, alt=True) if videos else ""
+        recap_link = ""
+        if any(slug == "recap" for slug, _ in self.footer_pages):
+            recap_link = f'<p class="center"><a class="btn btn-outline" href="recap.html">Read the recap</a></p>'
         body = f"""{self.page_head("Results", "Results")}
 {stats}
-{self.section(f"{self.name} {self.year()}", "Champions", intro + main + privacy)}
+{self.section(f"{self.name} {self.year()}", "Champions", intro + main + privacy + recap_link)}
+{videos_html}
 {links_html}"""
         return "Results", f"Results and champions from {self.name} {self.year()}.", body, None
+
+    def page_recap(self):
+        R = self.cfg.get("recap") or {}
+        title = R.get("title") or f"{self.name} {self.year()} Recap"
+        prose = "".join(f"<p>{esc(self.fill(x))}</p>" for x in R.get("paragraphs") or [])
+        story = self.section(R.get("eyebrow") or "The day in review", title, f'<div class="prose">{prose}</div>',
+                             narrow=True, center=False) if prose else ""
+        videos = self.videos_html(R.get("videos") or [])
+        videos_html = self.section(R.get("videos_eyebrow") or "Highlights", R.get("videos_title") or "Watch",
+                                   videos, alt=True) if videos else ""
+        back = '<section class="section"><div class="wrap center"><p class="btn-row"><a class="btn btn-primary" href="results.html">See the results</a></p></div></section>'
+        body = f"""{self.page_head("Recap", title, R.get("intro") or None)}
+{story}
+{videos_html}
+{back}"""
+        return "Recap", f"How {self.name} {self.year()} went: the story of the day, with video highlights.", body, None
 
     def page_faq(self):
         cfg = self.cfg
