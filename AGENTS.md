@@ -61,6 +61,9 @@ facts the user gives you. For next year, update the dates and clear `results` an
   them as an official ruleset, and don't invent a league, sanctioning body, or point system. Trick
   lists, judging criteria, and points in presets and demos are examples: confirm the real ones with the
   user before publishing them.
+- **Merch and side events:** list only what the user tells you is on offer, with their prices and wording. The site never takes
+  payments, so say where and how things are sold in `merch.note`. Pictures need `alt` text.
+
 - **Brackets:** `brackets` entrants are first name and last initial for minors. Never invent entrants or results; record only
   what the user gives you, by match number. Don't set `full_names_ok` unless the user says everyone agreed.
 - **Toy wording** (gear, equipment, music, safety) belongs in the preset or `site.jsonc`, never in
@@ -79,6 +82,9 @@ facts the user gives you. For next year, update the dates and clear `results` an
   build it at every stage with `--today`.
 - **Showcase:** `showcase/`, `examples/`, and `scripts/build_showcase.py` only run in the original
   template repository. Ignore them (or delete them) in a user's copy.
+- **Smoke test:** `scripts/smoke_test.js` and `.github/workflows/smoke-test.yml` click through every page of the built showcase
+  and its examples at phone width. They only run in the original template repository. Run it after changing `build.py`
+  or `assets/`: `python3 scripts/build_showcase.py && node scripts/smoke_test.js` (needs Node and Playwright).
 - **No dependencies:** keep `build.py` and `scripts/check_site.py` standard-library Python 3.9+.
 
 ## Useful commands
@@ -88,3 +94,5 @@ python3 build.py --today 2026-11-15          # preview another day (any stage)
 python3 build.py --base-url https://x.org/   # build for a specific address
 python3 scripts/check_site.py                # must print "OK"
 ```
+
+- **Accessibility check:** after changing markup or styles, run `python3 scripts/build_showcase.py && node scripts/a11y_test.js` (needs Playwright and axe-core; see `.github/workflows/a11y.yml`). It fails on serious or critical axe problems at 360px and 1100px.

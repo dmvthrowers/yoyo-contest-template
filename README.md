@@ -148,6 +148,7 @@ The build prints the current status line, so you can check every stage before it
 | Sponsors and packages | `site.jsonc` → `sponsors`, `partners`, `sponsorship` | Tiers come from the preset; set prices and slots. |
 | Results and wrap-up | `site.jsonc` → `results`, `wrap` | See [Competitor privacy](#competitor-privacy). |
 | FAQ | `site.jsonc` → `faq_extra` | Or copy `faq` from the preset to replace it. |
+| Retired pages | `site.jsonc` → `redirects` | `{ "old-page": "rules.html" }` keeps old links working: `old-page.html` sends visitors to the new page. |
 | Terms | copy `terms` from the preset into `site.jsonc` | Have someone check them. See below. |
 | Colors and corners | `site.jsonc` → `theme` | `"corners"`: `sharp`, `soft`, or `round`. The build warns if text would be hard to read. |
 | Logo | add `assets/emblem.svg` | Otherwise a logo with your short name is generated. Pick its toy with `theme.emblem`: `yoyo`, `kendama`, `top`, `diabolo`, `juggling`, or `star`. |
@@ -233,6 +234,13 @@ the build warns about values it can't use, then ignores them.
   `{ "time": "10:30 AM", "division": "1A", "round": "Prelims" }` shows "1A Division · Prelims" and
   "Top 10 advance to Finals." The build warns if the round doesn't exist, so the schedule and divisions
   stay consistent.
+
+### Merch and side events
+
+Two more pages appear only when you fill them in. Neither takes payments; they say what's on offer and where.
+
+- **Merch** (`merch`): `items` (name, text, price, a picture in `assets/images/` with `alt`, an `https://` link if it's sold online), a `note` such as "Sold at the booth on contest day, cash and card", and `vendors` (who's tabling, with a tier and a link).
+- **Side events** (`side_events`): `items` with a title, text, when, where, a picture and a link, for things like a beginner table, a maker corner or a sponsor tour.
 
 ### Brackets
 

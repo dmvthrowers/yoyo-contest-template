@@ -175,6 +175,15 @@
     "contact_url": ""
   },
 
+  // Merch (optional): a "Merch" page appears when you list items or vendors. Each item: name, text, price,
+  // image (a file in assets/images/, with "alt"), and an https:// "url" if it can be bought online.
+  // "note" says where and how it's sold. This site never takes payments.
+  // { "name": "Contest Tee", "text": "Black tee, back print.", "price": "$25", "image": "images/merch/tee.jpg", "alt": "Black t-shirt with a yo-yo print" }
+  "merch": { "intro": "", "note": "", "items": [], "vendors": [] },
+
+  // Side events (optional): a "Side Events" page appears when you list at least one. Each item: title, text,
+  // when, where, image and alt, and an https:// "url" with a "label".
+  "side_events": { "intro": "", "items": [] },
   // Brackets (optional): a "Brackets" page appears when you list at least one. "entrants" are in seed order
   // (the first name is the top seed); the build draws every match, gives byes to the top seeds when the
   // number isn't a power of two, and moves winners forward. Matches are numbered round by round (the 3rd-place
@@ -230,6 +239,10 @@
 
   // Terms text comes from the preset. Have someone check it fits your venue and local law.
   "terms": { "effective": "September 2026" },
+
+  // Retired pages: keep old links working. Each old page name sends visitors to a page on
+  // this site (or an https:// address). Example: { "divisions": "register.html#divisions" }
+  "redirects": {},
 
   // How conduct problems are reported, shown on the terms page. The rules themselves come from
   // the preset's terms. All optional; leave empty to show only the contact email.

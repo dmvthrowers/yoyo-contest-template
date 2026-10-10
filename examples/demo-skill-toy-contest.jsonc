@@ -46,6 +46,14 @@
   ],
   "venue": { "name": "Riverfront Hall", "space": "Ballroom", "address": "100 Example St, Harrisburg PA" },
   "sponsors": [ { "tier": "Gold", "name": "Example Toy Shop", "text": "Prize packs for every division." } ],
+  // Sample side events: a drop-in table and a workshop, shown on their own "Side Events" page.
+  "side_events": {
+    "intro": "Between divisions, there's plenty to do. Everything here is drop-in and free.",
+    "items": [
+      { "title": "Beginner Table", "text": "Borrow a toy and learn a first trick from a volunteer.", "when": "All day", "where": "Main hall" },
+      { "title": "Repair Bench", "text": "Bring a toy with a worn string or loose part and we'll fix it.", "when": "Between divisions", "where": "Side room" }
+    ]
+  },
   "partners": [], "sponsorship": {}, "results": {}, "wrap": {},
   "contact": { "email": "contest@example.org", "social": [] },
   "faq_extra": [ { "group": "Competing", "q": "Is there a division for kids?", "a": "Yes. Junior (Any Toy) is for players 13 and under." } ],
