@@ -55,6 +55,17 @@ corners, and flat cards, in your colors.
 
 ---
 
+## Prerequisites
+
+Everything here is free except the optional custom domain.
+
+| You need | Free / low-cost option |
+|---|---|
+| GitHub account | [github.com/signup](https://github.com/signup) — Pages hosting is free on public repos |
+| Shared contest email | Gmail (free) — put it in `site.jsonc` → `contact`. Keep registration data (names, emails, payments) in your sign-up tool, never in this repo |
+| Online registration | Pair with [yoyo-registration-template](https://github.com/dmvthrowers/yoyo-registration-template), or link any sign-up tool in `registration` |
+| Custom domain (optional) | [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) or [Porkbun](https://porkbun.com) (~$10–15/yr), or use the free `yourcontest.github.io` address |
+
 ## Quick start
 
 You need a free [GitHub account](https://github.com/signup).
